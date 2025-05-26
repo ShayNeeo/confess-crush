@@ -201,6 +201,28 @@ The `visualization.py` script is the primary engine for insight generation and c
     *   **Purpose**: To compare the distributions of various behavioral features (e.g., purchase frequency, average order value, types of products bought) between customers who made repeat purchases (label=1) and those who did not (label=0).
     *   **Business Value**: Provides critical insights for developing effective customer retention strategies by highlighting behaviors that differentiate loyal customers from one-time buyers, thus informing churn prevention tactics.
 
+#### **Section 6: Predictive Modeling (Chapter 5)**
+
+44. **Target Variable Distribution (Pie Chart)**
+    *   **Purpose**: To understand the class balance of the target variable (e.g., the proportion of returning vs. non-returning customers in the training dataset).
+    *   **Business Value**: Informs model training strategy (e.g., need for resampling techniques if classes are imbalanced) and provides a baseline for understanding model performance relative to the natural class distribution.
+
+45. **Confusion Matrix**
+    *   **Purpose**: To provide a detailed breakdown of a classification model's performance by showing true positives, true negatives, false positives, and false negatives, with enhanced error handling and fallback visualizations.
+    *   **Business Value**: Essential for understanding the types of errors the model is making, assessing its reliability for specific business decisions (e.g., cost of false positives vs. false negatives in churn prediction), and fine-tuning model thresholds. Robust implementation ensures reliable insights even when model building fails.
+
+46. **ROC Curve (Receiver Operating Characteristic Curve)**
+    *   **Purpose**: To visually assess a classification model's ability to distinguish between positive and negative classes across various threshold settings. The Area Under the Curve (AUC) quantifies this ability, with comprehensive error handling for missing data scenarios.
+    *   **Business Value**: Provides a robust measure of model performance independent of class distribution and decision threshold; crucial for comparing different models and validating model suitability for deployment. Enhanced implementation ensures consistent reporting regardless of data availability.
+
+47. **Feature Importance Chart (Bar Chart)**
+    *   **Purpose**: To identify and rank the features that have the most significant impact on the predictive model's decisions (e.g., which customer attributes are most indicative of repeat purchase behavior), with intelligent fallback handling for missing model data.
+    *   **Business Value**: Allows the business to focus efforts and resources on the highest-impact factors; provides explainability for model predictions; can guide future data collection and feature engineering efforts. Robust error handling ensures insights are always available.
+
+48. **Model Performance Summary (Bar Chart)**
+    *   **Purpose**: To present key model evaluation metrics (e.g., Accuracy, Precision, Recall, F1-Score) in a clear, comparative bar chart format, with comprehensive error handling and fallback visualizations for incomplete data scenarios.
+    *   **Business Value**: Offers a consolidated view for making a final decision on model deployment, ongoing performance monitoring, and communicating model effectiveness to non-technical stakeholders. Enhanced implementation provides reliable reporting even when metrics are unavailable.
+
 #### **Section 6: Custom Business Insights**
 
 34. **Top 10 Products Repurchase Rate Analysis (Dual-Axis Chart)**
@@ -244,28 +266,6 @@ The `visualization.py` script is the primary engine for insight generation and c
 43. **Advanced RFM (Recency, Frequency, Monetary) Analysis**
     *   **Purpose**: To perform sophisticated customer segmentation using enhanced RFM methodology, incorporating behavioral adaptations for non-monetary environments and creating detailed customer value profiles.
     *   **Business Value**: Enables precision targeting for marketing campaigns based on customer value and behavior; guides personalized pricing strategies and offer optimization; helps identify at-risk high-value customers and growth opportunities in underperforming segments.
-
-#### **Section 7: Predictive Modeling (Chapter 5)**
-
-44. **Target Variable Distribution (Pie Chart)**
-    *   **Purpose**: To understand the class balance of the target variable (e.g., the proportion of returning vs. non-returning customers in the training dataset).
-    *   **Business Value**: Informs model training strategy (e.g., need for resampling techniques if classes are imbalanced) and provides a baseline for understanding model performance relative to the natural class distribution.
-
-45. **Confusion Matrix**
-    *   **Purpose**: To provide a detailed breakdown of a classification model's performance by showing true positives, true negatives, false positives, and false negatives, with enhanced error handling and fallback visualizations.
-    *   **Business Value**: Essential for understanding the types of errors the model is making, assessing its reliability for specific business decisions (e.g., cost of false positives vs. false negatives in churn prediction), and fine-tuning model thresholds. Robust implementation ensures reliable insights even when model building fails.
-
-46. **ROC Curve (Receiver Operating Characteristic Curve)**
-    *   **Purpose**: To visually assess a classification model's ability to distinguish between positive and negative classes across various threshold settings. The Area Under the Curve (AUC) quantifies this ability, with comprehensive error handling for missing data scenarios.
-    *   **Business Value**: Provides a robust measure of model performance independent of class distribution and decision threshold; crucial for comparing different models and validating model suitability for deployment. Enhanced implementation ensures consistent reporting regardless of data availability.
-
-47. **Feature Importance Chart (Bar Chart)**
-    *   **Purpose**: To identify and rank the features that have the most significant impact on the predictive model's decisions (e.g., which customer attributes are most indicative of repeat purchase behavior), with intelligent fallback handling for missing model data.
-    *   **Business Value**: Allows the business to focus efforts and resources on the highest-impact factors; provides explainability for model predictions; can guide future data collection and feature engineering efforts. Robust error handling ensures insights are always available.
-
-48. **Model Performance Summary (Bar Chart)**
-    *   **Purpose**: To present key model evaluation metrics (e.g., Accuracy, Precision, Recall, F1-Score) in a clear, comparative bar chart format, with comprehensive error handling and fallback visualizations for incomplete data scenarios.
-    *   **Business Value**: Offers a consolidated view for making a final decision on model deployment, ongoing performance monitoring, and communicating model effectiveness to non-technical stakeholders. Enhanced implementation provides reliable reporting even when metrics are unavailable.
 
 ### Business Impact Summary
 The visualization pipeline is designed to deliver tangible business value across several key areas:
