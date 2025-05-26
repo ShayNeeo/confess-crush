@@ -270,3 +270,15 @@ flowchart LR
     I
     A
     end
+```
+**Lưu ý**: Pipeline là lặp đi lặp lại. Hiểu biết từ trực quan hóa (E, F, G) có thể phản hồi vào việc tinh chỉnh các quy trình làm sạch dữ liệu (C) hoặc đề xuất các đặc trưng mới, dẫn đến cải thiện liên tục.
+
+### Chỉ Số Hiệu Suất Chính Của Pipeline
+*   **Tốc Độ Xử Lý**: Xử lý hơn 10 triệu bản ghi trong vòng chưa đến 30 phút.
+    *   **Ý nghĩa**: Thể hiện hiệu quả xử lý cao và khả năng mở rộng, cho phép phân tích nhanh các bộ dữ liệu lớn và chu kỳ lặp nhanh cho các tác vụ phân tích.
+*   **Độ Rộng Trực Quan Hóa**: Tạo ra hơn 150 trực quan hóa riêng biệt mỗi lần chạy toàn diện.
+    *   **Ý nghĩa**: Cho thấy phạm vi phân tích toàn diện, cung cấp một loạt các góc nhìn đa dạng cho khám phá dữ liệu sâu, khám phá hiểu biết và phục vụ nhu cầu đa dạng của các bên liên quan.
+*   **Độ Sâu Phân Tích**: Hỗ trợ phân tích trên hơn 12 chiều phân tích chính (ví dụ: thời gian, nhân khẩu học, sản phẩm, thương gia, hành vi).
+    *   **Ý nghĩa**: Làm nổi bật bản chất đa mặt của phân tích, cho phép hiểu biết chéo chiều phức tạp quan trọng cho hiểu biết kinh doanh toàn diện và tinh tế.
+
+Pipeline xử lý và trực quan hóa dữ liệu cấp công nghiệp này được thiết kế để cung cấp hiểu biết kịp thời, đáng tin cậy và có thể hành động, trao quyền cho DAZONE 2025 với trí thông minh cần thiết cho lập kế hoạch chiến lược và lợi thế cạnh tranh bền vững. 
