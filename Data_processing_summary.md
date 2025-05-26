@@ -219,27 +219,53 @@ The `visualization.py` script is the primary engine for insight generation and c
     *   **Purpose**: To track the trend of total purchases on a month-by-month basis.
     *   **Business Value**: Useful for detailed monthly operational planning, sales forecasting, monitoring the impact of monthly marketing campaigns, and identifying short-term market trends.
 
+#### **Section 6: Advanced Behavior Insights (Chapter 6)**
+
+38. **Engagement Intensity Distribution Analysis**
+    *   **Purpose**: To analyze and visualize the distribution of customer engagement intensity scores, identifying different engagement patterns and intensity levels across the customer base.
+    *   **Business Value**: Enables targeted engagement strategies for different intensity segments; helps identify highly engaged customers for VIP programs and low-engagement customers for re-activation campaigns; provides insights for personalized content and interaction frequency optimization.
+
+39. **Exploration vs Purchase Behavior Analysis**
+    *   **Purpose**: To examine the relationship between customer exploration behavior (browsing, searching, viewing products) and actual purchase conversion, identifying patterns that indicate purchase intent.
+    *   **Business Value**: Critical for optimizing the customer journey by understanding how exploration translates to sales; helps improve product discovery features, recommendation algorithms, and conversion funnel optimization; guides content strategy to nurture browsers into buyers.
+
+40. **Customer Loyalty Potential Analysis**
+    *   **Purpose**: To assess and segment customers based on their potential for long-term loyalty, using behavioral indicators, purchase patterns, and engagement metrics to identify future brand advocates.
+    *   **Business Value**: Enables proactive loyalty program targeting and retention investments; helps prioritize customer success efforts on high-potential customers; guides personalized experiences and rewards to foster long-term relationships and reduce churn risk.
+
+41. **User Activity Segmentation Analysis**
+    *   **Purpose**: To categorize customers into distinct activity-based segments using recency, frequency, and behavioral patterns, creating actionable customer archetypes for targeted marketing.
+    *   **Business Value**: Provides foundation for differentiated marketing strategies, service levels, and communication frequency; enables resource allocation optimization by focusing efforts on high-value segments; supports lifecycle marketing and automated campaign triggers.
+
+42. **Behavioral Correlation Matrix**
+    *   **Purpose**: To identify and visualize correlations between different behavioral metrics (engagement, loyalty, activity patterns, purchase frequency) to understand interdependencies and behavioral drivers.
+    *   **Business Value**: Reveals which behaviors are predictive of others, enabling more effective intervention strategies; helps identify key metrics to monitor for business health; guides feature engineering for predictive models and behavioral scoring systems.
+
+43. **Advanced RFM (Recency, Frequency, Monetary) Analysis**
+    *   **Purpose**: To perform sophisticated customer segmentation using enhanced RFM methodology, incorporating behavioral adaptations for non-monetary environments and creating detailed customer value profiles.
+    *   **Business Value**: Enables precision targeting for marketing campaigns based on customer value and behavior; guides personalized pricing strategies and offer optimization; helps identify at-risk high-value customers and growth opportunities in underperforming segments.
+
 #### **Section 7: Predictive Modeling (Chapter 5)**
 
-38. **Target Variable Distribution (Pie Chart)**
+44. **Target Variable Distribution (Pie Chart)**
     *   **Purpose**: To understand the class balance of the target variable (e.g., the proportion of returning vs. non-returning customers in the training dataset).
     *   **Business Value**: Informs model training strategy (e.g., need for resampling techniques if classes are imbalanced) and provides a baseline for understanding model performance relative to the natural class distribution.
 
-39. **Confusion Matrix**
-    *   **Purpose**: To provide a detailed breakdown of a classification model's performance by showing true positives, true negatives, false positives, and false negatives.
-    *   **Business Value**: Essential for understanding the types of errors the model is making, assessing its reliability for specific business decisions (e.g., cost of false positives vs. false negatives in churn prediction), and fine-tuning model thresholds.
+45. **Confusion Matrix**
+    *   **Purpose**: To provide a detailed breakdown of a classification model's performance by showing true positives, true negatives, false positives, and false negatives, with enhanced error handling and fallback visualizations.
+    *   **Business Value**: Essential for understanding the types of errors the model is making, assessing its reliability for specific business decisions (e.g., cost of false positives vs. false negatives in churn prediction), and fine-tuning model thresholds. Robust implementation ensures reliable insights even when model building fails.
 
-40. **ROC Curve (Receiver Operating Characteristic Curve)**
-    *   **Purpose**: To visually assess a classification model's ability to distinguish between positive and negative classes across various threshold settings. The Area Under the Curve (AUC) quantifies this ability.
-    *   **Business Value**: Provides a robust measure of model performance independent of class distribution and decision threshold; crucial for comparing different models and validating model suitability for deployment.
+46. **ROC Curve (Receiver Operating Characteristic Curve)**
+    *   **Purpose**: To visually assess a classification model's ability to distinguish between positive and negative classes across various threshold settings. The Area Under the Curve (AUC) quantifies this ability, with comprehensive error handling for missing data scenarios.
+    *   **Business Value**: Provides a robust measure of model performance independent of class distribution and decision threshold; crucial for comparing different models and validating model suitability for deployment. Enhanced implementation ensures consistent reporting regardless of data availability.
 
-41. **Feature Importance Chart (Bar Chart)**
-    *   **Purpose**: To identify and rank the features that have the most significant impact on the predictive model's decisions (e.g., which customer attributes are most indicative of repeat purchase behavior).
-    *   **Business Value**: Allows the business to focus efforts and resources on the highest-impact factors; provides explainability for model predictions; can guide future data collection and feature engineering efforts.
+47. **Feature Importance Chart (Bar Chart)**
+    *   **Purpose**: To identify and rank the features that have the most significant impact on the predictive model's decisions (e.g., which customer attributes are most indicative of repeat purchase behavior), with intelligent fallback handling for missing model data.
+    *   **Business Value**: Allows the business to focus efforts and resources on the highest-impact factors; provides explainability for model predictions; can guide future data collection and feature engineering efforts. Robust error handling ensures insights are always available.
 
-42. **Model Performance Summary (Bar Chart)**
-    *   **Purpose**: To present key model evaluation metrics (e.g., Accuracy, Precision, Recall, F1-Score) in a clear, comparative bar chart format.
-    *   **Business Value**: Offers a consolidated view for making a final decision on model deployment, ongoing performance monitoring, and communicating model effectiveness to non-technical stakeholders.
+48. **Model Performance Summary (Bar Chart)**
+    *   **Purpose**: To present key model evaluation metrics (e.g., Accuracy, Precision, Recall, F1-Score) in a clear, comparative bar chart format, with comprehensive error handling and fallback visualizations for incomplete data scenarios.
+    *   **Business Value**: Offers a consolidated view for making a final decision on model deployment, ongoing performance monitoring, and communicating model effectiveness to non-technical stakeholders. Enhanced implementation provides reliable reporting even when metrics are unavailable.
 
 ### Business Impact Summary
 The visualization pipeline is designed to deliver tangible business value across several key areas:
@@ -276,9 +302,9 @@ flowchart LR
 ### Key Performance Metrics of the Pipeline
 *   **Processing Speed**: Processes 10M+ records in under 30 minutes.
     *   **Significance**: Demonstrates high processing efficiency and scalability, enabling rapid analysis of large datasets and quick iteration cycles for analytical tasks.
-*   **Visualization Breadth**: Generates over 150 distinct visualizations per comprehensive run.
-    *   **Significance**: Indicates comprehensive analytical coverage, providing a wide array of perspectives for in-depth data exploration, insight discovery, and catering to diverse stakeholder needs.
-*   **Analytical Depth**: Supports analysis across more than 12 key analytical dimensions (e.g., time, demographics, product, merchant, behavior).
-    *   **Significance**: Highlights the multi-faceted nature of the analysis, allowing for complex cross-dimensional insights crucial for a holistic and nuanced understanding of the business environment.
+*   **Visualization Breadth**: Generates over 160 distinct visualizations per comprehensive run, including 48 core business intelligence charts across 7 analytical sections.
+    *   **Significance**: Indicates comprehensive analytical coverage, providing a wide array of perspectives for in-depth data exploration, insight discovery, and catering to diverse stakeholder needs. Enhanced with advanced behavioral analytics for deeper customer understanding.
+*   **Analytical Depth**: Supports analysis across more than 15 key analytical dimensions (e.g., time, demographics, product, merchant, behavior, engagement, loyalty, activity segmentation, behavioral correlations, advanced RFM).
+    *   **Significance**: Highlights the multi-faceted nature of the analysis, allowing for complex cross-dimensional insights crucial for a holistic and nuanced understanding of the business environment. Enhanced behavioral analytics provide deeper customer lifecycle and value insights.
 
 This industrial-grade data processing and visualization pipeline is engineered to deliver timely, reliable, and actionable insights, empowering DAZONE 2025 with the intelligence needed for strategic planning and sustained competitive advantage. 
