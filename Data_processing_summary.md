@@ -241,7 +241,7 @@ The `visualization.py` script is the primary engine for insight generation and c
     *   **Purpose**: To track the trend of total purchases on a month-by-month basis.
     *   **Business Value**: Useful for detailed monthly operational planning, sales forecasting, monitoring the impact of monthly marketing campaigns, and identifying short-term market trends.
 
-#### **Section 6: Advanced Behavior Insights (Chapter 6)**
+#### **Section 7: Advanced Behavior Insights (Chapter 6)**
 
 38. **Engagement Intensity Distribution Analysis**
     *   **Purpose**: To analyze and visualize the distribution of customer engagement intensity scores, identifying different engagement patterns and intensity levels across the customer base.
