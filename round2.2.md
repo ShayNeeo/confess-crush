@@ -100,10 +100,10 @@ Giống như đầu bếp cần chuẩn bị nguyên liệu tươi ngon và dụ
     Hãy tưởng tượng đây là dây chuyền sản xuất một "nhà tiên tri":
     ```mermaid
     graph LR
-        A[Dữ liệu đã sơ chế từ Phần 1] --> B(SMOTE: Cân bằng các nhóm khách hàng);
-        B --> C{Huấn luyện "Nhà Tiên Tri"};
+        A[Dữ liệu đã sơ chế từ Phần 1] --> B(SMOTE Cân bằng dữ liệu);
+        B --> C[Huấn luyện Nhà Tiên Tri];
         C --> D[Đánh giá trên dữ liệu Validation];
-        D --> E[Kết quả: Điểm số & Biểu đồ];
+        D --> E[Kết quả Điểm số và Biểu đồ];
     ```
 
 * **Hai Con Đường Thám Hiểm (Two Modeling Options):** Chúng ta có hai "chiến thuật" chính để tìm ra "nhà tiên tri" giỏi nhất.
@@ -113,9 +113,9 @@ Giống như đầu bếp cần chuẩn bị nguyên liệu tươi ngon và dụ
         * *Luồng công việc (Pipeline Option 1):*
             ```mermaid
             graph TD
-                A[Dữ liệu đã sơ chế & SMOTE] --> B(Huấn luyện LightGBM_Opt1);
+                A[Dữ liệu đã sơ chế và SMOTE] --> B[Huấn luyện LightGBM_Opt1];
                 B --> C[Đánh giá LightGBM_Opt1];
-                A --> D(Huấn luyện RandomForest_Opt1);
+                A --> D[Huấn luyện RandomForest_Opt1];
                 D --> E[Đánh giá RandomForest_Opt1];
                 C --> F[Lưu kết quả];
                 E --> F;
@@ -127,20 +127,33 @@ Giống như đầu bếp cần chuẩn bị nguyên liệu tươi ngon và dụ
         * *Luồng công việc (Pipeline Option 2):*
             ```mermaid
             graph TD
-                A[Dữ liệu đã sơ chế & SMOTE] --> B{Bắt đầu "Cuộc Thi Đầu Bếp"};
-                B -- LogisticRegression_Comp --> C1[Huấn luyện & Đánh giá LR_Comp];
-                B -- RandomForest_Comp --> C2[Huấn luyện & Đánh giá RF_Comp];
-                B -- XGBoost_Comp --> C3[Huấn luyện & Đánh giá XGB_Comp];
-                B -- LightGBM_Comp --> C4[Huấn luyện & Đánh giá LGBM_Comp];
-                B -- LinearSVC_Comp --> C5[Huấn luyện & Đánh giá SVC_Comp];
-                B -- MLPClassifier_Comp --> C6[Huấn luyện & Đánh giá MLP_Comp];
-                C1 --> D[Tổng hợp kết quả];
-                C2 --> D;
-                C3 --> D;
-                C4 --> D;
-                C5 --> D;
-                C6 --> D;
-                D --> E[So sánh & Chọn Model nổi bật từ Lựa chọn 2];
+                A[Dữ liệu đã sơ chế và SMOTE] --> B[Bắt đầu Cuộc Thi So Sánh Models];
+                B --> LR_Train[Huấn luyện LogisticRegression_Comp];
+                LR_Train --> LR_Eval[Đánh giá LR_Comp];
+                LR_Eval --> Collect_Results[Tổng hợp kết quả];
+
+                B --> RF_Train[Huấn luyện RandomForest_Comp];
+                RF_Train --> RF_Eval[Đánh giá RF_Comp];
+                RF_Eval --> Collect_Results;
+
+                B --> XGB_Train[Huấn luyện XGBoost_Comp];
+                XGB_Train --> XGB_Eval[Đánh giá XGB_Comp];
+                XGB_Eval --> Collect_Results;
+
+                B --> LGBM_Train[Huấn luyện LightGBM_Comp];
+                LGBM_Train --> LGBM_Eval[Đánh giá LGBM_Comp];
+                LGBM_Eval --> Collect_Results;
+
+                B --> SVC_Train[Huấn luyện LinearSVC_Comp];
+                SVC_Train --> SVC_Eval[Đánh giá SVC_Comp];
+                SVC_Eval --> Collect_Results;
+
+                B --> MLP_Train[Huấn luyện MLPClassifier_Comp];
+                MLP_Train --> MLP_Eval[Đánh giá MLP_Comp];
+                MLP_Eval --> Collect_Results;
+
+                Collect_Results --> Compare[So sánh tất cả Models];
+                Compare --> SelectBest[Chọn Model tốt nhất từ Lựa chọn 2];
             ```
             *Mục tiêu:* So sánh hiệu suất của một loạt các thuật toán khác nhau để tìm ra ứng cử viên sáng giá.
 
