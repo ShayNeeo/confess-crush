@@ -1,227 +1,223 @@
-# README: Giải Mã Kho Báu Dữ Liệu Sàn Thương Mại Điện Tử - DAZONE 2025 Vòng 2.2
+# README: Hành Trình Khai Phá Dữ Liệu Khách Hàng Sàn TMĐT - Sứ Mệnh DAZONE 2025 Vòng 2.2
 
-Chào mừng các nhà thám hiểm dữ liệu của đội chúng ta đến với hành trình chinh phục DAZONE 2025! File Python này chính là la bàn và cuốc xẻng để chúng ta khai phá những "mỏ vàng" thông tin từ dữ liệu của một sàn thương mại điện tử. Mục tiêu cuối cùng? Tìm ra bí mật giữ chân khách hàng và chiến thắng cuộc thi! 🚀
+Chào các chiến binh dữ liệu của đội! Chúng ta đang đứng trước một thử thách lớn từ "Sếp Tổng" tại cuộc thi DAZONE 2025: làm sao để sàn thương mại điện tử của chúng ta giữ chân được khách hàng, khiến họ quay lại mua sắm? File Python này chính là "bảo bối" và "kim chỉ nam" của đội trong hành trình khám phá những bí mật ẩn sâu trong dữ liệu khách hàng. Hãy cùng nhau giải mã nó và mang về chiến thắng nhé! 🚀
 
 ## Mục Lục
 
-1.  [Bối Cảnh Cuộc Thám Hiểm: Sàn Thương Mại Điện Tử và Thử Thách DAZONE](#bối-cảnh-cuộc-thám-hiểm-sàn-thương-mại-điện-tử-và-thử-thách-dazone)
-2.  [Cách Vận Hành "Cỗ Máy Khai Khoáng" (Cách Chạy Script)](#cách-vận-hành-cỗ-máy-khai-khoáng-cách-chạy-script)
-3.  [Bản Thiết Kế "Cỗ Máy" (Cấu Trúc Script Chi Tiết)](#bản-thiết-kế-cỗ-máy-cấu-trúc-script-chi-tiết)
-    * [Giai Đoạn 1: Gom Góp "Đất Đá" và Chuẩn Bị "Dụng Cụ"](#giai-đoạn-1-gom-góp-đất-đá-và-chuẩn-bị-dụng-cụ)
-    * [Giai Đoạn 2: "Luyện Kim" và "Thử Vàng" (Huấn Luyện & Đánh Giá Model)](#giai-đoạn-2-luyện-kim-và-thử-vàng-huấn-luyện--đánh-giá-model)
-    * [Giai Đoạn 3: "Chế Tác Trang Sức" và "Trưng Bày" (Phân Tích Sâu & Kể Chuyện)](#giai-đoạn-3-chế-tác-trang-sức-và-trưng-bày-phân-tích-sâu--kể-chuyện)
-4.  [Đối Chiếu Với "Bảng Vàng" Ban Giám Khảo (Barem Chấm Điểm DAZONE 2025)](#đối-chiếu-với-bảng-vàng-ban-giám-khảo-barem-chấm-điểm-dazone-2025)
-5.  [Những "Viên Kim Cương" Nên "Đánh Bóng" Cho Buổi Trình Bày (Gợi Ý Trực Quan Hóa)](#những-viên-kim-cương-nên-đánh-bóng-cho-buổi-trình-bày-gợi-ý-trực-quan-hóa)
-6.  [Lời Dặn Dò Từ "Trưởng Đoàn Thám Hiểm"](#lời-dặn-dò-từ-trưởng-đoàn-thám-hiểm)
+1.  [Nhiệm Vụ Bí Mật: Hiểu Lòng Khách Hàng, Giữ Chân Doanh Thu](#nhiệm-vụ-bí-mật-hiểu-lòng-khách-hàng-giữ-chân-doanh-thu)
+2.  [Kích Hoạt "Cỗ Máy Thời Gian": Hướng Dẫn Vận Hành Script](#kích-hoạt-cỗ-máy-thời-gian-hướng-dẫn-vận-hành-script)
+3.  [Giải Mã "Cỗ Máy Thời Gian": Cấu Trúc Script và Câu Chuyện Đằng Sau](#giải-mã-cỗ-máy-thời-gian-cấu-trúc-script-và-câu-chuyện-đằng-sau)
+    * [Chương 1: Thu Thập Thông Tin Tình Báo - Chuẩn Bị Dữ Liệu](#chương-1-thu-thập-thông-tin-tình-báo---chuẩn-bị-dữ-liệu)
+    * [Chương 2: Chế Tạo Quả Cầu Tiên Tri - Xây Dựng và Đánh Giá Model](#chương-2-chế-tạo-quả-cầu-tiên-tri---xây-dựng-và-đánh-giá-model)
+    * [Chương 3: Đọc Vị Quả Cầu & Phân Loại "Chiến Binh" - Phân Tích Sâu và Tạo Chân Dung Khách Hàng](#chương-3-đọc-vị-quả-cầu--phân-loại-chiến-binh---phân-tích-sâu-và-tạo-chân-dung-khách-hàng)
+4.  [Đáp Án Cho "Sếp Tổng": Đối Chiếu Với Barem Chấm Điểm DAZONE 2025](#đáp-án-cho-sếp-tổng-đối-chiếu-với-barem-chấm-điểm-dazone-2025)
+5.  [Báo Cáo Chiến Công Lên "Bộ Chỉ Huy": Gợi Ý Trực Quan Hóa Cho Bài Thuyết Trình](#báo-cáo-chiến-công-lên-bộ-chỉ-huy-gợi-ý-trực-quan-hóa-cho-bài-thuyết-trình)
+6.  [Thông Điệp Từ "Chỉ Huy Trưởng" Đội Đặc Nhiệm](#thông-điệp-từ-chỉ-huy-trưởng-đội-đặc-nhiệm)
 
-## Bối Cảnh Cuộc Thám Hiểm: Sàn Thương Mại Điện Tử và Thử Thách DAZONE
+## Nhiệm Vụ Bí Mật: Hiểu Lòng Khách Hàng, Giữ Chân Doanh Thu
 
-Tưởng tượng chúng ta đang làm việc cho một sàn thương mại điện tử lớn. Sàn có rất nhiều khách hàng và vô vàn sản phẩm. Một câu hỏi lớn mà sếp đặt ra là: "Làm sao để biết khách hàng nào sẽ tiếp tục mua sắm với chúng ta, cụ thể là với một gian hàng họ từng mua, trong 6 tháng tới?" [cite: 909, 911] Đây chính là "kho báu" mà cuộc thi DAZONE 2025 Vòng 2.2 yêu cầu chúng ta tìm kiếm. [cite: 895]
+Sàn thương mại điện tử của chúng ta có hàng triệu khách hàng. Nhưng, ai trong số họ sẽ thực sự gắn bó và quay lại mua hàng tại một gian hàng cụ thể trong 6 tháng tới? Đây không chỉ là một câu hỏi, mà là một "nhiệm vụ tối mật" ảnh hưởng trực tiếp đến doanh thu và sự phát triển bền vững. Nếu chúng ta biết được điều này, chúng ta có thể:
+* Chăm sóc đúng người, đúng lúc.
+* Tung ra các chương trình khuyến mãi hiệu quả hơn.
+* Biến khách hàng mới thành khách hàng trung thành.
 
-"Cỗ máy khai khoáng" (script Python) này sẽ giúp chúng ta:
-1.  **Sàng lọc "đất đá"**: Làm sạch và chuẩn bị dữ liệu giao dịch, thông tin người dùng. [cite: 946]
-2.  **Chế tạo "máy dò vàng"**: Xây dựng các mô hình (model) dự đoán khả năng khách hàng quay lại. [cite: 925, 949]
-3.  **Thử nghiệm "máy dò"**: Đánh giá xem "máy dò" nào hoạt động tốt nhất. [cite: 926]
-4.  **Phân loại "vàng"**: Chia khách hàng thành từng nhóm (phân khúc) để hiểu rõ hơn về họ. [cite: 951]
-5.  **Đề xuất "chiến lược khai thác"**: Đưa ra những gợi ý kinh doanh thông minh dựa trên những gì tìm được. [cite: 953, 981]
+"Cỗ máy thời gian" (script Python này) sẽ giúp chúng ta giải quyết nhiệm vụ này bằng cách:
+1.  **"Thu thập và làm sạch các mảnh ghép quá khứ"**: Chuẩn bị dữ liệu giao dịch và thông tin khách hàng.
+2.  **"Chế tạo các phiên bản quả cầu tiên tri"**: Xây dựng các mô hình dự đoán.
+3.  **"Kiểm tra độ chính xác của từng quả cầu"**: Đánh giá model nào "phán" chuẩn nhất.
+4.  **"Nhận diện các nhóm chiến binh mua sắm"**: Phân loại khách hàng dựa trên hành vi và đặc điểm.
+5.  **"Vạch ra kế hoạch tác chiến"**: Đề xuất các chiến lược kinh doanh thông minh.
 
-## Cách Vận Hành "Cỗ Máy Khai Khoáng" (Cách Chạy Script)
+## Kích Hoạt "Cỗ Máy Thời Gian": Hướng Dẫn Vận Hành Script
 
-Để "cỗ máy" này hoạt động, đội của chúng ta cần:
-1.  **"Xưởng chế tạo" (Môi trường):** Máy tính có cài Python và các "phụ tùng" (thư viện) như `pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn` (cho các model, scaler), `imblearn` (cho SMOTE), `xgboost`, `lightgbm` (cho các model mạnh), và `shap` (để hiểu model).
-2.  **"Nguồn quặng" (Dữ liệu đầu vào):** Các file CSV đã được xử lý ở vòng trước hoặc từ script `data_cleaning.py`, nằm trong thư mục `cleaning_results/cleaned_data/`:
-    * `competition_train_features.csv`: Dữ liệu huấn luyện chính, đã có sẵn nhiều "đặc điểm" (features) của khách hàng.
-    * `competition_test_features.csv`: Dữ liệu để "thử thách" model, cấu trúc tương tự file train.
-    * `cleaned_user_info.csv`: Thông tin chi tiết về người dùng (tuổi, giới tính, nghề nghiệp,...).
-3.  **Khởi động "cỗ máy"**: Chạy file Python `DAZONE2025_R2.2_Main_Analysis.py`.
-4.  **"Thành phẩm" (Kết quả):** Mọi thứ "khai thác" được sẽ nằm trong thư mục `round_2.2`:
-    * `model_outputs`: Các "máy dò vàng" (model) tốt nhất đã được lưu lại.
-    * `segmentation_outputs`: Thông tin chi tiết về các nhóm khách hàng và "chân dung" (persona) của họ.
-    * `shap_outputs`: Các file giải thích cách "máy dò" đưa ra quyết định.
-    * `visualizations_from_main_analysis`: Rất nhiều biểu đồ, hình ảnh minh họa cho từng bước.
-    * `logs`: "Sổ nhật ký" ghi lại toàn bộ quá trình "khai khoáng".
+Để "cỗ máy" của chúng ta bắt đầu hành trình xuyên không về quá khứ và dự đoán tương lai, cả đội cần chuẩn bị:
+1.  **"Trang bị cá nhân" (Môi trường):** Máy tính được cài Python và các "vũ khí" cần thiết (thư viện) như `pandas`, `numpy` (để xử lý số liệu), `matplotlib`, `seaborn` (để vẽ biểu đồ), `scikit-learn` (bộ công cụ xây model), `imblearn` (để cân bằng lực lượng các nhóm khách hàng), `xgboost`, `lightgbm` (2 "chiến mã" mạnh mẽ), và `shap` (kính lúp soi thấu model).
+2.  **"Bản đồ kho báu cổ" (Dữ liệu đầu vào):** Các file CSV đã được "lau chùi" từ vòng trước hoặc từ script `data_cleaning.py`, cất giữ trong `cleaning_results/cleaned_data/`:
+    * `competition_train_features.csv`: Thông tin huấn luyện các "nhà tiên tri".
+    * `competition_test_features.csv`: Thông tin để "thử tài" các "nhà tiên tri".
+    * `cleaned_user_info.csv`: Hồ sơ chi tiết của từng khách hàng.
+3.  **"Niệm thần chú" (Chạy script):** Thực thi file `DAZONE2025_R2.2_Main_Analysis.py`.
+4.  **"Chiến lợi phẩm" (Kết quả):** Mọi "bí mật" và "kho báu" sẽ được tập hợp tại thư mục `round_2.2`:
+    * `model_outputs`: Nơi cất giữ các "quả cầu tiên tri" mạnh nhất.
+    * `segmentation_outputs`: "Hồ sơ mật" của từng nhóm khách hàng.
+    * `shap_outputs`: "Bản giải mã" cách "quả cầu" đưa ra dự đoán.
+    * `visualizations_from_main_analysis`: "Album ảnh" ghi lại những khám phá quan trọng.
+    * `logs`: "Biên niên sử" của cuộc hành trình.
 
-## Bản Thiết Kế "Cỗ Máy" (Cấu Trúc Script Chi Tiết)
+## Giải Mã "Cỗ Máy Thời Gian": Cấu Trúc Script và Câu Chuyện Đằng Sau
 
-"Cỗ máy" của chúng ta có 3 bộ phận chính, hoạt động tuần tự.
+Hành trình của chúng ta được chia thành 3 chương lớn, mỗi chương hé lộ một phần của bức tranh toàn cảnh.
 
-### Giai Đoạn 1: Gom Góp "Đất Đá" và Chuẩn Bị "Dụng Cụ"
+### Chương 1: Thu Thập Thông Tin Tình Báo - Chuẩn Bị Dữ Liệu
 
-Đây là bước chuẩn bị nền tảng, đảm bảo mọi thứ sẵn sàng.
+Trước mọi trận đánh lớn, khâu tình báo và chuẩn bị luôn là quan trọng nhất. Ở đây, "tình báo" chính là dữ liệu khách hàng của sàn thương mại điện tử.
 
-* **Khai Báo "Dụng Cụ" (Import Libraries):** Gọi tên tất cả các thư viện cần thiết.
-* **Thiết Lập "Công Trường" (Configuration):**
-    * `DEVELOPMENT_MODE`: Chế độ "chạy thử" (`True`) để nhanh có kết quả với ít dữ liệu, hoặc "chạy thật" (`False`) với toàn bộ dữ liệu. Log gần nhất của chúng ta là `False`.
-    * `PRODUCTION_TIER`: Khi "chạy thật", chọn mức độ "đào sâu" (1: nhanh hơn, 2: kỹ hơn, lâu hơn). Log gần nhất là `2`.
-    * `RANDOM_STATE`: Một con số (ví dụ: `9` như trong log, hoặc `42` như trong script gốc) để đảm bảo các bước ngẫu nhiên (như chia dữ liệu, khởi tạo model) cho kết quả giống nhau mỗi lần chạy, giúp dễ dàng kiểm tra và so sánh.
-    * `K_SELECTION_METHOD`: Cách chọn số cụm `k` cho K-Means ("silhouette" hoặc "elbow"). Log gần nhất là `silhouette`.
-    * Màu sắc (`PRIMARY_RED_THEME`): Chọn màu đỏ làm chủ đạo cho các biểu đồ.
-* **Tạo Các "Kho Chứa" (Output Directory Setup):** Tạo các thư mục để lưu kết quả.
-* **Ghi "Sổ Tay Công Trường" (Logging Setup):** Thiết lập để ghi lại mọi hoạt động.
-* **Thu Thập "Đất Đá Thô" (Load Data):**
-    * Hàm `load_data` sẽ đọc dữ liệu từ các file CSV.
-    * Dữ liệu được lấy mẫu nếu ở `DEVELOPMENT_MODE`.
-* **"Sơ Khảo Địa Chất" (Initial Data Exploration):**
-    * Vẽ biểu đồ tròn thể hiện tỷ lệ khách hàng quay lại và không quay lại (`label`) trong tập huấn luyện. Giúp hiểu sự mất cân bằng của dữ liệu.
-* **"Tinh Chế Quặng" Sơ Bộ (Data Preparation for Modeling):**
-    * Hàm `preprocess_for_modeling`: "Lọc rửa" dữ liệu lần cuối.
-        * **Xử lý ngày tháng:** Bỏ các cột ngày tháng thô (vì đã có features được tạo từ ngày tháng như `interaction_span_days`).
-        * **Điền giá trị rỗng (NaN):** Với cột số, điền 0 cho các cột đếm/cờ, điền trung vị (median) cho các cột khác. Cột chữ/category điền "Unknown".
-        * **Mã hóa chữ thành số (Label Encoding):** Chuyển các cột dạng chữ (ví dụ `sex`, `age_group`) thành dạng số mà model hiểu được. Lưu lại "bảng mã" (`label_encoders`) để áp dụng nhất quán cho cả tập train và test.
-        * **Xử lý vô cực (Inf):** Chuyển thành NaN rồi xử lý.
-    * **Phân chia "Khu Vực Khai Thác" (Train/Validation Split):** Chia tập train thành 2 phần: `X_train` (để dạy model) và `X_val` (để kiểm tra model). `y_train` và `y_val` là "đáp án" tương ứng.
-    * **"Đồng Bộ Hóa Kích Cỡ" (StandardScaler):** Đưa các features số về cùng một thang đo, tránh feature nào có giá trị lớn "át vía" feature khác.
-    * **"Tăng Cường Lực Lượng" Cho Nhóm Yếu Thế (SMOTE):** Nếu nhóm khách hàng quay lại (`label=1`) quá ít, SMOTE sẽ tạo thêm các "bản sao thông minh" của họ trong tập `X_train_smote`, `y_train_smote` để model học tốt hơn về nhóm này. **Log của bạn cho thấy SMOTE đã được áp dụng.**
-* **Chuẩn Bị "Máy Dò" Sẵn (Model Options Storage):**
-    * Trong "Modeling Option 1", chúng ta đã chuẩn bị sẵn các "máy dò" (model) `LightGBM_Opt1`, `RandomForest_Opt1`, và theo yêu cầu mới nhất là cả `XGBoost_Opt1` và `LogisticRegression_Opt1`, mỗi loại với bộ "phụ tùng" (tham số) riêng tùy theo `DEVELOPMENT_MODE` hoặc `PRODUCTION_TIER`. Log cho thấy điều này đã được thực hiện.
-* **Giữ Gọn "Công Trường" (Memory Management):**
-    * Lưu `X_train_scaled` (dữ liệu gốc, chưa SMOTE) để dùng cho Hyperparameter Tuning, nhằm chống overfitting. Log xác nhận: `Preserving X_train_scaled ... for hyperparameter tuning`.
+* **Triệu Tập "Đội Quân" Thư Viện:** Gọi các thư viện cần thiết.
+* **Thiết Lập "Chiến Trường" (Cấu hình):**
+    * `DEVELOPMENT_MODE`: Chế độ "diễn tập" (`True`) với ít quân hơn (dữ liệu mẫu) để nhanh chóng kiểm tra chiến thuật, hoặc "ra trận thật" (`False`) với toàn bộ lực lượng. *Log gần nhất của đội ta (18:04:02) đang ở chế độ "ra trận thật".*
+    * `PRODUCTION_TIER`: Khi "ra trận thật", chọn cấp độ "dốc toàn lực" (Tier 2 - kỹ lưỡng) hay "đánh nhanh thắng nhanh" (Tier 1). *Log gần nhất đang ở Tier 2.*
+    * `RANDOM_STATE`: "Con số định mệnh" (ví dụ `9` như trong log) để mọi quyết định ngẫu nhiên (chia quân, chọn mẫu) đều theo một kịch bản, giúp chúng ta dễ dàng xem lại và so sánh các "trận đánh".
+    * `K_SELECTION_METHOD`: "Chiến thuật chọn tướng" cho việc chia nhóm khách hàng ("silhouette" hoặc "elbow"). *Log gần nhất đang dùng "silhouette".*
+    * Màu sắc: Chọn "màu cờ sắc áo" (màu đỏ) cho các biểu đồ báo cáo.
+* **Xây Dựng "Hậu Cần" (Tạo thư mục output, Logging):** Chuẩn bị nơi lưu trữ "chiến lợi phẩm" và ghi chép lại toàn bộ diễn biến.
+* **Tiếp Nhận "Thông Điệp Mật Mã" (Tải dữ liệu):** Đọc dữ liệu từ các file CSV.
+* **Đọc Lướt "Thông Điệp" (EDA ban đầu):** Vẽ biểu đồ tròn xem tỷ lệ khách hàng có khả năng quay lại (`label = 1`) và không (`label = 0`). Bước này cho ta biết "kẻ địch" chính của chúng ta (khách hàng không quay lại) có đông không.
+* **"Giải Mã" và "Sắp Xếp" Thông Tin (Tiền xử lý dữ liệu cho model):**
+    * Hàm `preprocess_for_modeling`: "Phiên dịch viên" và "sắp xếp viên" của đội.
+        * Xử lý các thông tin còn thiếu (NaN), mã hóa thông tin dạng chữ thành dạng số, xử lý các con số "kỳ lạ" (vô cực).
+    * **Chia "Bản Đồ Chiến Lược" (Train/Validation Split):** Chia dữ liệu huấn luyện thành khu vực "huấn luyện binh sĩ" (`X_train`, `y_train`) và khu vực "thử nghiệm vũ khí" (`X_val`, `y_val`).
+    * **"Trang Bị Đồng Phục" Cho "Binh Sĩ" (StandardScaler):** Đưa các đặc điểm số về cùng một "chuẩn", tránh việc "binh sĩ" này quá to con so với "binh sĩ" khác.
+    * **"Tuyển Thêm Quân" Cho Phe Yếu (SMOTE):** Nếu nhóm khách hàng quay lại quá ít, SMOTE sẽ "chiêu mộ" thêm các "tân binh" ảo có đặc điểm tương tự để lực lượng hai bên cân bằng hơn, giúp "quả cầu tiên tri" học được nhiều hơn về nhóm ít ỏi này. *Log cho thấy SMOTE đã tạo ra tập `X_train_smote` đông đảo hơn.*
+* **Chuẩn Bị Sẵn Các "Mẫu Quả Cầu" (Model Options Storage):**
+    * Trong "Chiến Thuật 1", chúng ta đã chuẩn bị sẵn các "mẫu quả cầu" `LightGBM_Opt1`, `RandomForest_Opt1`, và theo cập nhật mới nhất là `XGBoost_Opt1`, `LogisticRegression_Opt1`. Mỗi loại có "công thức chế tạo" (tham số) riêng, phù hợp với từng cấp độ "tác chiến".
+* **Dọn Dẹp "Chiến Trường" (Memory Management):**
+    * Lưu lại `X_train_scaled` (dữ liệu huấn luyện gốc, chưa SMOTE) để dùng cho việc "mài giũa quả cầu" (Hyperparameter Tuning), giúp "quả cầu" không bị "ảo tưởng sức mạnh".
 
-### Giai Đoạn 2: "Luyện Kim" và "Thử Vàng" (Huấn Luyện & Đánh Giá Model)
+### Chương 2: "Chế Tạo Quả Cầu Tiên Tri" - Xây Dựng và Đánh Giá Model
 
-Đây là trái tim của "cỗ máy", nơi các "máy dò vàng" được chế tạo và kiểm tra.
+Đây là chương hấp dẫn nhất! Chúng ta sẽ tạo ra những "quả cầu" có khả năng nhìn thấu tương lai và xem "quả cầu" nào "phán" chuẩn nhất.
 
-* **Hàm "Giám Định Chất Lượng Vàng" (`evaluate_model_performance`):**
-    * Dùng để huấn luyện một model trên dữ liệu được cung cấp (thường là `X_train_smote`, `y_train_smote` cho đánh giá ban đầu).
-    * Dự đoán trên `X_val_scaled` (dữ liệu kiểm tra chưa từng thấy).
-    * Tính các chỉ số "độ tinh khiết" của "vàng" (metrics): AUC-ROC, F1-Score, Log Loss, Brier Score, Precision, Recall cho lớp "quay lại".
-    * Vẽ "Ma trận nhầm lẫn": Xem model nhầm ở đâu.
+* **Hàm "Thẩm Định Quả Cầu" (`evaluate_model_performance`):**
+    * Dùng để "thôi miên" (huấn luyện) "quả cầu" (model) bằng dữ liệu `X_train_smote`.
+    * Yêu cầu "quả cầu" dự đoán kết quả trên `X_val_scaled`.
+    * Chấm điểm "quả cầu" bằng các thước đo: AUC-ROC (khả năng phân biệt tổng thể), F1-Score (cân bằng giữa tìm đúng và không sót khách hàng mục tiêu), Log Loss, Brier Score (các hình thức "phạt" nếu đoán sai và quá tự tin), Precision, Recall (cho nhóm khách hàng quay lại).
+    * Vẽ "Ma trận Lỗi Lầm": Xem "quả cầu" hay nhầm lẫn ở đâu.
 
-* **Luồng Chế Tạo và Thử Nghiệm "Máy Dò" (Model Pipeline):**
-    * **Pipeline Tổng Quát cho mỗi lần đánh giá ban đầu:**
+* **Luồng Chế Tạo và Thử Nghiệm "Quả Cầu":**
+    * **Quy Trình Chuẩn cho mỗi "Quả Cầu" được đánh giá ban đầu:**
         ```mermaid
         graph LR
-            A[Dữ liệu đã sơ chế từ GĐ1] --> B(SMOTE: Cân bằng dữ liệu huấn luyện);
-            B --> C[Huấn luyện "Máy Dò" trên X_train_smote];
-            C --> D[Đánh giá "Máy Dò" trên X_val_scaled];
-            D --> E[Kết quả: Điểm số & Biểu đồ];
+            A[Dữ liệu huấn luyện đã chuẩn bị] --> B(SMOTE Cân bằng lực lượng);
+            B --> C[Thôi miên Quả Cầu trên X_train_smote];
+            C --> D[Thử tài Quả Cầu trên X_val_scaled];
+            D --> E[Kết quả: Điểm số và Biểu đồ];
         ```
-    * **Pipeline cho Hyperparameter Tuning (Tinh chỉnh "Máy Dò"):**
+    * **Quy Trình "Mài Giũa Quả Cầu" (Hyperparameter Tuning):**
         ```mermaid
         graph LR
-            A[Dữ liệu X_train_scaled, y_train gốc từ GĐ1] --> B(RandomizedSearchCV tìm cấu hình tốt nhất);
-            B -- Sử dụng Class Weight hoặc Scale Pos Weight --> C[Huấn luyện "Máy Dò" đã tinh chỉnh trên X_train_smote];
-            C --> D[Đánh giá "Máy Dò" đã tinh chỉnh trên X_val_scaled];
-            D --> E[Kết quả: Model hiệu quả hơn?];
+            A[Dữ liệu huấn luyện X_train_scaled và y_train gốc] --> B(RandomizedSearchCV tìm công thức mài giũa tốt nhất);
+            B -- Áp dụng Class Weight hoặc Scale Pos Weight để Quả Cầu tự cân bằng --> C[Thôi miên Quả Cầu đã mài giũa trên X_train_smote];
+            C --> D[Thử tài Quả Cầu đã mài giũa trên X_val_scaled];
+            D --> E[Kết quả: Quả Cầu có tinh xảo hơn không?];
         ```
 
-* **Hai Lựa Chọn "Khai Thác Vàng":**
+* **Hai "Xưởng Rèn Quả Cầu" Chính:**
 
-    * **Lựa Chọn 1: Đào Sâu Ở Những "Mỏ Lớn" Đã Biết (Opt1 Models)**
-        * *Mục tiêu:* Kiểm tra nhanh hiệu suất của một số "máy dò" mạnh mẽ (`LightGBM_Opt1`, `RandomForest_Opt1`, `XGBoost_Opt1`, `LogisticRegression_Opt1`) với các cấu hình ban đầu đã được thiết lập sẵn cho từng `DEVELOPMENT_MODE` / `PRODUCTION_TIER`.
-        * *Log của bạn cho thấy cả 4 model này đều đã được huấn luyện và đánh giá trên `X_train_smote` và `X_val_scaled`.*
+    * **Xưởng 1: Tập Trung Vào Các "Pháp Sư" Danh Tiếng (Opt1 Models)**
+        * *Chiến thuật:* "Mời" các "pháp sư" nổi tiếng (`LightGBM_Opt1`, `RandomForest_Opt1`, `XGBoost_Opt1`, `LogisticRegression_Opt1`) đến "thử sức" với những "bộ phép" (tham số) cơ bản đã chuẩn bị cho từng cấp độ "khẩn cấp" (`DEVELOPMENT_MODE` / `PRODUCTION_TIER`).
+        * *Kết quả trong log (Tier 2):* `MLPClassifier_Comp` (AUC 0.6084) là "pháp sư" ấn tượng nhất ở vòng sơ loại, nhưng trong Option 1, `LogisticRegression_Opt1` (AUC 0.5985) và `RandomForest_Opt1` (AUC 0.5827) cũng cho thấy tiềm năng nhất định (lưu ý là log cho `PRODUCTION_TIER = 2` mới nhất của bạn, các model Opt1 có AUC hơi thấp hơn so với Opt2).
 
-    * **Lựa Chọn 2: "Tuyển Chọn Thợ Mỏ" Giỏi Nhất (Comp Models - Comparative Analysis)**
-        * *Mục tiêu:* Tổ chức một "cuộc thi" cho nhiều loại "máy dò" khác nhau (`LogisticRegression_Comp`, `RandomForest_Comp`, `XGBoost_Comp`, `LightGBM_Comp`, `LinearSVC_Comp`, `MLPClassifier_Comp`) để xem loại nào có tiềm năng nhất trên dữ liệu `X_train_smote`.
-        * *Log của bạn cho thấy tất cả các model này cũng đã được huấn luyện và đánh giá.*
+    * **Xưởng 2: "Đại Hội Võ Lâm" của các "Pháp Sư" (Comp Models - Comparative Analysis)**
+        * *Chiến thuật:* Tổ chức một "đại hội" quy tụ nhiều "pháp sư" từ các "môn phái" khác nhau (`LogisticRegression_Comp`, `RandomForest_Comp`, `XGBoost_Comp`, `LightGBM_Comp`, `LinearSVC_Comp`, `MLPClassifier_Comp`) để xem ai "cao tay" nhất khi cùng giải một bài toán trên dữ liệu `X_train_smote`.
+        * *Kết quả trong log (Tier 2):* `MLPClassifier_Comp` (AUC 0.6084) tạm thời dẫn đầu "đại hội".
 
-* **"Bảng Phong Thần" (Model Comparison Summary):**
-    * Tổng hợp điểm số AUC-ROC, F1, Precision, Recall, LogLoss, Brier Score của tất cả các model đã thử nghiệm (cả Opt1 và Comp).
-    * Log của bạn cho thấy `MLPClassifier_Comp` (AUC 0.6084) là model tốt nhất trước khi tuning trong lần chạy này.
+* **"Bảng Vàng Vinh Danh" (Model Comparison Summary):**
+    * Tổng hợp điểm số của tất cả các "pháp sư".
+    * Log của bạn cho thấy `MLPClassifier_Comp` (AUC 0.6084) là "Trạng Nguyên" trước khi "mài giũa".
 
-* **Chọn "Thợ Mỏ Vô Địch" (Best Model Before Tuning):** Dựa vào AUC-ROC, `MLPClassifier_Comp` được chọn.
+* **Chọn "Pháp Sư Đại Diện" (Best Model Before Tuning):** `MLPClassifier_Comp` được chọn.
 
-* **"Rèn Lại Công Cụ" Cho "Thợ Mỏ Vô Địch" (Hyperparameter Tuning):**
-    * *Mục tiêu:* Tinh chỉnh các "ốc vít" (siêu tham số) của những "thợ mỏ" (model) tiềm năng nhất để họ làm việc hiệu quả hơn nữa.
-    * Script của bạn đã chọn `MLPClassifier_Comp` và `RandomForest_Comp` (top 2 model có base name khác nhau trong `PRODUCTION_TIER = 2`) để tuning.
-    * **Cải tiến quan trọng:** Tuning được thực hiện trên `X_train_scaled` và `y_train` gốc, đồng thời model được truyền tham số xử lý mất cân bằng (như `class_weight` cho RF hoặc `scale_pos_weight` được tính cho XGB/LGBM, MLP) để chống overfitting trong quá trình cross-validation.
-    * `RandomizedSearchCV` được dùng để thử các bộ "ốc vít" khác nhau.
-    * **Kết quả tuning trong log:**
-        * `RandomForest_Comp_Tuned`: CV AUC 0.6463, Validation AUC **0.6279**. (Cải thiện so với RF_Comp gốc 0.6071)
-        * `MLPClassifier_Comp_Tuned`: CV AUC 0.6362, Validation AUC **0.6097**. (Cải thiện nhẹ so với MLP_Comp gốc 0.6084)
-    * CV ROC-AUC của cả hai model đã tuned (0.6463 và 0.6362) đều rất hợp lý và gần với validation AUC, cho thấy **vấn đề overfitting trong tuning đã được kiểm soát tốt.**
+* **"Truyền Thụ Bí Kíp" Cho Các "Pháp Sư" (Hyperparameter Tuning):**
+    * *Mục tiêu:* Giúp các "pháp sư" hàng đầu (`MLPClassifier_Comp` và `RandomForest_Comp` trong log Tier 2) hoàn thiện "phép thuật" của mình bằng cách thử các "biến thể thần chú" (siêu tham số) khác nhau.
+    * **Cải tiến quan trọng:** "Buổi luyện tập" này diễn ra trên dữ liệu gốc `X_train_scaled` và `y_train`, các "pháp sư" được dạy cách tự cân bằng sức mạnh (qua `class_weight` hoặc `scale_pos_weight`) để tránh "tẩu hỏa nhập ma" (overfitting).
+    * `RandomizedSearchCV` là "sư phụ" hướng dẫn tìm "biến thể thần chú" tốt nhất.
+    * **Kết quả "luyện công" trong log (Tier 2):**
+        * `RandomForest_Comp_Tuned`: CV AUC 0.6463 (khá hứa hẹn trên tập luyện), Validation AUC **0.6279**. (Cải thiện so với bản gốc 0.6071!)
+        * `MLPClassifier_Comp_Tuned`: CV AUC 0.6362, Validation AUC **0.6097**. (Cải thiện nhẹ so với bản gốc 0.6084).
+    * CV ROC-AUC của cả hai model đã "mài giũa" đều hợp lý và gần với validation AUC, cho thấy **không bị "ảo tưởng sức mạnh" nghiêm trọng.**
 
-* **"Công Cụ Tối Thượng" (Final Best Model):**
-    * `RandomForest_Comp_Tuned` (AUC 0.6279) được chọn làm model tốt nhất cuối cùng.
-    * Model này được lưu lại.
-* **"Những Mũi Khoan Quan Trọng Nhất" (Feature Importance):**
-    * Biểu đồ độ quan trọng của các "mũi khoan" (đặc trưng) cho model tốt nhất được vẽ.
+* **"Quả Cầu Tiên Tri Hoàn Hảo Nhất" (Final Best Model):**
+    * `RandomForest_Comp_Tuned` (AUC 0.6279) được chọn làm "Bảo vật trấn phái".
+    * "Bảo vật" này được cất giữ cẩn thận.
+* **"Thần Chú Quyền Năng Nhất" (Feature Importance):**
+    * Biểu đồ cho thấy những "yếu tố" (đặc trưng) nào có sức mạnh lớn nhất trong "quả cầu" này.
 
-### Giai Đoạn 3: "Chế Tác Trang Sức" và "Trưng Bày" (Phân Tích Sâu & Kể Chuyện)
+### Chương 3: "Đọc Vị Quả Cầu" & Phân Loại "Chiến Binh" - Phân Tích Sâu và Tạo Chân Dung Khách Hàng
 
-Sau khi có "máy dò vàng" tốt nhất, chúng ta sẽ tìm hiểu xem nó "nghĩ" gì và "vàng" của chúng ta có những loại nào.
+Khi đã có "Bảo vật trấn phái", chúng ta sẽ tìm hiểu cách nó hoạt động và dùng nó để "nhìn thấu" các nhóm khách hàng.
 
-* **I. "Đọc Vị Máy Dò" (SHAP Analysis):**
-    * Sử dụng thư viện `shap` để "giải mã" model `RandomForest_Comp_Tuned`.
-    * SHAP cho biết mỗi "đặc điểm" (feature) của khách hàng ảnh hưởng đến quyết định "quay lại" hay "không quay lại" của model như thế nào.
-    * Log cho thấy các features quan trọng nhất theo SHAP là `days_since_last_interaction`, `sex`, `unique_categories`, `purchase_rate`, `age`.
-* **II. "Phân Loại Vàng" (User Segmentation - K-Means Clustering):**
-    * *Mục tiêu:* Gom những khách hàng có hành vi tương tự nhau thành từng "hũ vàng" (cụm) riêng.
-    * **Chuẩn bị "vàng" để phân loại:** Lấy các đặc trưng hành vi và nhân khẩu học ở cấp độ người dùng.
-    * **Chọn Số "Hũ Vàng" (`optimal_k`):**
+* **I. "Soi Gương Ma Thuật" - Hiểu Cách "Quả Cầu" Suy Nghĩ (SHAP Analysis):**
+    * Dùng `shap` để "đọc vị" `RandomForest_Comp_Tuned`.
+    * SHAP giải thích tại sao "quả cầu" lại dự đoán một khách hàng sẽ quay lại hoặc không, dựa trên từng đặc điểm của họ.
+    * Log cho thấy các "manh mối" quan trọng nhất là: `days_since_last_interaction`, `sex`, `unique_categories`, `purchase_rate`, `age`.
+* **II. "Phân Loại Chiến Binh" Theo Đặc Tính (User Segmentation - K-Means Clustering):**
+    * *Mục tiêu:* Tập hợp những khách hàng ("chiến binh") có "phong cách chiến đấu" (hành vi) và "lý lịch" (đặc điểm) giống nhau vào cùng một "biệt đội".
+    * **Chuẩn bị "hồ sơ chiến binh":** Sử dụng các đặc trưng hành vi và nhân khẩu học tổng hợp ở cấp độ người dùng.
+    * **Chọn Số "Biệt Đội" Tối Ưu (`optimal_k`):**
         * Script được cấu hình dùng `K_SELECTION_METHOD = "silhouette"`.
         * Tính Silhouette score cho `k` từ 2 đến 7. Log cho thấy:
-            * k=2: Sil = 0.156
-            * k=3: Sil = 0.185
-            * k=4: Sil = **0.190** (làm tròn từ 0.1897 - cao nhất)
-            * k=5: Sil = 0.131
-            * k=6: Sil = 0.125
-            * k=7: Sil = 0.111
-        * Script đã **chọn chính xác `optimal_k=4`** dựa trên Silhouette score cao nhất.
-    * **Chia "vàng" vào "hũ" (Chạy K-Means):** Sử dụng `k=4` để phân cụm.
-    * **Mô Tả "Vàng" Trong Từng "Hũ" (Cluster Profiling):** Xem xét đặc điểm trung bình của khách hàng trong mỗi cụm.
-* **III. "Dán Nhãn Cho Từng Hũ Vàng" (Persona Assignment):**
-    * Dựa trên đặc điểm của mỗi cụm, đặt cho chúng những cái tên "kêu kêu" (persona) như "🌟👑 VIP Champions", "💔 Dormant & High Churn Risk", v.v.
-    * Log cho thấy 4 persona đã được gán cho 4 cụm.
-* **IV. "Khai Thác Giá Trị Từ Mỏ Vàng" (Business Insights & Recommendations):**
-    * Tổng hợp những phát hiện quan trọng từ model dự đoán, SHAP, và các persona.
-    * Đề xuất các chiến lược kinh doanh cụ thể cho từng nhóm khách hàng.
-    * Phác họa "Chân Dung Khách Hàng Vàng" (Ideal Customer Profile - ICP).
-* **V. Tổng Kết và "Kế Hoạch Mở Rộng Mỏ" (Final Summary & Next Steps).**
+            * k=2 (0.156), k=3 (0.185), k=4 (**0.190** - cao nhất), k=5 (0.131), k=6 (0.125), k=7 (0.111).
+        * Script đã **chọn chính xác `optimal_k=4`** theo Silhouette score.
+    * **Biên Chế "Biệt Đội" (Chạy K-Means):** Dùng `k=4` để phân chia.
+    * **Báo Cáo Đặc Điểm Từng "Biệt Đội" (Cluster Profiling):** Xem xét đặc điểm trung bình của các "chiến binh" trong mỗi "biệt đội".
+* **III. "Đặt Biệt Danh" Cho Các "Biệt Đội" (Persona Assignment):**
+    * Dựa trên đặc điểm của mỗi "biệt đội", đặt cho họ những "biệt danh" dễ nhớ (ví dụ: "🌟👑 VIP Champions", "💔 Dormant & High Churn Risk", v.v.).
+    * Log cho thấy 4 "biệt danh" đã được gán cho 4 "biệt đội".
+* **IV. "Kế Sách Tác Chiến" Cho Từng "Biệt Đội" (Business Insights & Recommendations):**
+    * Tổng hợp những "tin tình báo" quan trọng từ "quả cầu tiên tri", SHAP, và các "biệt đội".
+    * Đề xuất "kế sách" kinh doanh cụ thể cho từng "biệt đội" trên sàn thương mại điện tử.
+    * Phác họa "Chân Dung Chiến Binh Vàng" (Ideal Customer Profile - ICP).
+* **V. Tổng Kết "Chiến Dịch" và "Kế Hoạch Tương Lai" (Final Summary & Next Steps).**
 
 ## Đối Chiếu Với "Bảng Vàng" Ban Giám Khảo (Barem Chấm Điểm DAZONE 2025)
 
-Phiên bản script này đã có những cải tiến đáng kể và đáp ứng tốt hơn các tiêu chí:
+Phiên bản script này, khi chạy ở PRODUCTION TIER 2, đã thể hiện nhiều điểm mạnh:
 
 1.  **Forecasting & Model Evaluation (30%):**
-    * **Script làm được:** Nhiều model được thử nghiệm (Opt1 và Opt2). Có so sánh, có metrics đầy đủ. Hyperparameter tuning được thực hiện và **vấn đề overfitting trong CV đã được kiểm soát tốt hơn nhiều**. Logic chọn model tốt nhất rõ ràng.
-    * **Chấm điểm (ước lượng):** 70-85%. Để đạt điểm cao hơn, có thể thử nghiệm các kỹ thuật ensemble phức tạp hơn, hoặc phân tích sâu hơn về learning curve của model cuối cùng.
+    * **Script làm được:** Rất nhiều model được thử nghiệm. So sánh rõ ràng. Metrics đầy đủ. Hyperparameter tuning đã thực sự chạy và có cải thiện model (RF_Comp_Tuned tốt hơn RF_Comp). Vấn đề overfitting trong CV đã được kiểm soát tốt.
+    * **Chấm điểm (ước lượng):** 75-90%. Để tối đa, cần phân tích sâu hơn nữa về lý do chọn từng model để thử nghiệm, và có thể là các kỹ thuật kết hợp model tiên tiến.
 
 2.  **User Segmentation & Personalization Strategy (25%):**
-    * **Script làm được:** K-Means được sử dụng. `optimal_k` được chọn một cách linh hoạt (lần này là Silhouette). Có profiling và gán persona. Các đề xuất chiến lược đã bắt đầu hình thành.
-    * **Chấm điểm (ước lượng):** 65-80%. Để tối đa, cần làm sâu sắc hơn phân tích đặc điểm từng segment, liên kết chặt chẽ hơn giữa persona và chiến lược hành động (kênh, nội dung, thời điểm cụ thể), và bắt đầu đề cập đến việc đo lường ROI.
+    * **Script làm được:** K-Means với `optimal_k` được chọn linh hoạt bằng Silhouette. Có profiling và gán Persona. Các đề xuất chiến lược có cơ sở.
+    * **Chấm điểm (ước lượng):** 70-85%. Để tối đa, cần làm chiến lược cá nhân hóa cực kỳ chi tiết cho từng persona (kênh, nội dung, thời điểm, KPI đo lường, cân nhắc ROI).
 
 3.  **Visualization & Storytelling (20%):**
-    * **Script làm được:** Tạo ra nhiều biểu đồ tĩnh quan trọng (target distribution, CM, ROC/PR, feature importance, SHAP, K-Means evaluation, cluster distribution, boxplots, ICP).
-    * **Chấm điểm (ước lượng):** 50-65%. Điểm mạnh là có nhiều building blocks. Để cao hơn, cần kể một câu chuyện mạch lạc bằng các biểu đồ này trong bài thuyết trình. Phần "dashboard prescriptive" và "scenario analysis" vẫn là điểm cần phát triển ý tưởng bên ngoài script.
+    * **Script làm được:** Tạo ra bộ sưu tập biểu đồ tĩnh phong phú, làm nền tảng tốt cho việc kể chuyện.
+    * **Chấm điểm (ước lượng):** 50-70%. Điểm cộng cho sự đa dạng. Để cao hơn, bài thuyết trình cần sâu chuỗi chúng thành một câu chuyện kinh doanh hấp dẫn. "Dashboard prescriptive" và "scenario analysis" vẫn là những mục nâng cao cần ý tưởng trình bày riêng.
 
 4.  **Business Insights (25%):**
-    * **Script làm được:** Insight từ SHAP và các persona đã rõ ràng hơn. Các đề xuất chiến lược dựa trên kết quả phân tích.
-    * **Chấm điểm (ước lượng):** 65-80%. Để xuất sắc, cần những insight thực sự "đắt giá", có tính ứng dụng cao và đề xuất cụ thể, có thể kiểm chứng được cho sàn thương mại điện tử.
+    * **Script làm được:** Insight từ SHAP (ví dụ: `days_since_last_interaction`, `sex` quan trọng) và 4 persona rõ ràng cung cấp nhiều hiểu biết giá trị. Các đề xuất có tính ứng dụng.
+    * **Chấm điểm (ước lượng):** 70-85%. Để xuất sắc, cần những insight mang tính đột phá, độc đáo cho ngành TMĐT và có kế hoạch kiểm định các insight đó.
 
-**Tổng kết:** Script đã được cải thiện đáng kể, đặc biệt là phần tuning. Các phân tích đã đầy đủ hơn và logic hơn.
+**Tổng kết:** Script đã được cải tiến mạnh mẽ, giải quyết các vấn đề cốt lõi và cho ra kết quả phân tích đáng tin cậy hơn, phù hợp với yêu cầu của một cuộc thi lớn.
 
 ## Những "Viên Kim Cương" Nên "Đánh Bóng" Cho Buổi Trình Bày (Gợi Ý Trực Quan Hóa)
 
-Dựa trên log chạy `PRODUCTION_TIER = 2` và `K_SELECTION_METHOD = "silhouette"`:
+Dựa trên log chạy `PRODUCTION_TIER = 2` và `K_SELECTION_METHOD = "silhouette"` (kết quả `optimal_k=4`):
 
-1.  **Tổng Quan Bài Toán:**
-    * `target_variable_distribution.png`: Tỷ lệ khách hàng quay lại/không quay lại (nền tảng của bài toán).
-2.  **Hành Trình Tìm Kiếm Model Tốt Nhất:**
-    * **Bảng So Sánh Model Ban Đầu:** (Trích từ `model_comparison_summary.csv`) Cho thấy sự đa dạng model đã thử và làm nổi bật `MLPClassifier_Comp` là model tốt nhất trước tuning.
-    * **Kết Quả Tuning:**
-        * Trình bày ngắn gọn quá trình tuning của `RandomForest_Comp` và `MLPClassifier_Comp`, nêu bật CV AUC và Validation AUC để cho thấy sự cải thiện (hoặc không) và việc kiểm soát overfitting.
-        * **Confusion Matrix, ROC Curve, Precision-Recall Curve của Model Tốt Nhất Cuối Cùng (`RandomForest_Comp_Tuned`):** Đây là bằng chứng về hiệu suất của model bạn chọn.
-    * `feature_importances_RandomForest_Comp_Tuned.png`: Các yếu tố model này cho là quan trọng.
-3.  **"Bóc Tách" Model Với SHAP:**
-    * `shap_summary_plot_RandomForest_Comp_Tuned.png` (dot plot): Tác động của các feature lên dự đoán.
-    * `shap_bar_plot_RandomForest_Comp_Tuned.png`: Feature nào ảnh hưởng mạnh nhất theo SHAP.
-4.  **Khám Phá Các Nhóm Khách Hàng:**
-    * `kmeans_silhouette_scores.png` (và có thể cả `kmeans_elbow_method.png` để so sánh): Giải thích tại sao chọn `k=4` (dựa trên Silhouette score cao nhất).
-    * `user_segment_distribution.png` (cho `k=4`): Quy mô của từng phân khúc.
-    * `cluster_profiles_boxplots.png` (cho `k=4`): So sánh trực quan các đặc điểm chính (loyalty, engagement, purchase_rate, total_interactions, churn_risk) giữa 4 phân khúc.
-    * **Bảng Tổng Hợp Chân Dung Persona (4 personas):** Trình bày ngắn gọn đặc điểm nổi bật và tên persona của từng cụm.
-5.  **Khách Hàng Lý Tưởng (ICP):**
-    * `ideal_customer_profile_age_dist.png` và `ideal_customer_profile_sex_dist.png`. Có thể bổ sung thêm biểu đồ về ngành nghề/công việc nếu dữ liệu này chất lượng.
-6.  **Slide Chiến Lược:** Dựa trên Persona và ICP, đề xuất các hành động cụ thể.
+1.  **Câu Chuyện Mở Đầu - "Thử Thách Của Sàn TMĐT":**
+    * `target_variable_distribution.png`: Đặt vấn đề về tỷ lệ khách hàng không quay lại.
+2.  **Hành Trình "Rèn Giũa Quả Cầu Tiên Tri":**
+    * **Bảng So Sánh Model Ban Đầu:** Nêu bật `MLPClassifier_Comp` là ứng viên sáng giá ban đầu.
+    * **Tóm Tắt Kết Quả Tuning:**
+        * Cho thấy `RandomForest_Comp_Tuned` đã cải thiện như thế nào so với bản gốc (AUC từ 0.6071 lên 0.6279).
+        * Cho thấy `MLPClassifier_Comp_Tuned` (AUC 0.6097) dù được tune nhưng không vượt qua được RF đã tune.
+    * **"Bằng Chứng Sức Mạnh" của `RandomForest_Comp_Tuned`:**
+        * `confusion_matrix_RandomForest_Comp_Tuned.png`
+        * ROC Curve và Precision-Recall Curve (có thể vẽ riêng cho model này, hoặc trích từ `roc_curves_comparative_models.png` và `pr_curves_comparative_models.png` nhưng chỉ làm nổi bật đường của model tốt nhất).
+    * `feature_importances_RandomForest_Comp_Tuned.png`: Những "thần chú" model này dựa vào.
+3.  **"Bên Trong Quả Cầu" - Giải Mã Với SHAP:**
+    * `shap_summary_plot_RandomForest_Comp_Tuned.png` (dot plot).
+    * `shap_bar_plot_RandomForest_Comp_Tuned.png`.
+4.  **"Bản Đồ Các Nhóm Khách Hàng Chiến Lược":**
+    * `kmeans_silhouette_scores.png` (và có thể cả `kmeans_elbow_method.png`): Giải thích tại sao chọn `k=4`.
+    * `user_segment_distribution.png` (cho `k=4`): Quy mô của 4 "biệt đội".
+    * `cluster_profiles_boxplots.png` (cho `k=4`): So sánh trực quan các đặc điểm cốt lõi của 4 "biệt đội".
+    * **Slide Chân Dung Persona (4 personas):** Mỗi persona một slide (hoặc 2 persona/slide) với tên, đặc điểm nổi bật (trích từ `cluster_profiles_combined.csv`), và gợi ý chiến lược chính.
+5.  **"Chân Dung Vàng" - Khách Hàng Lý Tưởng:**
+    * `ideal_customer_profile_age_dist.png`
+    * `ideal_customer_profile_sex_dist.png`.
+6.  **Slide "Kế Sách Vàng":** Tổng hợp các đề xuất chiến lược quan trọng nhất, liên kết với model insights và personas.
 
-**Lưu ý quan trọng cho thuyết trình:**
-* **Câu chuyện mạch lạc:** Sắp xếp các biểu đồ để dẫn dắt người nghe qua quá trình phân tích của bạn, từ hiểu bài toán, xây dựng model, đến khám phá insight và đề xuất giải pháp.
-* **Tập trung vào ý nghĩa:** Đừng chỉ trình bày biểu đồ, hãy giải thích nó cho thấy điều gì và ý nghĩa của nó đối với bài toán của sàn thương mại điện tử.
-* **Kết nối với barem:** Ngầm liên kết các phần trình bày với các tiêu chí của ban giám khảo.
+**Lời khuyên vàng ngọc cho đội:**
+* **Storytelling is Key:** Hãy dệt nên một câu chuyện hấp dẫn xoay quanh việc sàn TMĐT làm thế nào để thấu hiểu và giữ chân khách hàng, với đội của bạn là những người giải mã.
+* **Focus on "So What?":** Với mỗi biểu đồ, mỗi kết quả, luôn trả lời câu hỏi: "Điều này có ý nghĩa gì với việc kinh doanh của sàn TMĐT? Chúng ta nên làm gì tiếp theo?"
+* **Đơn Giản Hóa:** Ngay cả những phân tích phức tạp cũng cần được trình bày một cách dễ hiểu. Các bạn trong đội hãy đảm bảo tất cả cùng hiểu để có thể trình bày trôi chảy.
 
-## Lời Dặn Dò Từ "Trưởng Đoàn Thám Hiểm"
+## Lời Dặn Dò Từ "Chỉ Huy Trưởng" Đội Đặc Nhiệm
 
-Đội của chúng ta đã có một "cỗ máy khai khoáng" rất mạnh mẽ và nhiều "báu vật" đã được tìm thấy! Lần chạy PRODUCTION này cho thấy script đã ổn định hơn, logic chặt chẽ hơn và các cải tiến đã phát huy tác dụng.
+Các chiến binh, chúng ta đã có một "bộ chỉ huy tác chiến" (script) rất chi tiết và hiệu quả. Log chạy PRODUCTION TIER 2 mới nhất cho thấy những cải tiến quan trọng đã được áp dụng thành công. "Quả cầu tiên tri" của chúng ta đã được "mài giũa" cẩn thận, và các "biệt đội khách hàng" đã được "điểm danh".
 
-Hãy nhớ, mục tiêu của DAZONE không chỉ là những con số AUC cao ngất, mà còn là khả năng biến dữ liệu thành những câu chuyện có ý nghĩa, những quyết định kinh doanh thông minh cho sàn thương mại điện tử. Hãy tự tin trình bày những khám phá của đội! Chúc cả đội thành công rực rỡ! 🌟
+Phần còn lại là ở tài "ngoại giao" và "thuyết trình" của cả đội để báo cáo những "chiến công" này lên "Bộ Chỉ Huy Tối Cao" DAZONE. Hãy nhớ, dữ liệu chỉ thực sự có giá trị khi nó dẫn đến hành động và tạo ra kết quả.
+
+Chúc đội chúng ta tự tin, tỏa sáng và giành chiến thắng! 💪🎉
