@@ -1,6 +1,6 @@
 # README: Giải Thích Toàn Diện Script Phân Tích DAZONE 2025 - Vòng 2.2
 
-Chào mừng bạn đến với "kho báu tri thức" của DAZONE 2025! Đoạn code Python này chính là tấm bản đồ giúp chúng ta khám phá dữ liệu và tìm ra "kho báu" – những hiểu biết sâu sắc về khách hàng. Hãy cùng nhau mổ xẻ nó nhé!
+Chào mừng bạn đến với "kho báu tri thức" của DAZONE 2025! Đoạn code Python này chính là tấm bản đồ giúp chúng ta khám phá dữ liệu và tìm ra "kho báu" – những hiểu biết sâu sắc về khách hàng. Hãy cùng nhau mổ xẻ nó nhé! 🚀
 
 ## Mục Lục
 
@@ -16,7 +16,7 @@ Chào mừng bạn đến với "kho báu tri thức" của DAZONE 2025! Đoạn
 
 ## Tổng Quan: Đi Tìm "Viên Ngọc" Ẩn Giấu
 
-Giống như các nhà thám hiểm đi tìm kho báu, chúng ta (những nhà phân tích dữ liệu) cũng đang đi tìm "viên ngọc" quý giá ẩn trong những con số và chữ cái. "Viên ngọc" ở đây chính là khả năng **dự đoán xem một khách hàng có quay trở lại mua hàng từ cùng một gian hàng trong 6 tháng tới hay không.**
+Giống như các nhà thám hiểm đi tìm kho báu, chúng ta (những nhà phân tích dữ liệu) cũng đang đi tìm "viên ngọc" quý giá ẩn trong những con số và chữ cái. "Viên ngọc" ở đây chính là khả năng **dự đoán xem một khách hàng có quay trở lại mua hàng từ cùng một gian hàng trong 6 tháng tới hay không.** 💎
 
 Đoạn code này là một "cỗ máy thần kỳ" giúp chúng ta:
 1.  "Làm sạch" và "chuẩn bị" dữ liệu (như đãi cát tìm vàng).
@@ -47,7 +47,7 @@ Script của chúng ta được chia làm 3 phần chính, giống như 3 giai �
 
 ### Phần 1: Chuẩn Bị "Nguyên Liệu" và "Dụng Cụ"
 
-Giống như đầu bếp cần chuẩn bị nguyên liệu tươi ngon và dụng cụ sắc bén trước khi nấu ăn, chúng ta cũng cần chuẩn bị dữ liệu thật tốt.
+Giống như đầu bếp cần chuẩn bị nguyên liệu tươi ngon và dụng cụ sắc bén trước khi nấu ăn, chúng ta cũng cần chuẩn bị dữ liệu thật tốt. 🍳
 
 * **Gọi Tên Các "Dụng Cụ" (Import Libraries):**
     * `pandas`, `numpy`: Hai trợ thủ đắc lực để làm việc với bảng biểu và con số (như dao và thớt).
@@ -82,7 +82,7 @@ Giống như đầu bếp cần chuẩn bị nguyên liệu tươi ngon và dụ
 
 ### Phần 2: "Nấu Nướng" và "Nếm Thử" (Huấn Luyện & Đánh Giá Model)
 
-Đây là lúc chúng ta thực sự xây dựng và kiểm tra các "nhà tiên tri".
+Đây là lúc chúng ta thực sự xây dựng và kiểm tra các "nhà tiên tri" (models). 👨‍🍳👩‍🍳
 
 * **Hàm "Nếm Thử Món Ăn" (`evaluate_model_performance`):**
     * "Nấu" (huấn luyện) một "nhà tiên tri" (model) với dữ liệu huấn luyện.
@@ -95,21 +95,59 @@ Giống như đầu bếp cần chuẩn bị nguyên liệu tươi ngon và dụ
         * `Precision (Class 1)`: Trong số những người được đoán là sẽ quay lại, có bao nhiêu người thực sự quay lại?
         * `Recall (Class 1)`: Trong số những người thực sự quay lại, "nhà tiên tri" tìm ra được bao nhiêu người?
     * Vẽ "Ma trận nhầm lẫn" (Confusion Matrix): Bức tranh cho thấy "nhà tiên tri" nhầm lẫn ở đâu (đoán đúng là A, sai là B, v.v.).
-* **Lựa Chọn 1: Thử Nghiệm Với Các "Đầu Bếp" Đơn Lẻ Mạnh Mẽ (Single Strong Models):**
-    * Huấn luyện và đánh giá **LightGBM (Opt1)** và **RandomForest (Opt1)** đã chuẩn bị ở Phần 1.
-* **Lựa Chọn 2: "Cuộc Thi Đầu Bếp" (Comparative Model Analysis - Lấy cảm hứng từ đội "3G"):**
-    * Chuẩn bị một loạt các "đầu bếp" khác nhau:
-        * `LogisticRegression`: "Đầu bếp" cổ điển, đơn giản nhưng hiệu quả.
-        * `RandomForest (Comp)`: Một phiên bản khác của "Rừng Cây Quyết Định".
-        * `XGBoost`: "Siêu đầu bếp" nổi tiếng.
-        * `LightGBM (Comp)`: Một phiên bản khác của "Ánh Sáng Thần Tốc".
-        * `LinearSVC` (có CalibratedClassifierCV): "Đầu bếp" thích vẽ đường thẳng để phân chia, được "hiệu chỉnh" để đoán xác suất tốt hơn.
-        * `MLPClassifier` (Neural Network): "Đầu bếp" mô phỏng bộ não con người.
-    * Cho tất cả các "đầu bếp" này "trổ tài" và "nếm thử" (huấn luyện và đánh giá).
-    * **Lập "Bảng Xếp Hạng" (Summary Table):** So sánh điểm số của các "đầu bếp" để xem ai giỏi nhất.
-    * **Vẽ Biểu Đồ So Sánh (Comparative ROC and PR Curves):**
-        * Đường cong ROC: "Đường đua" xem "nhà tiên tri" nào phân biệt giỏi hơn.
-        * Đường cong Precision-Recall: "Thử thách" khác để đánh giá khả năng tìm đúng và không bỏ sót.
+
+* **Luồng Xử Lý Chung Cho Mỗi "Nhà Tiên Tri" (Model Pipeline Tổng Quát):**
+    Hãy tưởng tượng đây là dây chuyền sản xuất một "nhà tiên tri":
+    ```mermaid
+    graph LR
+        A[Dữ liệu đã sơ chế từ Phần 1] --> B(SMOTE: Cân bằng các nhóm khách hàng);
+        B --> C{Huấn luyện "Nhà Tiên Tri"};
+        C --> D[Đánh giá trên dữ liệu Validation];
+        D --> E[Kết quả: Điểm số & Biểu đồ];
+    ```
+
+* **Hai Con Đường Thám Hiểm (Two Modeling Options):** Chúng ta có hai "chiến thuật" chính để tìm ra "nhà tiên tri" giỏi nhất.
+
+    * **Lựa Chọn 1: Đi Sâu Vào Một Vài "Hang Động Lớn" (Thử Nghiệm Với Các "Đầu Bếp" Đơn Lẻ Mạnh Mẽ - Opt1)**
+        * *Ý tưởng:* Giống như tập trung khám phá kỹ một vài hang động lớn mà mình tin là có nhiều châu báu. Ở đây, chúng ta chọn LightGBM và RandomForest với một bộ "gia vị" (cấu hình) ban đầu.
+        * *Luồng công việc (Pipeline Option 1):*
+            ```mermaid
+            graph TD
+                A[Dữ liệu đã sơ chế & SMOTE] --> B(Huấn luyện LightGBM_Opt1);
+                B --> C[Đánh giá LightGBM_Opt1];
+                A --> D(Huấn luyện RandomForest_Opt1);
+                D --> E[Đánh giá RandomForest_Opt1];
+                C --> F[Lưu kết quả];
+                E --> F;
+            ```
+            *Mục tiêu:* Xem xét hiệu suất của các model mạnh mẽ với cấu hình cơ bản.
+
+    * **Lựa Chọn 2: Khảo Sát Nhiều "Hang Động Nhỏ" (Cuộc Thi Của Nhiều "Đầu Bếp" - Comp)**
+        * *Ý tưởng:* Giống như cử nhiều đội thám hiểm nhỏ đi khảo sát nhiều hang động khác nhau, mỗi đội dùng một "bản đồ" (model) riêng. Sau đó so sánh xem đội nào tìm được nhiều dấu hiệu "kho báu" nhất.
+        * *Luồng công việc (Pipeline Option 2):*
+            ```mermaid
+            graph TD
+                A[Dữ liệu đã sơ chế & SMOTE] --> B{Bắt đầu "Cuộc Thi Đầu Bếp"};
+                B -- LogisticRegression_Comp --> C1[Huấn luyện & Đánh giá LR_Comp];
+                B -- RandomForest_Comp --> C2[Huấn luyện & Đánh giá RF_Comp];
+                B -- XGBoost_Comp --> C3[Huấn luyện & Đánh giá XGB_Comp];
+                B -- LightGBM_Comp --> C4[Huấn luyện & Đánh giá LGBM_Comp];
+                B -- LinearSVC_Comp --> C5[Huấn luyện & Đánh giá SVC_Comp];
+                B -- MLPClassifier_Comp --> C6[Huấn luyện & Đánh giá MLP_Comp];
+                C1 --> D[Tổng hợp kết quả];
+                C2 --> D;
+                C3 --> D;
+                C4 --> D;
+                C5 --> D;
+                C6 --> D;
+                D --> E[So sánh & Chọn Model nổi bật từ Lựa chọn 2];
+            ```
+            *Mục tiêu:* So sánh hiệu suất của một loạt các thuật toán khác nhau để tìm ra ứng cử viên sáng giá.
+
+* **Lập "Bảng Xếp Hạng" (Summary Table):** So sánh điểm số của tất cả các "nhà tiên tri" đã thử nghiệm ở Lựa chọn 1 và Lựa chọn 2.
+* **Vẽ Biểu Đồ So Sánh (Comparative ROC and PR Curves):**
+    * Đường cong ROC: "Đường đua" xem "nhà tiên tri" nào phân biệt giỏi hơn.
+    * Đường cong Precision-Recall: "Thử thách" khác để đánh giá khả năng tìm đúng và không bỏ sót.
 * **Chọn Ra "Siêu Đầu Bếp" (Best Model Before Tuning):** Dựa vào điểm AUC-ROC, chọn ra "nhà tiên tri" xuất sắc nhất từ tất cả các lựa chọn trên.
 * **"Gia Giảm Gia Vị" Cho "Siêu Đầu Bếp" (Hyperparameter Tuning):**
     * Mỗi "nhà tiên tri" có những "gia vị" (hyperparameters) riêng. Việc tìm đúng "gia vị" sẽ giúp "món ăn" ngon hơn.
@@ -118,11 +156,11 @@ Giống như đầu bếp cần chuẩn bị nguyên liệu tươi ngon và dụ
 * **"Món Ăn Hoàn Hảo" (Final Best Model):**
     * So sánh "siêu đầu bếp" đã được "gia giảm gia vị" với "siêu đầu bếp" ban đầu. Chọn ra người giỏi nhất cuối cùng.
     * Lưu lại "công thức" của "món ăn hoàn hảo" này (save model).
-    * **"Bí Kíp Gia Truyền" (Feature Importance):** Xem "nguyên liệu" (đặc trưng) nào quan trọng nhất tạo nên sự thành công của "món ăn hoàn hảo".
+* **"Bí Kíp Gia Truyền" (Feature Importance):** Xem "nguyên liệu" (đặc trưng) nào quan trọng nhất tạo nên sự thành công của "món ăn hoàn hảo".
 
 ### Phần 3: "Khám Phá Sâu Hơn" và "Kể Chuyện Dữ Liệu"
 
-Sau khi có "nhà tiên tri" giỏi nhất, chúng ta sẽ tìm hiểu sâu hơn và kể những câu chuyện thú vị từ dữ liệu.
+Sau khi có "nhà tiên tri" giỏi nhất, chúng ta sẽ tìm hiểu sâu hơn và kể những câu chuyện thú vị từ dữ liệu. 🕵️‍♀️📚
 
 * **I. "Giải Mã" Suy Nghĩ Của "Nhà Tiên Tri" (SHAP Analysis):**
     * Nếu thư viện `shap` có sẵn, chúng ta sẽ dùng nó.
@@ -172,7 +210,7 @@ Sau khi có "nhà tiên tri" giỏi nhất, chúng ta sẽ tìm hiểu sâu hơn
 
 ## Soi Chiếu Với "Kim Chỉ Nam" (Barem Chấm Điểm DAZONE 2025)
 
-Hãy xem "tấm bản đồ" của chúng ta đáp ứng "kim chỉ nam" của ban giám khảo như thế nào nhé!
+Hãy xem "tấm bản đồ" của chúng ta đáp ứng "kim chỉ nam" của ban giám khảo như thế nào nhé! 📜
 
 1.  **Forecasting & Model Evaluation (Dự đoán & Đánh giá Model - 30%):**
     * **Metrics & Performance:**
@@ -216,12 +254,12 @@ Hãy xem "tấm bản đồ" của chúng ta đáp ứng "kim chỉ nam" của b
 
 ## Gợi Ý "Trang Trí" Cho Bài Kể Chuyện (Trực Quan Hóa Dữ Liệu Cho Thuyết Trình)
 
-Dưới đây là những "bức tranh" quan trọng bạn nên chọn lọc để đưa vào slide thuyết trình, giúp câu chuyện của bạn thêm sinh động và thuyết phục:
+Dưới đây là những "bức tranh" quan trọng bạn nên chọn lọc để đưa vào slide thuyết trình, giúp câu chuyện của bạn thêm sinh động và thuyết phục: 🎨✨
 
 1.  **Bối Cảnh Bài Toán:**
     * `target_variable_distribution.png`: Hiểu rõ sự mất cân bằng của dữ liệu mục tiêu.
 2.  **Đánh Giá Model:**
-    * **Bảng So Sánh Model:** (Từ `model_comparison_summary.csv`) Cô đọng hiệu suất các model đã thử.
+    * **Bảng So Sánh Model:** (Trích từ `model_comparison_summary.csv`) Cô đọng hiệu suất các model đã thử.
     * `roc_curves_comparative_models.png`: Trực quan hóa khả năng phân loại của các model.
     * `pr_curves_comparative_models.png`: Quan trọng khi dữ liệu mất cân bằng.
     * **Confusion Matrix của Model Tốt Nhất:** (Ví dụ: `confusion_matrix_MLPClassifier_Comp_Tuned.png`) Xem model cuối cùng hoạt động cụ thể ra sao.
@@ -247,8 +285,8 @@ Dưới đây là những "bức tranh" quan trọng bạn nên chọn lọc đ�
 
 ## Lời Kết Từ "Giáo Sư Thông Tuệ"
 
-"Tấm bản đồ" (script Python) này là một công cụ mạnh mẽ. Nó không chỉ giúp bạn tìm ra "kho báu" mà còn rèn luyện tư duy phân tích, kỹ năng giải quyết vấn đề – những hành trang quý giá cho bất kỳ nhà khoa học dữ liệu nào.
+"Tấm bản đồ" (script Python) này là một công cụ mạnh mẽ. Nó không chỉ giúp bạn tìm ra "kho báu" mà còn rèn luyện tư duy phân tích, kỹ năng giải quyết vấn đề – những hành trang quý giá cho bất kỳ nhà khoa học dữ liệu nào. 🧐
 
-Hãy nhớ rằng, các "nhà tiên tri" (model) dù giỏi đến đâu cũng chỉ là công cụ. Điều quan trọng là khả năng của bạn trong việc "lắng nghe" câu chuyện mà dữ liệu kể, đặt ra những câu hỏi thông minh, và biến những con số khô khan thành những hành động kinh doanh có giá trị.
+Hãy nhớ rằng, các "nhà tiên tri" (model) dù giỏi đến đâu cũng chỉ là công cụ. Điều quan trọng là khả năng của bạn trong việc "lắng nghe" câu chuyện mà dữ liệu kể, đặt ra những câu hỏi thông minh, và biến những con số khô khan thành những hành động kinh doanh có giá trị. 💡
 
-Chúc bạn có một bài thuyết trình Vòng 2.2 thật xuất sắc và chinh phục được ban giám khảo DAZONE 2025! Nếu có bất kỳ câu hỏi nào khác, đừng ngần ngại nhé!
+Chúc bạn có một bài thuyết trình Vòng 2.2 thật xuất sắc và chinh phục được ban giám khảo DAZONE 2025! Nếu có bất kỳ câu hỏi nào khác, đừng ngần ngại nhé! 👍
