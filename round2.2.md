@@ -1,183 +1,254 @@
-# DAZONE 2025 Vòng 2.2: Bé Cùng AI Dự Đoán Bạn Nào Sẽ Quay Lại Chơi & Chia Nhóm Bạn Bè
+# README: Giải Thích Toàn Diện Script Phân Tích DAZONE 2025 - Vòng 2.2
 
-**Mục tiêu của trò chơi này là gì?**
-Tưởng tượng chúng ta có một cửa hàng đồ chơi. Chúng ta muốn biết bạn nhỏ nào đã mua đồ chơi rồi sẽ quay lại mua nữa. AI (giống như một bạn rô-bốt siêu thông minh) sẽ giúp chúng ta đoán xem bạn nào quay lại. Sau đó, chúng ta sẽ chia các bạn nhỏ thành từng nhóm khác nhau để có thể tặng quà hoặc nói chuyện với từng nhóm theo cách mà các bạn ấy thích nhất! Để làm được điều này, chúng ta cần dọn dẹp sổ sách (làm sạch dữ liệu), nghĩ ra cách ghi chép thông minh hơn (xây dựng đặc trưng), dạy cho bạn AI cách đoán (mô hình hóa), hỏi bạn AI xem tại sao bạn ấy lại đoán như vậy (diễn giải bằng SHAP), và cuối cùng là chia các bạn thành từng nhóm (gom cụm).
+Chào mừng bạn đến với "kho báu tri thức" của DAZONE 2025! Đoạn code Python này chính là tấm bản đồ giúp chúng ta khám phá dữ liệu và tìm ra "kho báu" – những hiểu biết sâu sắc về khách hàng. Hãy cùng nhau mổ xẻ nó nhé!
 
-**Ai đã tạo ra trò chơi AI này?** AI Assistant
-**Ngày hoàn thành:** 2025-06-02 (Đã cập nhật thêm nhiều điều thú vị!)
+## Mục Lục
 
-## Những Điều Thú Vị Mà Script Này Có Thể Làm:
+1.  [Tổng Quan: Đi Tìm "Viên Ngọc" Ẩn Giấu](#tổng-quan-đi-tìm-viên-ngọc-ẩn-giấu)
+2.  [Cách "Đọc" Tấm Bản Đồ Này (Cách Chạy Script)](#cách-đọc-tấm-bản-đồ-này-cách-chạy-script)
+3.  [Khám Phá Từng Phần Của Tấm Bản Đồ (Cấu Trúc Script)](#khám-phá-từng-phần-của-tấm-bản-đồ-cấu-trúc-script)
+    * [Phần 1: Chuẩn Bị "Nguyên Liệu" và "Dụng Cụ"](#phần-1-chuẩn-bị-nguyên-liệu-và-dụng-cụ)
+    * [Phần 2: "Nấu Nướng" và "Nếm Thử" (Huấn Luyện & Đánh Giá Model)](#phần-2-nấu-nướng-và-nếm-thử-huấn-luyện--đánh-giá-model)
+    * [Phần 3: "Khám Phá Sâu Hơn" và "Kể Chuyện Dữ Liệu"](#phần-3-khám-phá-sâu-hơn-và-kể-chuyện-dữ-liệu)
+4.  [Soi Chiếu Với "Kim Chỉ Nam" (Barem Chấm Điểm DAZONE 2025)](#soi-chiếu-với-kim-chỉ-nam-barem-chấm-điểm-dazone-2025)
+5.  [Gợi Ý "Trang Trí" Cho Bài Kể Chuyện (Trực Quan Hóa Dữ Liệu Cho Thuyết Trình)](#gợi-ý-trang-trí-cho-bài-kể-chuyện-trực-quan-hóa-dữ-liệu-cho-thuyết-trình)
+6.  [Lời Kết Từ "Giáo Sư Thông Tuệ"](#lời-kết-từ-giáo-sư-thông-tuệ)
 
-* **Dạy AI Đoán Giỏi:** Huấn luyện và xem xét nhiều bạn AI khác nhau để xem bạn nào đoán giỏi nhất việc bạn nhỏ có quay lại cửa hàng không.
-* **Chia Nhóm Bạn Bè:** Dùng một phép thuật gọi là K-Means để tự động chia các bạn nhỏ thành từng nhóm riêng biệt dựa trên những điểm giống nhau.
-* **Đặt Tên Cho Nhóm (Chân dung Thông minh):** Tự động đặt cho mỗi nhóm một cái tên thật hay (giống như biệt danh) để chúng ta dễ hình dung về các bạn trong nhóm đó.
-* **Tạo Ra Thông Tin Mới Siêu Đẳng (Xây dựng Đặc trưng Nâng cao):**
-    * Xem xét kỹ số điện thoại và nhà mạng của bố mẹ các bạn xem có gì đặc biệt không.
-    * Kết hợp các thông tin lại với nhau, ví dụ như bạn nhỏ ở độ tuổi nào thì hay mua đồ chơi gì.
-    * Tính toán xem các bạn có thường xuyên ghé cửa hàng không.
-* **Hỏi Tỏ Mọi Chuyện Với AI (Diễn giải Mô hình bằng SHAP):** Dùng một công cụ đặc biệt tên là SHAP để hiểu tại sao bạn AI lại đưa ra dự đoán như vậy, xem thông tin nào là quan trọng nhất.
-* **Chế Độ Chơi Nhanh và Chơi Kỹ:**
-    * `DEVELOPMENT_MODE` (Chơi thử): Chạy nhanh để xem thử ý tưởng có hay không, chỉ lấy một ít bạn nhỏ ra để thử thôi.
-    * `PRODUCTION_MODE` (Chơi thật - có 2 mức độ): Phân tích tất cả các bạn nhỏ luôn, có thể chọn chơi nhanh (Tier 1) hoặc chơi thật kỹ (Tier 2) để có kết quả tốt nhất.
-* **Ghi Chép Cẩn Thận:** Mọi việc bạn AI làm đều được ghi lại vào một cuốn sổ (tệp log) để chúng ta xem lại.
-* **Báo Cáo Đầy Đủ:** Tạo ra nhiều hình ảnh đẹp, bảng biểu để tổng kết lại những gì chúng ta khám phá được.
+## Tổng Quan: Đi Tìm "Viên Ngọc" Ẩn Giấu
 
-## Những Lỗi Đã Được Sửa Gần Đây:
+Giống như các nhà thám hiểm đi tìm kho báu, chúng ta (những nhà phân tích dữ liệu) cũng đang đi tìm "viên ngọc" quý giá ẩn trong những con số và chữ cái. "Viên ngọc" ở đây chính là khả năng **dự đoán xem một khách hàng có quay trở lại mua hàng từ cùng một gian hàng trong 6 tháng tới hay không.**
 
-* **Lỗi SHAP (Hỏi AI):** Đã sửa để công cụ SHAP hoạt động trơn tru hơn, hiểu được cả những cách AI suy nghĩ phức tạp.
-* **Lỗi Gán Tên Nhóm:** Sửa cách tính toán để việc đặt tên cho các nhóm bạn bè (gán chân dung) được chính xác và ổn định hơn, dù cho thông tin có hơi lộn xộn chút.
-* **Lỗi Hiển Thị Tuổi:** Đã sửa cách xử lý thông tin tuổi, để những bạn không rõ tuổi sẽ không bị coi nhầm là 0 tuổi, giúp biểu đồ tuổi đẹp và đúng hơn.
+Đoạn code này là một "cỗ máy thần kỳ" giúp chúng ta:
+1.  "Làm sạch" và "chuẩn bị" dữ liệu (như đãi cát tìm vàng).
+2.  Xây dựng các "nhà tiên tri" (model) để dự đoán.
+3.  Đánh giá xem "nhà tiên tri" nào giỏi nhất.
+4.  "Phân loại" khách hàng thành từng nhóm để hiểu rõ hơn về họ.
+5.  Đưa ra những "lời khuyên vàng ngọc" cho doanh nghiệp.
 
-## Ngôi Nhà Của Các Tệp (Cấu trúc Thư mục):
+## Cách "Đọc" Tấm Bản Đồ Này (Cách Chạy Script)
 
-Tưởng tượng đây là một ngôi nhà lớn, và các tệp được xếp vào các phòng khác nhau:
+Để "cỗ máy thần kỳ" này hoạt động, bạn cần:
+1.  **Môi trường:** Có cài đặt Python và các "dụng cụ" cần thiết (thư viện) như `pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`, `imblearn`, `xgboost`, `lightgbm`, và có thể là `shap`.
+2.  **Dữ liệu đầu vào:** Các file dữ liệu đã được làm sạch từ vòng trước (đặt trong thư mục `cleaning_results/cleaned_data/`), bao gồm:
+    * `competition_train_features.csv`: Dữ liệu huấn luyện đã được "chế biến" sẵn các đặc trưng.
+    * `competition_test_features.csv`: Dữ liệu kiểm thử tương tự.
+    * `cleaned_user_info.csv`: Thông tin người dùng đã sạch.
+3.  **Chạy script:** Thực thi file Python này (`DAZONE2025_R2.2_Main_Analysis.py`).
+4.  **Kết quả:** Các "kho báu" tìm được sẽ được cất giữ trong thư mục `round_2.2`, bao gồm:
+    * `model_outputs`: Các "nhà tiên tri" đã huấn luyện.
+    * `segmentation_outputs`: Thông tin về các nhóm khách hàng.
+    * `shap_outputs`: Giải thích chi tiết về quyết định của "nhà tiên tri".
+    * `visualizations_from_main_analysis`: Các biểu đồ, hình ảnh minh họa.
+    * `logs`: "Nhật ký hành trình" ghi lại quá trình hoạt động của script.
 
-.
-├── ten_script_cua_ban.py             # Đây là cuốn sách hướng dẫn chính (script)
-├── cleaning_results/
-│   └── cleaned_data/               # PHÒNG CHỨA DỮ LIỆU SẠCH SẼ (Đầu vào)
-│       ├── competition_train_features.csv
-│       ├── ... (nhiều sổ ghi chép khác về các bạn)
-└── round_2.2/                      # PHÒNG CHỨA KẾT QUẢ (Đầu ra)
-├── round_2.2_execution_log.txt # Cuốn nhật ký ghi lại mọi việc AI làm
-├── ideal_customer_profile.jpg  # Hình ảnh về nhóm bạn lý tưởng
-├── round_2_2_analysis_results.png # Bảng tổng kết lớn với nhiều hình ảnh
-└── ... (nhiều báo cáo và kết quả khác)
+## Khám Phá Từng Phần Của Tấm Bản Đồ (Cấu Trúc Script)
 
-*(Lưu ý: Tên các thư mục trực quan hóa đã được cập nhật trong code để dễ quản lý hơn, ví dụ: `0_data_cleaning_reports`, `1_exploratory_data_analysis/1a_demographics`, v.v...)*
+Script của chúng ta được chia làm 3 phần chính, giống như 3 giai đoạn của một cuộc thám hiểm lớn.
 
-## Những Thứ Cần Có Để Chạy Script (Điều kiện Tiên quyết & Thư viện):
+### Phần 1: Chuẩn Bị "Nguyên Liệu" và "Dụng Cụ"
 
-Giống như muốn xây nhà Lego, bạn AI cần có đủ các mảnh ghép (thư viện Python):
+Giống như đầu bếp cần chuẩn bị nguyên liệu tươi ngon và dụng cụ sắc bén trước khi nấu ăn, chúng ta cũng cần chuẩn bị dữ liệu thật tốt.
 
-* pandas, numpy (để sắp xếp và tính toán dữ liệu)
-* matplotlib, seaborn (để vẽ biểu đồ đẹp)
-* scikit-learn (bộ công cụ chính để dạy AI)
-* imbalanced-learn (giúp AI học tốt hơn khi số lượng các nhóm bạn không đều nhau)
-* xgboost, lightgbm (hai bạn AI phụ trợ siêu mạnh)
-* shap (công cụ đặc biệt để hiểu AI nghĩ gì - không bắt buộc nhưng nên có)
+* **Gọi Tên Các "Dụng Cụ" (Import Libraries):**
+    * `pandas`, `numpy`: Hai trợ thủ đắc lực để làm việc với bảng biểu và con số (như dao và thớt).
+    * `matplotlib`, `seaborn`: Bộ đôi họa sĩ tài ba giúp vẽ nên những bức tranh đẹp từ dữ liệu.
+    * `sklearn`: "Hộp đồ nghề" chứa đầy các "công thức" làm "nhà tiên tri" (machine learning models) và các "thước đo" chất lượng.
+    * `imblearn` (SMOTE): "Phép màu" giúp cân bằng dữ liệu khi một loại "nguyên liệu" nào đó quá ít.
+    * `xgboost`, `lightgbm`: Hai "siêu đầu bếp" nổi tiếng với khả năng tạo ra những "món ăn" (model) cực kỳ chính xác.
+    * `shap`: "Kính lúp thần kỳ" giúp nhìn thấu suy nghĩ của các "nhà tiên tri".
+* **Thiết Lập "Luật Chơi" (Configuration):**
+    * `DEVELOPMENT_MODE`: Nếu bật `True` (chế độ thử nghiệm), script sẽ chạy nhanh hơn với ít dữ liệu hơn, tiện cho việc kiểm tra. Tắt (`False`) khi muốn chạy thật.
+    * `PRODUCTION_TIER`: Mức độ "nghiêm túc" khi chạy thật (1: chạy nhanh hơn, 2: chạy kỹ hơn, lâu hơn).
+    * `RANDOM_STATE`: Con số may mắn để đảm bảo mỗi lần chạy, kết quả vẫn giống nhau (nếu các yếu tố khác không đổi).
+    * Màu sắc (`PRIMARY_RED_THEME`, etc.): Chọn màu chủ đạo là màu đỏ cho các "bức tranh" trực quan.
+* **Tạo "Chỗ Cất Đồ" (Output Directory Setup):** Tạo sẵn các thư mục để lưu trữ kết quả.
+* **Viết "Nhật Ký Hành Trình" (Logging Setup):** Ghi lại mọi bước đi, mọi quyết định để sau này dễ dàng xem lại.
+* **Tải "Nguyên Liệu" (Load Data):**
+    * Hàm `load_data`: "Người vận chuyển" mang dữ liệu từ file CSV vào.
+    * Tải các file `competition_train_features.csv`, `competition_test_features.csv`, và `cleaned_user_info.csv`. Đây là dữ liệu đã được làm sạch và có thêm các đặc trưng từ vòng trước hoặc từ script `data_cleaning.py`.
+* **"Ngó Qua" Nguyên Liệu Ban Đầu (Initial Data Exploration):**
+    * Vẽ biểu đồ tròn ("bánh gato") để xem tỷ lệ khách hàng quay lại (`label = 1`) và không quay lại (`label = 0`) trong bộ dữ liệu huấn luyện.
+* **Sơ Chế "Nguyên Liệu" Cho "Món Ăn Chính" (Data Preparation for Modeling):**
+    * Hàm `preprocess_for_modeling`: "Đầu bếp phụ" dọn dẹp dữ liệu lần cuối trước khi cho vào "nồi nấu".
+        * **Xử lý giá trị thiếu (NaN):** Với các cột số, nếu là cột đếm (`count`, `total`, `is_`, `unique`, `action_`) thì điền số 0, còn lại thì điền giá trị trung vị (median). Với cột chữ, điền "Unknown".
+        * **Mã hóa cột chữ (Label Encoding):** Máy tính chỉ hiểu số, nên các cột chữ (như `sex`, `age_group`) phải được chuyển thành số. Hàm này sẽ "học" cách mã hóa từ dữ liệu huấn luyện và áp dụng tương tự cho dữ liệu kiểm thử để đảm bảo tính nhất quán.
+        * **Xử lý giá trị vô cực (Inf):** Chuyển các giá trị này thành NaN rồi xử lý như trên.
+    * **Chia "Bánh":** Chia dữ liệu huấn luyện thành 2 phần: một phần lớn để "dạy" (train) cho "nhà tiên tri", một phần nhỏ để "kiểm tra bài cũ" (validation).
+    * **"Cân Đo" Đặc Trưng (StandardScaler):** Đưa các đặc trưng số về cùng một "hệ quy chiếu" để các "nhà tiên tri" không bị "thiên vị" bởi những con số quá lớn.
+    * **"Phép Màu" SMOTE (Handling Imbalanced Data):** Nếu số lượng khách hàng quay lại quá ít so với không quay lại, SMOTE sẽ "nhân bản" thêm những khách hàng quay lại để "cán cân" được cân bằng, giúp "nhà tiên tri" học tốt hơn về nhóm thiểu số này.
+* **Chuẩn Bị Các "Công Thức" Ban Đầu (Model Options Storage):**
+    * Lưu trữ sẵn các "công thức" (model instances) và "gia vị" (parameters) ban đầu cho **LightGBM** và **RandomForest**. Đây là hai "đầu bếp" mạnh mẽ mà chúng ta sẽ thử nghiệm trong "Lựa chọn 1".
+* **Dọn Dẹp "Bếp" (Memory Management):** Xóa bớt những dữ liệu không cần thiết nữa để tiết kiệm bộ nhớ.
 
-Bạn có thể nhờ người lớn cài đặt giúp bằng câu lệnh:
-`pip install pandas numpy matplotlib seaborn scikit-learn imbalanced-learn xgboost lightgbm shap`
+### Phần 2: "Nấu Nướng" và "Nếm Thử" (Huấn Luyện & Đánh Giá Model)
 
-## Cách Điều Khiển Bạn AI (Cấu hình):
+Đây là lúc chúng ta thực sự xây dựng và kiểm tra các "nhà tiên tri".
 
-Ở đầu cuốn sách hướng dẫn (script), có hai công tắc để bạn điều khiển bạn AI:
+* **Hàm "Nếm Thử Món Ăn" (`evaluate_model_performance`):**
+    * "Nấu" (huấn luyện) một "nhà tiên tri" (model) với dữ liệu huấn luyện.
+    * Cho "nhà tiên tri" thử "đoán" trên dữ liệu kiểm tra (validation).
+    * Tính toán các "điểm số" để xem "nhà tiên tri" đoán giỏi đến đâu:
+        * `AUC-ROC`: "Điểm tổng quát" về khả năng phân biệt đúng/sai. Càng gần 1 càng tốt.
+        * `F1-Score`: "Điểm cân bằng" giữa việc tìm ra đúng khách hàng quay lại và không bỏ sót họ.
+        * `Log Loss`: "Điểm phạt" nếu "nhà tiên tri" đoán sai mà còn quá tự tin. Càng nhỏ càng tốt.
+        * `Brier Score`: Cũng là một loại "điểm phạt" khác.
+        * `Precision (Class 1)`: Trong số những người được đoán là sẽ quay lại, có bao nhiêu người thực sự quay lại?
+        * `Recall (Class 1)`: Trong số những người thực sự quay lại, "nhà tiên tri" tìm ra được bao nhiêu người?
+    * Vẽ "Ma trận nhầm lẫn" (Confusion Matrix): Bức tranh cho thấy "nhà tiên tri" nhầm lẫn ở đâu (đoán đúng là A, sai là B, v.v.).
+* **Lựa Chọn 1: Thử Nghiệm Với Các "Đầu Bếp" Đơn Lẻ Mạnh Mẽ (Single Strong Models):**
+    * Huấn luyện và đánh giá **LightGBM (Opt1)** và **RandomForest (Opt1)** đã chuẩn bị ở Phần 1.
+* **Lựa Chọn 2: "Cuộc Thi Đầu Bếp" (Comparative Model Analysis - Lấy cảm hứng từ đội "3G"):**
+    * Chuẩn bị một loạt các "đầu bếp" khác nhau:
+        * `LogisticRegression`: "Đầu bếp" cổ điển, đơn giản nhưng hiệu quả.
+        * `RandomForest (Comp)`: Một phiên bản khác của "Rừng Cây Quyết Định".
+        * `XGBoost`: "Siêu đầu bếp" nổi tiếng.
+        * `LightGBM (Comp)`: Một phiên bản khác của "Ánh Sáng Thần Tốc".
+        * `LinearSVC` (có CalibratedClassifierCV): "Đầu bếp" thích vẽ đường thẳng để phân chia, được "hiệu chỉnh" để đoán xác suất tốt hơn.
+        * `MLPClassifier` (Neural Network): "Đầu bếp" mô phỏng bộ não con người.
+    * Cho tất cả các "đầu bếp" này "trổ tài" và "nếm thử" (huấn luyện và đánh giá).
+    * **Lập "Bảng Xếp Hạng" (Summary Table):** So sánh điểm số của các "đầu bếp" để xem ai giỏi nhất.
+    * **Vẽ Biểu Đồ So Sánh (Comparative ROC and PR Curves):**
+        * Đường cong ROC: "Đường đua" xem "nhà tiên tri" nào phân biệt giỏi hơn.
+        * Đường cong Precision-Recall: "Thử thách" khác để đánh giá khả năng tìm đúng và không bỏ sót.
+* **Chọn Ra "Siêu Đầu Bếp" (Best Model Before Tuning):** Dựa vào điểm AUC-ROC, chọn ra "nhà tiên tri" xuất sắc nhất từ tất cả các lựa chọn trên.
+* **"Gia Giảm Gia Vị" Cho "Siêu Đầu Bếp" (Hyperparameter Tuning):**
+    * Mỗi "nhà tiên tri" có những "gia vị" (hyperparameters) riêng. Việc tìm đúng "gia vị" sẽ giúp "món ăn" ngon hơn.
+    * Sử dụng `RandomizedSearchCV`: "Người thử gia vị" tự động thử nhiều cách kết hợp "gia vị" khác nhau để tìm ra công thức tốt nhất cho "siêu đầu bếp" (hoặc top 2 nếu chạy chế độ PRODUCTION_TIER 2).
+    * Scoring: Dùng AUC-ROC để chọn "gia vị" tốt nhất.
+* **"Món Ăn Hoàn Hảo" (Final Best Model):**
+    * So sánh "siêu đầu bếp" đã được "gia giảm gia vị" với "siêu đầu bếp" ban đầu. Chọn ra người giỏi nhất cuối cùng.
+    * Lưu lại "công thức" của "món ăn hoàn hảo" này (save model).
+    * **"Bí Kíp Gia Truyền" (Feature Importance):** Xem "nguyên liệu" (đặc trưng) nào quan trọng nhất tạo nên sự thành công của "món ăn hoàn hảo".
 
-1.  **`DEVELOPMENT_MODE`** (Công tắc Chơi Nháp):
-    * Bật (`True`): AI sẽ chạy thử nhanh với một ít dữ liệu thôi, để xem ý tưởng có ổn không.
-    * Tắt (`False`): AI sẽ làm việc nghiêm túc với tất cả dữ liệu.
+### Phần 3: "Khám Phá Sâu Hơn" và "Kể Chuyện Dữ Liệu"
 
-2.  **`PRODUCTION_TIER`** (Mức độ Chơi Thật - khi Chơi Nháp tắt):
-    * **Mức 1 (Tier 1)**: AI sẽ cố gắng làm xong việc trong vòng 1 tiếng, làm nhanh nhưng vẫn đảm bảo chất lượng.
-    * **Mức 2 (Tier 2)**: AI sẽ làm việc kỹ hơn, có thể mất khoảng 2 tiếng, để có kết quả tốt nhất có thể.
+Sau khi có "nhà tiên tri" giỏi nhất, chúng ta sẽ tìm hiểu sâu hơn và kể những câu chuyện thú vị từ dữ liệu.
 
-## Cách Bắt Đầu Trò Chơi Với AI (Chạy Script):
+* **I. "Giải Mã" Suy Nghĩ Của "Nhà Tiên Tri" (SHAP Analysis):**
+    * Nếu thư viện `shap` có sẵn, chúng ta sẽ dùng nó.
+    * SHAP giúp giải thích tại sao "nhà tiên tri" lại đưa ra một dự đoán cụ thể cho từng khách hàng. Nó cho biết đặc trưng nào ảnh hưởng nhiều nhất, và ảnh hưởng theo hướng nào (tích cực hay tiêu cực đến việc quay lại).
+    * Vẽ biểu đồ SHAP:
+        * `summary_plot (dot)`: "Bản đồ nhiệt" cho thấy sự phân bổ ảnh hưởng của từng đặc trưng.
+        * `summary_plot (bar)`: Xếp hạng các đặc trưng theo mức độ ảnh hưởng trung bình.
+* **II. "Chia Nhóm" Khách Hàng (User Segmentation - K-Means Clustering):**
+    * Mục tiêu: Gom những khách hàng có hành vi và đặc điểm giống nhau vào cùng một nhóm.
+    * **Chuẩn bị dữ liệu:**
+        * Sử dụng các đặc trưng đã được tính toán ở mức độ người dùng (ví dụ: `total_interactions`, `purchase_rate`, `loyalty_potential`).
+        * Nếu cần, tải lại `df_train_aligned` và `df_user_info` để có thông tin đầy đủ.
+        * Kết hợp thông tin hành vi và thông tin nhân khẩu học.
+        * Tiền xử lý dữ liệu này một lần nữa (NaN, encoding, scaling) riêng cho việc phân cụm.
+    * **Tìm Số Nhóm Tối Ưu (Optimal K):**
+        * **Elbow Method (Phương pháp khuỷu tay):** Vẽ đồ thị sự thay đổi của "độ méo mó" (inertia) khi tăng số lượng nhóm. "Khuỷu tay" của đồ thị thường là gợi ý cho số nhóm tốt.
+        * **Silhouette Score:** Một thước đo khác xem các điểm dữ liệu trong cùng một nhóm có "gần gũi" với nhau và "xa cách" với các nhóm khác không. Điểm càng cao càng tốt.
+    * **Chạy K-Means:** Sau khi chọn được số nhóm `optimal_k`, áp dụng thuật toán K-Means để chia khách hàng.
+    * **"Soi" Đặc Điểm Từng Nhóm (Cluster Profiling):**
+        * Tính giá trị trung bình (cho số) hoặc giá trị xuất hiện nhiều nhất (mode, cho chữ) của các đặc trưng cho từng nhóm. Điều này giúp hiểu rõ đặc điểm của mỗi nhóm.
+        * Lưu lại hồ sơ nhóm và dữ liệu người dùng kèm theo nhãn nhóm.
+    * **Vẽ Biểu Đồ Phân Bố Nhóm và Đặc Điểm Nhóm:**
+        * Biểu đồ tròn thể hiện tỷ lệ khách hàng trong mỗi nhóm.
+        * Biểu đồ hộp (boxplot) so sánh sự phân bổ của các đặc trưng quan trọng (như `loyalty_potential`, `engagement_intensity`) giữa các nhóm.
+* **III. "Đặt Tên" Cho Các Nhóm (Persona Assignment):**
+    * Dựa trên "hồ sơ phân khúc" (cluster profiles), đặt cho mỗi nhóm một cái tên gần gũi, dễ hình dung (ví dụ: "🌟👑 VIP Champions", "💔 Dormant & High Churn Risk").
+    * Logic gán persona dựa trên các ngưỡng (median, quantile) của các chỉ số quan trọng như `loyalty_potential`, `engagement_intensity`, `churn_risk_score`, `purchase_rate`.
+* **IV. "Lời Khuyên Vàng Ngọc" (Business Insights & Recommendations):**
+    * **Từ Model Dự Đoán & SHAP:**
+        * Những yếu tố nào là "nam châm" hút khách hàng quay lại?
+        * Những yếu tố nào là "rào cản"?
+    * **Từ Phân Khúc & Chân Dung Khách Hàng:**
+        * Mỗi nhóm khách hàng có đặc điểm gì nổi bật?
+        * Nên có chiến lược gì riêng cho từng nhóm (ví dụ: nhóm "VIP" thì chăm sóc đặc biệt, nhóm "nguy cơ rời bỏ" thì tìm cách giữ chân).
+    * **Đề xuất chiến lược chung:**
+        * Cá nhân hóa trải nghiệm.
+        * Chiến lược giữ chân khách hàng cho các nhóm nguy cơ cao.
+        * Chuyển đổi khách hàng chỉ xem hàng thành người mua.
+        * Chương trình khách hàng thân thiết.
+        * Ưu tiên phát triển tính năng/sản phẩm dựa trên các yếu tố quan trọng.
+        * Hợp tác với các gian hàng.
+    * **Phác Họa "Khách Hàng Trong Mơ" (Ideal Customer Profile - ICP):**
+        * Dựa trên những người mua hàng nhiều nhất, mô tả xem họ trông như thế nào (tuổi, giới tính, v.v.).
+* **V. Tổng Kết Cuộc Thám Hiểm (Final Summary & Next Steps):**
+    * Tóm tắt lại những gì đã làm và kết quả.
+    * Gợi ý những bước tiếp theo (triển khai model, A/B testing, theo dõi và cập nhật model).
 
-1.  Để các sổ ghi chép về các bạn (tệp CSV đã làm sạch) vào đúng phòng `cleaning_results/cleaned_data/`.
-2.  Chọn chế độ Chơi Nháp hay Chơi Thật bằng cách chỉnh công tắc ở đầu script.
-3.  Nhờ người lớn gõ lệnh này vào máy tính:
-    ```bash
-    python ten_script_cua_ban.py
-    ```
-    (Nhớ thay `ten_script_cua_ban.py` bằng tên thật của cuốn sách hướng dẫn nhé).
+## Soi Chiếu Với "Kim Chỉ Nam" (Barem Chấm Điểm DAZONE 2025)
 
-## Các Cuốn Sổ Ghi Chép AI Cần (Tệp Dữ liệu Đầu vào):
+Hãy xem "tấm bản đồ" của chúng ta đáp ứng "kim chỉ nam" của ban giám khảo như thế nào nhé!
 
-Bạn AI cần những cuốn sổ này để làm việc (đã được dọn dẹp sạch sẽ):
-* `competition_train_features.csv` (Sổ chính để AI học)
-* `competition_test_features.csv` (Sổ để AI kiểm tra bài)
-* `user_log_user_behavior_summary.csv` (Sổ ghi lại hành vi chung của các bạn)
-* `cleaned_user_info.csv` (Sổ thông tin cá nhân của các bạn)
-* Và một vài cuốn sổ khác như được liệt kê trong script.
+1.  **Forecasting & Model Evaluation (Dự đoán & Đánh giá Model - 30%):**
+    * **Metrics & Performance:**
+        * **Script làm được:** Script đã thực hiện dự đoán (`label`), sử dụng nhiều thuật toán phổ biến (LightGBM, RandomForest, XGBoost, Logistic Regression, LinearSVC, MLP) và cả model tùy chỉnh ban đầu. Có hàm `evaluate_model_performance` tính toán các metrics quan trọng (AUC-ROC, F1, Precision, Recall, LogLoss, Brier Score). Có so sánh giữa các model qua bảng tổng hợp và biểu đồ ROC/PR. Có giải thích lý do lựa chọn model cuối cùng (dựa trên AUC). Có thực hiện Hyperparameter Tuning (`RandomizedSearchCV`) để cải thiện model.
+        * **Cần cải thiện/Lưu ý cho bài thuyết trình:**
+            * Cần giải thích rõ hơn *tại sao* chọn các model này để thử nghiệm ban đầu (ví dụ: LightGBM/XGBoost mạnh mẽ, Logistic Regression nhanh và dễ diễn giải,...).
+            * Phân tích sâu hơn về ý nghĩa của từng metric trong bối cảnh bài toán (ví dụ: F1-score quan trọng vì dữ liệu mất cân bằng).
+            * Phân tích Learning Curve (nếu có thể thêm vào) để xem model có bị overfitting/underfitting không.
+            * Script hiện tại chưa có phần kiểm tra lỗi model trên dữ liệu test một cách tường minh (ví dụ: so sánh phân phối dự đoán trên train/val/test).
+    * **Chấm điểm (ước lượng theo script):** Có thể đạt 60-80% nếu trình bày tốt các phần đã có. Để đạt 100%, cần bổ sung phân tích sâu hơn về lựa chọn model, so sánh chi tiết hơn, và có thể là các kỹ thuật kết hợp model (ensemble).
 
-## Các Bước Bạn AI Làm Việc (Quy trình Làm việc):
+2.  **User Segmentation & Personalization Strategy (Phân khúc người dùng & Chiến lược Cá nhân hóa - 25%):**
+    * **Phân nhóm & chiến lược hành động:**
+        * **Script làm được:** Sử dụng K-Means để phân cụm người dùng dựa trên các đặc trưng hành vi và nhân khẩu học. Có tìm `optimal_k` bằng Elbow và Silhouette. Có profiling cho từng cụm (đặc điểm trung bình/mode). Có gán Persona cho từng cụm dựa trên logic phân tích các chỉ số. Có phần đề xuất chiến lược chung và gợi ý cho từng persona.
+        * **Cần cải thiện/Lưu ý cho bài thuyết trình:**
+            * Giải thích rõ hơn cơ sở lựa chọn các đặc trưng (`user_level_features_for_segment`) cho việc phân cụm.
+            * Phân tích sâu hơn về sự khác biệt hành vi và nhân khẩu học giữa các nhóm (ví dụ: nhóm VIP thường có hành vi X, độ tuổi Y...). Các boxplot đã tạo là một khởi đầu tốt.
+            * Khi đề xuất chiến lược cho từng persona, cần cụ thể hơn về kênh (email, app, web), nội dung (thông điệp), thời điểm.
+            * Cân nhắc ROI: Hiện tại script chưa tính toán ROI, nhưng khi trình bày chiến lược, có thể đề cập đến việc đo lường hiệu quả và tối ưu chi phí.
+    * **Chấm điểm (ước lượng theo script):** Có thể đạt 60-80%. Để đạt 100%, cần chiến lược cá nhân hóa chi tiết hơn cho từng nhóm, có phân tích sâu về sự khác biệt và đặc biệt là cân nhắc ROI.
 
-1.  **Chuẩn bị:** Đọc hướng dẫn, chọn chế độ làm việc.
-2.  **Đọc Sổ Sách:** Xem qua tất cả các sổ ghi chép.
-3.  **Dọn Dẹp Sổ Sách:** Làm cho sổ sách thật sạch sẽ, không có lỗi.
-4.  **Ghi Chép Thông Minh:** Tạo ra những thông tin mới hữu ích từ sổ sách cũ.
-5.  **Chia Sổ Để Dạy và Kiểm Tra:** Chia một phần sổ để dạy AI, một phần để kiểm tra xem AI học giỏi chưa. Mã hóa những chữ khó hiểu thành số để AI đọc được.
-6.  **Chọn Thông Tin Quan Trọng:** Lọc ra những thông tin cần thiết nhất để dạy AI.
-7.  **Dạy AI Đoán:**
-    * Giúp AI học công bằng hơn nếu số bạn trong các nhóm không đều nhau (dùng SMOTE).
-    * Cho nhiều bạn AI khác nhau cùng học và thi tài.
-    * Tinh chỉnh các bạn AI để các bạn ấy đoán giỏi hơn nữa.
-8.  **Hỏi AI "Vì Sao?":** Dùng SHAP để hiểu tại sao AI lại đoán như vậy.
-9.  **Chia Nhóm Bạn Bè:**
-    * Chuẩn bị thông tin để chia nhóm.
-    * Dùng phép thuật K-Means để chia nhóm và tìm ra số nhóm hợp lý nhất.
-    * Tìm hiểu xem mỗi nhóm bạn có đặc điểm gì và đặt tên cho các nhóm đó.
-10. **Vẽ Tranh Kể Chuyện:** Vẽ nhiều biểu đồ đẹp để kể lại câu chuyện về các bạn nhỏ.
-11. **Cất Giữ Thành Quả:** Lưu lại tất cả nhật ký, tranh vẽ, báo cáo vào đúng phòng.
-12. **Lời Khuyên Từ AI:** Đưa ra những lời khuyên hữu ích cho cửa hàng đồ chơi.
+3.  **Visualization & Storytelling (Trực quan hóa & Kể chuyện bằng dữ liệu - 20%):**
+    * **Dashboard prescriptive & scenario analysis:**
+        * **Script làm được:** Script tạo ra rất nhiều biểu đồ tĩnh để minh họa các bước phân tích (target distribution, confusion matrix, ROC/PR curves, feature importance, SHAP plots, cluster distribution, boxplots, ICP plots).
+        * **Cần cải thiện/Lưu ý cho bài thuyết trình:**
+            * Script hiện tại *không* tạo ra dashboard tương tác (interactive) hay công cụ "what-if" (scenario analysis). Đây là điểm cần lưu ý.
+            * Trong bài thuyết trình, cần sắp xếp các biểu đồ một cách logic, dẫn dắt câu chuyện mạch lạc.
+            * "Prescriptive dashboard" (dashboard có tính đề xuất) và "projection" (dự phóng) là những yêu cầu cao hơn. Script hiện tại cung cấp nền tảng (model dự đoán), nhưng việc xây dựng dashboard/tool để thể hiện dự phóng cần công cụ riêng (Tableau, PowerBI, hoặc code Dash/Streamlit).
+    * **Chấm điểm (ước lượng theo script):** Nếu chỉ dựa vào các chart tĩnh đã tạo, có thể đạt 40-60%. Để điểm cao hơn, cần nhấn mạnh vào việc liên kết các chart, kể một câu chuyện hấp dẫn và nếu có thể, mô phỏng một "scenario analysis" bằng cách thay đổi giả định đầu vào và xem model dự đoán thế nào (dù không có tool tương tác).
 
-## Các Bạn AI Giúp Sức & Phép Thuật Được Dùng:
+4.  **Business Insights (Hiểu biết Kinh doanh - 25%):**
+    * **Insight nâng cao & Recommendation:**
+        * **Script làm được:** Phần IV ("Business Insights & Recommendations") và phần SHAP, Segmentation đã đưa ra nhiều hiểu biết: các yếu tố ảnh hưởng đến việc quay lại, đặc điểm từng nhóm khách hàng, gợi ý chiến lược. Có đề xuất ICP. Các đề xuất được gắn với kết quả phân tích model và phân khúc.
+        * **Cần cải thiện/Lưu ý cho bài thuyết trình:**
+            * Cần làm nổi bật những insight *sâu sắc và mới mẻ* (ví dụ: một hành vi bất ngờ nào đó lại là yếu tố quyết định, hoặc một nhóm khách hàng tưởng nhỏ nhưng tiềm năng lớn).
+            * Khi đề xuất hành động, cần rõ ràng, có luận điểm hợp lý và nhấn mạnh tính khả thi.
+            * "Cách thức kiểm định insight" (how to validate insights) là một điểm quan trọng. Có thể đề xuất các thử nghiệm A/B để kiểm chứng các chiến lược dựa trên insight.
+    * **Chấm điểm (ước lượng theo script):** Có thể đạt 60-80%. Để đạt 100%, cần những insight thực sự "đắt giá", có tính đột phá và đề xuất hành động cực kỳ rõ ràng, kèm theo phương án kiểm định.
 
-### Tại Sao Lại Chọn Những Bạn AI Này?
+**Tổng kết so sánh với barem:** Script của bạn đã có một nền tảng rất vững chắc, chạm đến nhiều yêu cầu của barem. Để tối đa hóa điểm số, cần tập trung vào việc trình bày sâu sắc các phân tích đã có, làm rõ lý do lựa chọn phương pháp, và đưa ra các chiến lược, đề xuất cụ thể, có tính hành động cao, gắn liền với mục tiêu kinh doanh. Phần trực quan hóa tương tác và scenario analysis là điểm có thể chưa đáp ứng hoàn toàn bằng script, nhưng có thể được bổ sung ý tưởng trong bài thuyết trình.
 
-Chúng ta nhờ nhiều bạn AI khác nhau giúp sức vì mỗi bạn có một thế mạnh riêng, giống như mỗi bạn nhỏ giỏi một trò chơi khác nhau vậy!
+## Gợi Ý "Trang Trí" Cho Bài Kể Chuyện (Trực Quan Hóa Dữ Liệu Cho Thuyết Trình)
 
-* **Logistic Regression (Bạn Cân Bằng):** Giống như một cái cân đơn giản. Bạn ấy giúp chúng ta xem xét một cách công bằng xem một bạn nhỏ có khả năng quay lại hay không. Bạn này dễ hiểu và là điểm khởi đầu tốt.
-* **Random Forest (Hội Đồng Cây Thông Thái):** Tưởng tượng chúng ta hỏi ý kiến của cả một rừng cây thông thái. Mỗi cây sẽ đưa ra một ý kiến ("bạn này sẽ quay lại" hoặc "bạn này không"). Sau đó, cả rừng cây sẽ biểu quyết xem ý kiến nào được nhiều phiếu nhất. Cách này rất mạnh mẽ vì nhiều cái đầu luôn tốt hơn một!
-* **XGBoost & LightGBM (Hai Bạn Rô-bốt Siêu Tốc):** Đây là hai bạn rô-bốt cực kỳ thông minh và học rất nhanh. Các bạn ấy liên tục sửa lỗi của mình để ngày càng đoán giỏi hơn. XGBoost thì rất cẩn thận, còn LightGBM thì siêu nhanh, đặc biệt khi có rất nhiều bạn nhỏ cần phân tích.
-* **Extra Trees (Những Cái Cây Nghĩ Khác Biệt):** Cũng giống như Rừng Ngẫu nhiên, nhưng những cái cây này còn "nghịch ngợm" hơn một chút khi suy nghĩ, tạo ra những ý tưởng mới lạ. Đôi khi điều này lại giúp tìm ra cách đoán hay hơn.
+Dưới đây là những "bức tranh" quan trọng bạn nên chọn lọc để đưa vào slide thuyết trình, giúp câu chuyện của bạn thêm sinh động và thuyết phục:
 
-**Tại sao lại cần nhiều bạn AI như vậy?** Để chúng ta thử nhiều cách khác nhau, từ dễ đến khó, xem cách nào đoán giỏi nhất và tìm ra được những điều bí mật thú vị nhất về các bạn nhỏ!
+1.  **Bối Cảnh Bài Toán:**
+    * `target_variable_distribution.png`: Hiểu rõ sự mất cân bằng của dữ liệu mục tiêu.
+2.  **Đánh Giá Model:**
+    * **Bảng So Sánh Model:** (Từ `model_comparison_summary.csv`) Cô đọng hiệu suất các model đã thử.
+    * `roc_curves_comparative_models.png`: Trực quan hóa khả năng phân loại của các model.
+    * `pr_curves_comparative_models.png`: Quan trọng khi dữ liệu mất cân bằng.
+    * **Confusion Matrix của Model Tốt Nhất:** (Ví dụ: `confusion_matrix_MLPClassifier_Comp_Tuned.png`) Xem model cuối cùng hoạt động cụ thể ra sao.
+    * `feature_importances_[best_model_name].png`: Những yếu tố nào model cho là quan trọng nhất.
+3.  **Giải thích Model (SHAP):**
+    * `shap_summary_plot_[best_model_name].png`: (Dot plot) Tác động tổng thể của các đặc trưng.
+    * `shap_bar_plot_[best_model_name].png`: (Bar plot) Mức độ quan trọng trung bình của các đặc trưng theo SHAP.
+4.  **Phân Khúc Khách Hàng:**
+    * `kmeans_elbow_method.png` và `kmeans_silhouette_scores.png`: Giải thích cách chọn số cụm `k`.
+    * `user_segment_distribution.png`: Tỷ lệ các phân khúc khách hàng.
+    * `cluster_profiles_boxplots.png`: So sánh trực quan đặc điểm chính của các cụm (ví dụ: loyalty, engagement).
+    * **Bảng Hồ Sơ Phân Khúc (Cluster Profiles):** (Trích từ `cluster_profiles_combined.csv`) Tóm tắt đặc điểm chính của từng persona.
+5.  **Hồ Sơ Khách Hàng Lý Tưởng (ICP):**
+    * `ideal_customer_profile_age_dist.png`
+    * `ideal_customer_profile_sex_dist.png`
+    * (Có thể thêm các biểu đồ về ngành nghề, tình trạng hôn nhân... của ICP nếu bạn phân tích sâu hơn).
 
-### SHAP (Bạn Giải Thích Thông Thái)
+**Lưu ý khi chọn biểu đồ:**
+* **Đơn giản, rõ ràng:** Mỗi biểu đồ nên truyền tải một thông điệp chính.
+* **Chú thích đầy đủ:** Tiêu đề, nhãn trục, legend phải rõ ràng.
+* **Màu sắc nhất quán:** Sử dụng màu đỏ chủ đạo như trong script để tạo sự đồng bộ.
+* **Kể chuyện:** Sắp xếp các biểu đồ theo một dòng chảy logic, dẫn dắt người xem qua câu chuyện phân tích của bạn. Đừng chỉ liệt kê, hãy giải thích ý nghĩa của chúng!
 
-* **SHAP là gì?** Tưởng tượng khi cả đội thắng một trận đấu bóng đá. SHAP giống như một bạn bình luận viên rất giỏi, bạn ấy sẽ chỉ ra được cầu thủ nào (đặc trưng nào) đã chuyền bóng hay, cầu thủ nào đã sút giỏi, góp công lớn nhất vào bàn thắng (dự đoán đúng). SHAP cho mỗi đặc trưng một "điểm đóng góp".
-* **Mục đích của SHAP trong script này là gì?**
-    * **Tìm Ngôi Sao Sáng:** Giúp chúng ta biết thông tin nào (tuổi, giới tính, đồ chơi hay mua...) là quan trọng nhất khiến AI đoán một bạn nhỏ sẽ quay lại.
-    * **Hiểu Rõ AI Hơn:** Giúp chúng ta hiểu tại sao AI lại đưa ra quyết định như vậy, chứ không phải AI đoán mò.
-    * **Tin Tưởng AI:** Khi hiểu rồi, chúng ta sẽ tin tưởng bạn AI hơn.
-    * Script này dùng `TreeExplainer` (Bạn giải thích chuyên về cây) cho các bạn AI dạng cây và `KernelExplainer` (Bạn giải thích đa năng) cho các bạn AI khác.
+## Lời Kết Từ "Giáo Sư Thông Tuệ"
 
-## Từ Điển Cho Bé (Giải thích các từ khó):
+"Tấm bản đồ" (script Python) này là một công cụ mạnh mẽ. Nó không chỉ giúp bạn tìm ra "kho báu" mà còn rèn luyện tư duy phân tích, kỹ năng giải quyết vấn đề – những hành trang quý giá cho bất kỳ nhà khoa học dữ liệu nào.
 
-* **AUC-ROC:** Một loại điểm thi xem bạn AI phân biệt bạn nào "có" và bạn nào "không" giỏi đến đâu. Điểm càng cao (gần 1 nhất) thì bạn AI càng siêu.
-* **F1-Score:** Điểm này cho biết bạn AI có đoán trúng nhiều bạn "có" mà không bỏ sót bạn nào không. Rất quan trọng khi số bạn "có" ít hơn hẳn số bạn "không".
-* **Log Loss:** Nếu AI đoán sai mà lại rất tự tin là mình đúng, AI sẽ bị "phạt" nặng. Điểm này càng nhỏ thì AI càng ngoan.
-* **Brier Score:** Xem những dự đoán "có lẽ" của AI có gần với sự thật không. Càng nhỏ càng tốt.
-* **SMOTE:** Nếu trong lớp học có ít bạn nữ hơn bạn nam, SMOTE sẽ "nhân bản" thêm vài bạn nữ "ảo" y như thật để số lượng cân bằng hơn, giúp AI học công bằng hơn.
-* **K-Means Clustering (Chia Nhóm K-Means):** Giống như trò chơi chia kẹo vào các rổ. Sao cho kẹo trong cùng một rổ thì giống nhau (cùng màu, cùng vị), và khác với kẹo ở rổ khác.
-* **Silhouette Score (Điểm Chia Nhóm Đẹp):** Xem các rổ kẹo đã được chia có đẹp không. Kẹo trong rổ có hợp nhau không, và có khác kẹo ở rổ bên cạnh không? Điểm càng cao thì chia càng đẹp.
-* **Inertia (Độ Chụm Lại - cho K-Means):** Xem các viên kẹo trong mỗi rổ có được xếp gần nhau, chụm lại một chỗ không. Số này càng nhỏ thì các viên kẹo trong rổ càng gần nhau.
-* **Hyperparameter Tuning (Chỉnh Nút Thông Minh):** Giống như chỉnh các nút điều khiển trên một món đồ chơi rô-bốt để nó hoạt động tốt nhất, thông minh nhất.
-* **RandomizedSearchCV (Thử Nút Ngẫu Nhiên):** Thay vì thử vặn hết tất cả các nút, chúng ta chỉ thử vặn một vài nút ngẫu nhiên xem cách nào tốt nhất.
-* **Label Encoding (Dán Nhãn Số):** Đổi tên các đồ vật (ví dụ: "gấu bông", "xe hơi") thành các con số (0, 1, 2) để bạn AI dễ hiểu hơn.
-* **Feature Engineering (Sáng Tạo Thông Tin Mới):** Dùng sự thông minh của mình để nghĩ ra những thông tin mới từ những gì đã có. Ví dụ, từ ngày sinh, mình có thể tính ra tuổi. Việc này giúp AI đoán giỏi hơn.
-* **Class Imbalance (Lớp Học Không Đều):** Tưởng tượng trong lớp có 20 bạn nữ nhưng chỉ có 2 bạn nam. Đó là lớp học không đều!
-* **Ensemble Methods (Biệt Đội Siêu Anh Hùng):** Thay vì để một siêu anh hùng giải cứu thế giới, chúng ta tập hợp cả một biệt đội! Mỗi người giỏi một kiểu, cùng nhau sẽ mạnh hơn. Các bạn AI như Random Forest, XGBoost là những biệt đội như vậy.
+Hãy nhớ rằng, các "nhà tiên tri" (model) dù giỏi đến đâu cũng chỉ là công cụ. Điều quan trọng là khả năng của bạn trong việc "lắng nghe" câu chuyện mà dữ liệu kể, đặt ra những câu hỏi thông minh, và biến những con số khô khan thành những hành động kinh doanh có giá trị.
 
-## Các Thành Quả AI Tạo Ra (Kết quả Đầu ra):
-
-Tất cả các báo cáo, tranh vẽ của AI được cất trong phòng `round_2.2` (và các phòng nhỏ hơn bên trong `cleaning_results/visualization/`):
-
-* **`round_2.2_execution_log.txt`**: Cuốn nhật ký chi tiết bạn AI đã làm những gì.
-* **`ideal_customer_profile.jpg`**: Tranh vẽ chân dung nhóm bạn lý tưởng (thích mua hàng nhất).
-* **`round_2_2_analysis_results.png`**: Một bức tranh lớn tổng hợp nhiều hình ảnh quan trọng khác.
-* **`model_comparison.csv`**: Bảng điểm thi của các bạn AI.
-* **`feature_importance_rf_initial.csv`**: Bảng xếp hạng xem thông tin nào quan trọng với bạn AI Random Forest (lúc đầu).
-* **`combined_feature_importance.csv`**: (Nếu SHAP chạy) Bảng xếp hạng kết hợp độ quan trọng từ Random Forest và SHAP.
-* **`shap_feature_importance.csv`**: (Nếu SHAP chạy) Bảng xếp hạng độ quan trọng chỉ từ SHAP.
-* **`cluster_profiles.txt`**: Mô tả chi tiết về từng nhóm bạn đã được chia.
-* **`enhanced_persona_analysis.txt`**: Phân tích sâu hơn về tên và đặc điểm của các nhóm bạn.
-* **`selected_features.txt`**: Danh sách những thông tin quan trọng nhất mà AI đã dùng để học.
-* Và nhiều biểu đồ, báo cáo khác trong các thư mục con như `0_data_cleaning_reports`, `1_exploratory_data_analysis`, v.v...
-
-## Tóm Tắt Các Bước Khám Phá Chính (Ví dụ từ một lần "Chơi Thật"):
-
-* AI đã giúp làm cân bằng số lượng các bạn trong các nhóm học khác nhau (dùng SMOTE).
-* Bạn AI Random Forest thường đoán khá giỏi (ví dụ, điểm AUC-ROC khoảng 0.6392).
-* AI đã dùng kính lúp SHAP để tìm ra những thông tin quan trọng nhất giúp đoán đúng, như thông tin về nhà mạng hoặc điểm tin cậy của người dùng.
-* AI đã chia các bạn thành các nhóm khác nhau (ví dụ: nhóm "Bạn Thân Hay Ghé" và nhóm "Bạn Có Vẻ Sắp Nghỉ Chơi").
-* Dựa vào đó, AI đề xuất cách nói chuyện và tặng quà riêng cho từng nhóm.
-
-## Những Điều Cần Chú Ý (Gỡ lỗi & Lưu ý):
-
-* Nhớ cài đủ các mảnh ghép (thư viện Python) cho bạn AI nhé!
-* Nếu AI không tìm thấy sổ sách (dữ liệu), hãy kiểm tra xem bạn đã để đúng phòng `cleaning_results/cleaned_data/` chưa.
-* Nên cài thêm kính lúp SHAP để hiểu rõ AI hơn.
-* Thời gian AI làm việc sẽ khác nhau tùy bạn chọn chế độ Chơi Nháp hay Chơi Thật.
+Chúc bạn có một bài thuyết trình Vòng 2.2 thật xuất sắc và chinh phục được ban giám khảo DAZONE 2025! Nếu có bất kỳ câu hỏi nào khác, đừng ngần ngại nhé!
