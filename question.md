@@ -193,14 +193,6 @@ graph TD
 - **Scalability:** Performance on large datasets
 - **Interpretability:** SHAP analysis clarity and business alignment
 
-### Expected Scoring Against DAZONE 2025 Criteria
-
-| Component | Weight | Expected Score | Strengths |
-|-----------|--------|----------------|-----------|
-| Forecasting & Model Evaluation | 30% | 75-90% | Comprehensive model comparison, proper validation, hyperparameter tuning |
-| User Segmentation & Personalization | 25% | 70-85% | K-means with optimal k, detailed personas, strategy recommendations |
-| Visualization & Storytelling | 20% | 50-70% | Rich visualization set, needs narrative integration |
-| Business Insights | 25% | 70-85% | SHAP analysis, persona-based strategies, actionable recommendations |
 
 ## Implementation Status
 
