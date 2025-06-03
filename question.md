@@ -232,7 +232,7 @@ graph TD
     D --> E{SHAP};
     E --> F[Features quan trọng];
     D --> G[Chạy cho 6 tháng tiếp theo];
-    D -.-> H((cần 1));
+    D -.-> H((câu 1));
 
     %% Styling (Tùy chọn)
     classDef data fill:#f9f,stroke:#333,stroke-width:2px;
