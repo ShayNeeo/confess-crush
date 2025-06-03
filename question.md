@@ -171,7 +171,8 @@ graph TD
         direction TB
         subgraph "SHAP Analysis"
             FINAL_MODEL --> SHAP_ANALYSIS["SHAP Analysis on Final Model"];
-            X_VAL_RFE --> SHAP_ANALYSIS; Data for SHAP (consistent with model training if RFE used)
+            X_VAL_RFE --> SHAP_ANALYSIS;
+            %% Data for SHAP (consistent with model training if RFE used)
             SHAP_ANALYSIS --> SHAP_OUTPUT["SHAP Plots & Importance Values"];
         end
 
