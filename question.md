@@ -222,8 +222,7 @@ graph TD
     classDef deployment fill:#A36B38,stroke:#ccc,stroke-width:2px,color:#fff;
     classDef analysis fill:#6A4C93,stroke:#ccc,stroke-width:2px,color:#fff;
     classDef io fill:#8A7A5F,stroke:#ccc,stroke-width:2px,color:#fff;
-    classDef metrics fill:#4E6A58,stroke:#ccc,stroke-width:1px,color:#fff;
-
+    classDef styleForMetrics fill:#4E6A58,stroke:#ccc,stroke-width:1px,color:#fff; %% Renamed class
 
     class A1,A2,A3,X_TRAIN_RAW,Y_TRAIN,X_VAL_RAW,Y_VAL,X_TRAIN_SCALED,X_VAL_SCALED,X_TRAIN_SMOTE,SELECTED_FEATURES,X_TRAIN_RFE,X_VAL_RFE,X_TRAIN_SMOTE_RFE,SHAP_OUTPUT,DATA_FOR_SEG,CLUSTER_LABELS,DF_SEG_WITH_CLUSTERS,INITIAL_CLUSTER_PROFILES,USER_LEVEL_LABELS_CALC,MERGED_FOR_EARLY_PROFILE,CLUSTER_LABEL_PROFILE,ENHANCED_CLUSTER_PROFILES,PERSONA_THRESHOLDS,DF_SEG_WITH_PERSONAS,MERGED_FOR_FINAL_PROFILING io;
     class PROC_TRAIN_FEAT,PROC_TEST_FEAT,DF_TRAIN_ALIGNED,DF_TEST_ALIGNED,SCALE_TRAIN,SCALE_VAL,PREPROC_SEG,OPTIMAL_K,KMEANS_CLUSTER,AGG_BEHAVIOR,MERGE_USER_INFO_SEG process;
@@ -231,5 +230,5 @@ graph TD
     class SELECT_BEST_BASE,COMPARE_FINAL decision;
     class SHAP_ANALYSIS,VALIDATE_PERSONAS,BUSINESS_INSIGHTS analysis;
     class DEPLOY_MODEL deployment;
-    class METRICS_OPT1, METRICS_OPT2 metrics;
+    class METRICS_OPT1,METRICS_OPT2 styleForMetrics; %% Used renamed class
 ```
