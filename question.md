@@ -100,129 +100,159 @@ graph TD
     class SHAP_ANALYSIS analysis;
     class DEPLOY deployment;
 ```
+# Beautiful ML Workflow Diagram
+
 ```mermaid
 graph TD
-    %% Data Ingestion
-    A1[CSV: competition_train_features.csv] --> PROC_TRAIN_FEAT;
-    A2[CSV: competition_test_features.csv] --> PROC_TEST_FEAT;
-    A3[CSV: cleaned_user_info.csv] --> MERGE_USER_INFO_SEG;
+    %% Data Ingestion with icons
+    A1["📊 CSV: competition_train_features.csv"] --> PROC_TRAIN_FEAT
+    A2["📊 CSV: competition_test_features.csv"] --> PROC_TEST_FEAT
+    A3["👥 CSV: cleaned_user_info.csv"] --> MERGE_USER_INFO_SEG
 
-    subgraph "Part 1: Data Preparation"
-      direction LR
-      PROC_TRAIN_FEAT["Preprocess Train Features: Drop Dates, Encode Cats"] --> DF_TRAIN_ALIGNED["df_train_aligned (Features + Label)"];
-      PROC_TEST_FEAT["Preprocess Test Features"] --> DF_TEST_ALIGNED["df_test_aligned"];
-
-      DF_TRAIN_ALIGNED -- Split --> X_TRAIN_RAW["X_train_raw"];
-      DF_TRAIN_ALIGNED -- Split --> Y_TRAIN["y_train (labels)"];
-      DF_TRAIN_ALIGNED -- Split --> X_VAL_RAW["X_val_raw"];
-      DF_TRAIN_ALIGNED -- Split --> Y_VAL["y_val (labels)"];
-
-      X_TRAIN_RAW --> SCALE_TRAIN["Scale Features"];
-      X_VAL_RAW --> SCALE_VAL["Scale Features"];
-
-      SCALE_TRAIN --> X_TRAIN_SCALED["X_train_scaled (e.g. 20 features)"];
-      SCALE_VAL --> X_VAL_SCALED["X_val_scaled (e.g. 20 features)"];
-
-      X_TRAIN_SCALED -- "SMOTE with y_train" --> X_TRAIN_SMOTE["X_train_smote (for initial model eval)"];
-    end
-
-    subgraph "Part 2: Model Training, Evaluation & Tuning"
-      direction TB
-
-      subgraph "Initial Model Evaluation"
-        direction LR
-        X_TRAIN_SMOTE --> OPT1_EVAL["Opt 1: Train 4 Models"];
-        X_TRAIN_SMOTE --> OPT2_EVAL["Opt 2: Train 6 Models (MLP, SVC etc.)"];
-        OPT1_EVAL -- "Evaluate on X_val_scaled, y_val" --> METRICS_OPT1["Metrics Opt1"];
-        OPT2_EVAL -- "Evaluate on X_val_scaled, y_val" --> METRICS_OPT2["Metrics Opt2"];
-        METRICS_OPT1 --> SELECT_BEST_BASE["Select Best Base Model Pre-Tuning"];
-        METRICS_OPT2 --> SELECT_BEST_BASE;
-      end
-
-      subgraph "Feature Selection (RFECV)"
-        direction LR
-        SELECT_BEST_BASE -- "Uses X_train_scaled, y_train" --> RFECV_STEP["RFECV on Best Base Model"];
-        RFECV_STEP --> SELECTED_FEATURES["Selected Feature Set"];
-        X_TRAIN_SCALED -- "Filter by Selected" --> X_TRAIN_RFE["X_train_rfe (scaled)"];
-        X_VAL_SCALED -- "Filter by Selected" --> X_VAL_RFE["X_val_rfe (scaled)"];
-      end
-
-      X_TRAIN_RFE -- "SMOTE with y_train" --> X_TRAIN_SMOTE_RFE["X_train_smote_rfe"];
-
-      subgraph "Hyperparameter Tuning (Top 2 Models)"
+    subgraph PART1 ["🔧 Part 1: Data Preparation"]
         direction TB
-        SELECTED_FEATURES --> TUNE_MODELS_SETUP["Setup Tuning for Top Models"];
-        TUNE_MODELS_SETUP -- Model1 --> TUNE_MODEL_1["Tune Model 1"];
-        TUNE_MODELS_SETUP -- Model2 --> TUNE_MODEL_2["Tune Model 2"];
+        PROC_TRAIN_FEAT["⚙️ Preprocess Train Features<br/>Drop Dates, Encode Categories"] --> DF_TRAIN_ALIGNED["📈 df_train_aligned<br/><i>Features + Labels</i>"]
+        PROC_TEST_FEAT["⚙️ Preprocess Test Features"] --> DF_TEST_ALIGNED["📈 df_test_aligned"]
 
-        TUNE_MODEL_1 --> TUNED_MODEL_1_INSTANCE["Tuned Model 1"];
-        TUNE_MODEL_2 --> TUNED_MODEL_2_INSTANCE["Tuned Model 2"];
+        DF_TRAIN_ALIGNED -.-> SPLIT_DATA["🔀 Train/Validation Split"]
+        SPLIT_DATA --> X_TRAIN_RAW["🎯 X_train_raw"]
+        SPLIT_DATA --> Y_TRAIN["🏷️ y_train<br/><i>labels</i>"]
+        SPLIT_DATA --> X_VAL_RAW["🎯 X_val_raw"]
+        SPLIT_DATA --> Y_VAL["🏷️ y_val<br/><i>labels</i>"]
 
-        TUNED_MODEL_1_INSTANCE -- "Train on SMOTE_RFE, Eval on X_val_rfe" --> EVAL_TUNED_1["Eval Tuned Model 1"];
-        TUNED_MODEL_2_INSTANCE -- "Train on SMOTE_RFE, Eval on X_val_rfe" --> EVAL_TUNED_2["Eval Tuned Model 2"];
+        X_TRAIN_RAW --> SCALE_TRAIN["📏 Scale Features"]
+        X_VAL_RAW --> SCALE_VAL["📏 Scale Features"]
+        
+        SCALE_TRAIN --> X_TRAIN_SCALED["✨ X_train_scaled<br/><i>~20 features</i>"]
+        SCALE_VAL --> X_VAL_SCALED["✨ X_val_scaled<br/><i>~20 features</i>"]
 
-        EVAL_TUNED_1 --> COMPARE_FINAL["Compare & Select Final"];
-        EVAL_TUNED_2 --> COMPARE_FINAL;
-        SELECT_BEST_BASE --> COMPARE_FINAL;
-        COMPARE_FINAL --> FINAL_MODEL["Final Best Model"];
-      end
+        X_TRAIN_SCALED -.-> SMOTE_INITIAL["🔄 SMOTE Balancing"]
+        SMOTE_INITIAL --> X_TRAIN_SMOTE["⚖️ X_train_smote<br/><i>balanced dataset</i>"]
     end
 
-    subgraph "Part 3 & 4: Analysis & Reporting"
-      direction TB
+    subgraph PART2 ["🤖 Part 2: Model Training & Optimization"]
+        direction TB
+        
+        subgraph EVAL ["📊 Initial Model Evaluation"]
+            direction LR
+            X_TRAIN_SMOTE --> OPT1_EVAL["🎯 Option 1<br/>4 Base Models"]
+            X_TRAIN_SMOTE --> OPT2_EVAL["🎯 Option 2<br/>6 Models (MLP, SVC)"]
+            OPT1_EVAL --> METRICS_OPT1["📈 Metrics Set 1"]
+            OPT2_EVAL --> METRICS_OPT2["📈 Metrics Set 2"]
+            METRICS_OPT1 --> SELECT_BEST_BASE["🏆 Select Best<br/>Base Model"]
+            METRICS_OPT2 --> SELECT_BEST_BASE
+        end
 
-      subgraph "SHAP Analysis"
-        FINAL_MODEL --> SHAP_ANALYSIS["SHAP Analysis"];
-        X_VAL_RFE --> SHAP_ANALYSIS;
-        SHAP_ANALYSIS --> SHAP_OUTPUT["SHAP Plots"];
-      end
+        subgraph FEATURE_SEL ["🎯 Feature Selection (RFECV)"]
+            direction TB
+            SELECT_BEST_BASE --> RFECV_STEP["🔍 RFECV Analysis<br/>Recursive Feature Elimination"]
+            RFECV_STEP --> SELECTED_FEATURES["⭐ Selected Features<br/><i>~19 optimal features</i>"]
+            X_TRAIN_SCALED -.-> FILTER_TRAIN["🎛️ Filter Features"]
+            X_VAL_SCALED -.-> FILTER_VAL["🎛️ Filter Features"]
+            SELECTED_FEATURES --> FILTER_TRAIN
+            SELECTED_FEATURES --> FILTER_VAL
+            FILTER_TRAIN --> X_TRAIN_RFE["🎯 X_train_rfe<br/><i>scaled + selected</i>"]
+            FILTER_VAL --> X_VAL_RFE["🎯 X_val_rfe<br/><i>scaled + selected</i>"]
+        end
 
-      subgraph "Segmentation & Personas"
-        DF_TRAIN_ALIGNED --> AGG_BEHAVIOR["Aggregate User Behavior"];
-        AGG_BEHAVIOR & MERGE_USER_INFO_SEG --> DATA_FOR_SEG["Data for Segmentation"];
-        DATA_FOR_SEG --> PREPROC_SEG["Preprocess for Clustering"];
-        PREPROC_SEG --> OPTIMAL_K["Determine Optimal K"];
-        OPTIMAL_K --> KMEANS_CLUSTER["K-Means Clustering"];
-        KMEANS_CLUSTER --> DF_SEG_WITH_CLUSTERS["Segmentation Data"];
+        X_TRAIN_RFE -.-> SMOTE_FINAL["🔄 SMOTE on RFE Data"]
+        SMOTE_FINAL --> X_TRAIN_SMOTE_RFE["⚖️ X_train_smote_rfe<br/><i>final training set</i>"]
+        
+        subgraph TUNING ["⚡ Hyperparameter Tuning"]
+            direction TB
+            SELECTED_FEATURES --> TUNE_SETUP["🛠️ Setup Tuning<br/>Top 2 Models"]
+            TUNE_SETUP --> TUNE_MODEL_1["🎛️ Tune Model 1<br/><i>e.g., MLP</i>"]
+            TUNE_SETUP --> TUNE_MODEL_2["🎛️ Tune Model 2<br/><i>e.g., Random Forest</i>"]
+            
+            TUNE_MODEL_1 --> TUNED_1["🔧 Tuned Model 1"]
+            TUNE_MODEL_2 --> TUNED_2["🔧 Tuned Model 2"]
 
-        DF_TRAIN_ALIGNED --> USER_LEVEL_LABELS_CALC["User-Level Labels"];
-        DF_SEG_WITH_CLUSTERS & USER_LEVEL_LABELS_CALC --> MERGED_FOR_EARLY_PROFILE["Merge for Profiles"];
-        MERGED_FOR_EARLY_PROFILE --> CLUSTER_LABEL_PROFILE["Cluster Profile Stats"];
-        INITIAL_CLUSTER_PROFILES & CLUSTER_LABEL_PROFILE --> ENHANCED_CLUSTER_PROFILES["Enhanced Profiles"];
+            TUNED_1 -.-> EVAL_1["📊 Evaluate Model 1"]
+            TUNED_2 -.-> EVAL_2["📊 Evaluate Model 2"]
+            X_TRAIN_SMOTE_RFE -.-> EVAL_1
+            X_TRAIN_SMOTE_RFE -.-> EVAL_2
+            X_VAL_RFE -.-> EVAL_1
+            X_VAL_RFE -.-> EVAL_2
+            
+            EVAL_1 --> FINAL_COMPARE["🏆 Final Model<br/>Selection"]
+            EVAL_2 --> FINAL_COMPARE
+            SELECT_BEST_BASE -.-> FINAL_COMPARE
+            FINAL_COMPARE --> FINAL_MODEL["👑 Champion Model<br/><i>e.g., RF_Tuned</i>"]
+        end
+    end
+    
+    subgraph PART3 ["🔍 Part 3 & 4: Analysis & Insights"]
+        direction TB
+        
+        subgraph SHAP_SECTION ["💡 SHAP Analysis"]
+            direction LR
+            FINAL_MODEL --> SHAP_ANALYSIS["🔬 SHAP Analysis<br/>Feature Importance"]
+            X_VAL_RFE -.-> SHAP_ANALYSIS
+            SHAP_ANALYSIS --> SHAP_OUTPUT["📊 SHAP Visualizations<br/>& Importance Scores"]
+        end
 
-        ENHANCED_CLUSTER_PROFILES --> PERSONA_THRESHOLDS["Define Thresholds"];
-        PERSONA_THRESHOLDS & ENHANCED_CLUSTER_PROFILES --> ASSIGN_PERSONAS["Assign Personas"];
-        ASSIGN_PERSONAS --> DF_SEG_WITH_PERSONAS["Segmentation w/ Personas"];
-
-        DF_SEG_WITH_PERSONAS & USER_LEVEL_LABELS_CALC --> MERGED_FOR_FINAL_PROFILING["Final Profiling Data"];
-        MERGED_FOR_FINAL_PROFILING --> ANALYZE_PERSONA_REPURCHASE["Analyze Repurchase by Persona"];
-        CLUSTER_LABEL_PROFILE --> VISUALIZE_CLUSTER_REPURCHASE["Visualize Cluster Repurchase"];
-        ANALYZE_PERSONA_REPURCHASE --> VISUALIZE_PERSONA_REPURCHASE["Visualize Persona Repurchase"];
-      end
+        subgraph SEGMENTATION ["👥 User Segmentation & Personas"]
+            direction TB
+            DF_TRAIN_ALIGNED --> AGG_BEHAVIOR["📊 Aggregate User<br/>Behavior Patterns"]
+            AGG_BEHAVIOR --> DATA_MERGE["🔗 Merge Data"]
+            MERGE_USER_INFO_SEG --> DATA_MERGE
+            DATA_MERGE --> DATA_FOR_SEG["🎯 Segmentation Dataset"]
+            
+            DATA_FOR_SEG --> PREPROC_SEG["⚙️ Preprocess &<br/>Scale for Clustering"]
+            PREPROC_SEG --> OPTIMAL_K["📈 Determine Optimal K<br/><i>e.g., K=4</i>"]
+            OPTIMAL_K --> KMEANS_CLUSTER["🎯 K-Means Clustering"]
+            KMEANS_CLUSTER --> CLUSTERS["👥 User Clusters<br/>with Labels"]
+            
+            CLUSTERS --> CLUSTER_PROFILES["📊 Initial Cluster<br/>Profiles"]
+            DF_TRAIN_ALIGNED --> USER_LABELS["🏷️ User-Level<br/>Repurchase Labels"]
+            
+            CLUSTERS --> MERGE_LABELS["🔗 Merge with Labels"]
+            USER_LABELS --> MERGE_LABELS
+            MERGE_LABELS --> ENHANCED_PROFILES["✨ Enhanced Profiles<br/>with Repurchase Rates"]
+            
+            ENHANCED_PROFILES --> PERSONA_DEF["👤 Define Persona<br/>Thresholds"]
+            PERSONA_DEF --> PERSONA_ASSIGN["🎭 Assign Personas<br/>to Clusters"]
+            PERSONA_ASSIGN --> FINAL_PERSONAS["🎭 Final User Personas<br/>with Segments"]
+            
+            FINAL_PERSONAS --> PERSONA_ANALYSIS["📈 Persona Repurchase<br/>Analysis"]
+            ENHANCED_PROFILES --> CLUSTER_VIZ["📊 Cluster Visualizations"]
+            PERSONA_ANALYSIS --> PERSONA_VIZ["🎨 Persona Visualizations"]
+        end
     end
 
-    subgraph "Part V: Insights & Deployment"
-      direction TB
-      FINAL_MODEL & SHAP_OUTPUT & DF_SEG_WITH_PERSONAS & ANALYZE_PERSONA_REPURCHASE & CLUSTER_LABEL_PROFILE --> BUSINESS_INSIGHTS["Business Insights"];
-      FINAL_MODEL --> DEPLOY_MODEL["Deploy Model"];
+    subgraph PART5 ["🚀 Part 5: Business Impact & Deployment"]
+        direction TB
+        FINAL_MODEL --> INSIGHTS_GEN["💡 Business Insights<br/>Generator"]
+        SHAP_OUTPUT --> INSIGHTS_GEN
+        FINAL_PERSONAS --> INSIGHTS_GEN
+        PERSONA_ANALYSIS --> INSIGHTS_GEN
+        ENHANCED_PROFILES --> INSIGHTS_GEN
+        
+        INSIGHTS_GEN --> BUSINESS_INSIGHTS["📋 Business Insights<br/>& Recommendations"]
+        FINAL_MODEL --> DEPLOY_PLAN["🚀 Deployment Planning<br/>Future Predictions"]
     end
 
-    %% Styling
-    classDef data        fill:#583269,stroke:#ccc,stroke-width:2px,color:#fff;
-    classDef process     fill:#204051,stroke:#ccc,stroke-width:2px,color:#fff;
-    classDef model       fill:#3B685C,stroke:#ccc,stroke-width:2px,color:#fff;
-    classDef decision    fill:#7D5A38,stroke:#ccc,stroke-width:2px,color:#fff;
-    classDef deployment  fill:#A36B38,stroke:#ccc,stroke-width:2px,color:#fff;
-    classDef analysis    fill:#6A4C93,stroke:#ccc,stroke-width:2px,color:#fff;
-    classDef io          fill:#8A7A5F,stroke:#ccc,stroke-width:2px,color:#fff;
-    classDef styleForMetrics fill:#4E6A58,stroke:#ccc,stroke-width:1px,color:#fff;
+    %% Beautiful Styling with Gradients and Modern Colors
+    classDef dataSource fill:linear-gradient(135deg, #667eea, #764ba2),stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
+    classDef process fill:linear-gradient(135deg, #f093fb, #f5576c),stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
+    classDef model fill:linear-gradient(135deg, #4facfe, #00f2fe),stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
+    classDef decision fill:linear-gradient(135deg, #43e97b, #38f9d7),stroke:#fff,stroke-width:2px,color:#333,font-weight:bold
+    classDef analysis fill:linear-gradient(135deg, #fa709a, #fee140),stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
+    classDef deployment fill:linear-gradient(135deg, #a8edea, #fed6e3),stroke:#fff,stroke-width:3px,color:#333,font-weight:bold
+    classDef champion fill:linear-gradient(135deg, #ffecd2, #fcb69f),stroke:#ff6b6b,stroke-width:4px,color:#333,font-weight:bold
+    classDef insights fill:linear-gradient(135deg, #667eea, #764ba2),stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
+    classDef intermediate fill:linear-gradient(135deg, #a8e6cf, #dcedc1),stroke:#4ecdc4,stroke-width:2px,color:#333
+    classDef metrics fill:linear-gradient(135deg, #ffd89b, #19547b),stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
 
-    %% class assignments
-    class A1,A2,A3,X_TRAIN_RAW,Y_TRAIN,X_VAL_RAW,Y_VAL,X_TRAIN_SCALED,X_VAL_SCALED,X_TRAIN_SMOTE,SELECTED_FEATURES,X_TRAIN_RFE,X_VAL_RFE,X_TRAIN_SMOTE_RFE,SHAP_OUTPUT,DATA_FOR_SEG,CLUSTER_LABELS,DF_SEG_WITH_CLUSTERS,INITIAL_CLUSTER_PROFILES,USER_LEVEL_LABELS_CALC,MERGED_FOR_EARLY_PROFILE,CLUSTER_LABEL_PROFILE,ENHANCED_CLUSTER_PROFILES,PERSONA_THRESHOLDS,DF_SEG_WITH_PERSONAS,MERGED_FOR_FINAL_PROFILING io;
-    class PROC_TRAIN_FEAT,PROC_TEST_FEAT,DF_TRAIN_ALIGNED,DF_TEST_ALIGNED,SCALE_TRAIN,SCALE_VAL,PREPROC_SEG,OPTIMAL_K,KMEANS_CLUSTER,AGG_BEHAVIOR,MERGE_USER_INFO_SEG process;
-    class OPT1_EVAL,OPT2_EVAL,RFECV_STEP,TUNE_MODELS_SETUP,TUNE_MODEL_1,TUNE_MODEL_2,TUNED_MODEL_1_INSTANCE,TUNED_MODEL_2_INSTANCE,EVAL_TUNED_1,EVAL_TUNED_2,FINAL_MODEL,ANALYZE_PERSONA_REPURCHASE,VISUALIZE_CLUSTER_REPURCHASE,VISUALIZE_PERSONA_REPURCHASE model;
-    class SELECT_BEST_BASE,COMPARE_FINAL decision;
-    class SHAP_ANALYSIS,VALIDATE_PERSONAS,BUSINESS_INSIGHTS analysis;
-    class DEPLOY_MODEL deployment;
-    class METRICS_OPT1,METRICS_OPT2 styleForMetrics;
+    %% Apply classes to nodes
+    class A1,A2,A3 dataSource
+    class PROC_TRAIN_FEAT,PROC_TEST_FEAT,SCALE_TRAIN,SCALE_VAL,PREPROC_SEG,AGG_BEHAVIOR,MERGE_USER_INFO_SEG,SMOTE_INITIAL,SMOTE_FINAL,FILTER_TRAIN,FILTER_VAL,DATA_MERGE process
+    class OPT1_EVAL,OPT2_EVAL,TUNE_MODEL_1,TUNE_MODEL_2,TUNED_1,TUNED_2,KMEANS_CLUSTER,RFECV_STEP,SHAP_ANALYSIS model
+    class SELECT_BEST_BASE,FINAL_COMPARE,OPTIMAL_K,PERSONA_DEF,PERSONA_ASSIGN decision
+    class CLUSTER_PROFILES,ENHANCED_PROFILES,PERSONA_ANALYSIS,CLUSTER_VIZ,PERSONA_VIZ,SHAP_OUTPUT,BUSINESS_INSIGHTS,INSIGHTS_GEN analysis
+    class DEPLOY_PLAN deployment
+    class FINAL_MODEL champion
+    class DF_TRAIN_ALIGNED,DF_TEST_ALIGNED,X_TRAIN_RAW,Y_TRAIN,X_VAL_RAW,Y_VAL,X_TRAIN_SCALED,X_VAL_SCALED,X_TRAIN_SMOTE,SELECTED_FEATURES,X_TRAIN_RFE,X_VAL_RFE,X_TRAIN_SMOTE_RFE,DATA_FOR_SEG,CLUSTERS,FINAL_PERSONAS,USER_LABELS,SPLIT_DATA,TUNE_SETUP intermediate
+    class METRICS_OPT1,METRICS_OPT2,EVAL_1,EVAL_2 metrics
 ```
+
