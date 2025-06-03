@@ -123,7 +123,7 @@ graph TD
         SCALE_TRAIN --> X_TRAIN_SCALED["X_train_scaled (e.g. 20 features)"];
         SCALE_VAL --> X_VAL_SCALED["X_val_scaled (e.g. 20 features)"];
 
-        X_TRAIN_SCALED -- SMOTE with y_train --> X_TRAIN_SMOTE["X_train_smote (for initial model eval)"];
+        X_TRAIN_SCALED -- "SMOTE with y_train" --> X_TRAIN_SMOTE["X_train_smote (for initial model eval)"];
     end
 
     subgraph "Part 2: Model Training, Evaluation & Tuning"
@@ -171,7 +171,7 @@ graph TD
         direction TB
         subgraph "SHAP Analysis"
             FINAL_MODEL --> SHAP_ANALYSIS["SHAP Analysis on Final Model"];
-            X_VAL_RFE --> SHAP_ANALYSIS;  // Data for SHAP (consistent with model training if RFE used)
+            X_VAL_RFE --> SHAP_ANALYSIS;  %% Data for SHAP (consistent with model training if RFE used)
             SHAP_ANALYSIS --> SHAP_OUTPUT["SHAP Plots & Importance Values"];
         end
 
