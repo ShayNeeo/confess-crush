@@ -205,3 +205,43 @@ Khi đã có "thần khí" trong tay, chúng ta cần hiểu rõ sức mạnh c�
 
 * **V. "Báo Cáo Tổng Lực Lượng" và "Kế Hoạch Mở Rộng Bờ Cõi" (Final Summary & Next Steps).**
 
+```mermaid
+graph TD
+    A[Dữ liệu ban đầu] --> B(Xử lý/Feature Engineering Option 1);
+    A --> C(Xử lý/Feature Engineering Option 2);
+
+    subgraph Option 1
+        B --> B1[Model 1 candidates];
+        B1 --> B2((Model tốt nhất Opt1));
+    end
+
+    subgraph Option 2
+        C --> C1[PRECV: Tiền xử lý];
+        C1 --> C2[Features đã tạo];
+        C2 --> C3[SMOTE / Xử lý mất cân bằng];
+        C3 --> C4[Normalize / Scale];
+        C4 --> C5[Train G Model(s)];
+        C5 --> C6((Model tốt nhất Opt2));
+    end
+
+    B2 --> D((Model đã lựa chọn));
+    C6 --> D;
+
+    D --> E{SHAP Analysis};
+    E --> F[Features quan trọng];
+    D --> G[Chạy cho 6 tháng tiếp theo];
+    D -.-> H((cần 1));
+
+    %% Styling (Tùy chọn, có thể cần plugin hoặc theme hỗ trợ trên một số trình render Mermaid)
+    classDef data fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef process fill:#ccf,stroke:#333,stroke-width:2px;
+    classDef model fill:#cfc,stroke:#333,stroke-width:2px,color:#000;
+    classDef decision fill:#f80,stroke:#333,stroke-width:2px;
+    classDef deployment fill:#e7d38f,stroke:#333,stroke-width:2px;
+
+    class A,C2 data;
+    class B,C,C1,C3,C4,C5,E process;
+    class B1,B2,C6,D model;
+    class G deployment;
+    class F,H data;
+```
