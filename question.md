@@ -60,12 +60,46 @@ Hành trình của chúng ta được chia thành 3 chương lớn, mỗi chươ
 
 ```mermaid
 graph TD
-    A[Bắt đầu Script với Cấu Hình] --> B(Chương 1: Chuẩn Bị Dữ Liệu);
-    B -- Dữ liệu đã Tiền xử lý, Chia TrainVal, Scale, SMOTE --> C(Chương 2: Huấn Luyện & Đánh Giá Model);
-    C -- Model Dự Đoán Tốt Nhất --> D(Chương 3: Phân Tích Sâu);
-    B -- Thông tin Người dùng, Dữ liệu Train sạch --> D;
-    D -- SHAP, Phân khúc, Personas --> E[Kết thúc: Insights, Đề Xuất Chiến Lược cho Sàn TMĐT];
+    A[Dữ liệu ban đầu] --> B(Option 1 Processing);
+    A --> C(Option 2 Processing);
+
+    subgraph Option 1
+        direction LR
+        B --> B1[train 4 model];
+        B1 --> B2((model tốt nhất Opt1));
+    end
+
+    subgraph Option 2
+        direction LR
+        C --> C1[RFECV];
+        C1 --> C2[Features đã tạo];
+        C2 --> C3[SMOTE / Xử lý mất cân bằng];
+        C3 --> C4[Normalize / Scale];
+        C4 --> C5[Train 6 model];
+        C5 --> C6((model tốt nhất Opt2));
+    end
+
+    B2 --> D((model đã lựa chọn));
+    C6 --> D;
+
+    D --> E{SHAP};
+    E --> F[Features quan trọng];
+    D --> G[Chạy cho 6 tháng tiếp theo];
+    D -.-> H((câu 1));
+
+    %% Styling (Tùy chọn)
+    classDef data fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef process fill:#ccf,stroke:#333,stroke-width:2px;
+    classDef model fill:#cfc,stroke:#333,stroke-width:2px,color:#000;
+    classDef decision fill:#f80,stroke:#333,stroke-width:2px;
+    classDef deployment fill:#e7d38f,stroke:#333,stroke-width:2px;
+
+    class A,C2,F,H data;
+    class B,C,C1,C3,C4,C5,E process;
+    class B1,B2,C6,D model;
+    class G deployment;
 ```
+
 
 ### Chương 1: Thu Thập Thông Tin Tình Báo - Chuẩn Bị Dữ Liệu
 
@@ -205,44 +239,3 @@ Khi đã có "thần khí" trong tay, chúng ta cần hiểu rõ sức mạnh c�
 
 * **V. "Báo Cáo Tổng Lực Lượng" và "Kế Hoạch Mở Rộng Bờ Cõi" (Final Summary & Next Steps).**
 
-```mermaid
-graph TD
-    A[Dữ liệu ban đầu] --> B(Option 1 Processing);
-    A --> C(Option 2 Processing);
-
-    subgraph Option 1
-        direction LR
-        B --> B1[train 4 model];
-        B1 --> B2((model tốt nhất Opt1));
-    end
-
-    subgraph Option 2
-        direction LR
-        C --> C1[RFECV];
-        C1 --> C2[Features đã tạo];
-        C2 --> C3[SMOTE / Xử lý mất cân bằng];
-        C3 --> C4[Normalize / Scale];
-        C4 --> C5[Train 6 model];
-        C5 --> C6((model tốt nhất Opt2));
-    end
-
-    B2 --> D((model đã lựa chọn));
-    C6 --> D;
-
-    D --> E{SHAP};
-    E --> F[Features quan trọng];
-    D --> G[Chạy cho 6 tháng tiếp theo];
-    D -.-> H((câu 1));
-
-    %% Styling (Tùy chọn)
-    classDef data fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef process fill:#ccf,stroke:#333,stroke-width:2px;
-    classDef model fill:#cfc,stroke:#333,stroke-width:2px,color:#000;
-    classDef decision fill:#f80,stroke:#333,stroke-width:2px;
-    classDef deployment fill:#e7d38f,stroke:#333,stroke-width:2px;
-
-    class A,C2,F,H data;
-    class B,C,C1,C3,C4,C5,E process;
-    class B1,B2,C6,D model;
-    class G deployment;
-```
