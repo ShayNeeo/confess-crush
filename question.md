@@ -212,7 +212,7 @@ graph TD
 
     subgraph Option 1
         direction LR
-        B --> B1[model 1];
+        B --> B1[train 4 model];
         B1 --> B2((model tốt nhất Opt1));
     end
 
@@ -222,7 +222,7 @@ graph TD
         C1 --> C2[Features đã tạo];
         C2 --> C3[SMOTE / Xử lý mất cân bằng];
         C3 --> C4[Normalize / Scale];
-        C4 --> C5[Train G model];
+        C4 --> C5[Train 6 model];
         C5 --> C6((model tốt nhất Opt2));
     end
 
