@@ -60,7 +60,7 @@ Hành trình của chúng ta được chia thành 3 chương lớn, mỗi chươ
 
 ```mermaid
 graph TD
-    A[Dữ liệu ban đầu (.csv features)] --> PREPROC[Tiền xử lý (Scale, Encode, SMOTE cho Train ban đầu)];
+    A[Dữ liệu ban đầu (csv features)] --> PREPROC[Tiền xử lý (Scale, Encode, SMOTE cho Train ban đầu)];
     PREPROC --> OPT1_EVAL[Option 1: Huấn luyện & Đánh giá 4 Model trên dữ liệu SMOTE];
     PREPROC --> OPT2_EVAL[Option 2: Huấn luyện & Đánh giá 6 Model trên dữ liệu SMOTE];
 
