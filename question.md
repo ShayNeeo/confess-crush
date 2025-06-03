@@ -60,33 +60,33 @@ Hành trình của chúng ta được chia thành 3 chương lớn, mỗi chươ
 
 ```mermaid
 graph TD
-    A[Dữ liệu ban đầu (.csv features)] --> PREPROC[Tiền xử lý (Scale, Encode, SMOTE cho Train ban đầu)];
-    PREPROC --> OPT1_EVAL[Option 1: Huấn luyện & Đánh giá 4 Model trên dữ liệu SMOTE];
-    PREPROC --> OPT2_EVAL[Option 2: Huấn luyện & Đánh giá 6 Model trên dữ liệu SMOTE];
+    A[Initial Data - CSV Features] --> PREPROC[Preprocessing - Scale, Encode, SMOTE for Initial Train];
+    PREPROC --> OPT1_EVAL[Option 1: Train & Evaluate 4 Models on SMOTE Data];
+    PREPROC --> OPT2_EVAL[Option 2: Train & Evaluate 6 Models on SMOTE Data];
 
-    OPT1_EVAL --> SELECT_BEST_BASE[Chọn Model Cơ sở Tốt nhất (BestModelOverall)];
+    OPT1_EVAL --> SELECT_BEST_BASE[Select Best Base Model];
     OPT2_EVAL --> SELECT_BEST_BASE;
 
-    SELECT_BEST_BASE -- Dữ liệu Train Gốc (Đã Scale) --> RFECV_STEP[RFECV: Lựa chọn Features cho BestModelOverall];
-    RFECV_STEP --> SELECTED_FEATURES[Tập Features đã chọn lọc];
+    SELECT_BEST_BASE -- Original Scaled Train Data --> RFECV_STEP[RFECV: Feature Selection for Best Base Model];
+    RFECV_STEP --> SELECTED_FEATURES[Selected Feature Set];
 
-    SELECTED_FEATURES -- Tạo lại X_train_smote_rfe, X_val_rfe --> TUNE_MODEL[Tinh chỉnh Siêu tham số (RandomizedSearchCV) cho BestModelOverall trên X_train_rfe (gốc)];
+    SELECTED_FEATURES -- Create X_train_smote_rfe, X_val_rfe --> TUNE_MODEL[Hyperparameter Tuning - RandomizedSearchCV for Best Base Model on X_train_rfe original];
     
-    TUNE_MODEL --> FINAL_MODEL((Model Tốt nhất Cuối cùng));
-    FINAL_MODEL -- Dữ liệu Validation (X_val_rfe) --> EVAL_FINAL[Đánh giá Model Cuối cùng];
+    TUNE_MODEL --> FINAL_MODEL((Final Best Tuned Model));
+    FINAL_MODEL -- Validation Data X_val_rfe --> EVAL_FINAL[Evaluate Final Tuned Model];
 
+    FINAL_MODEL --> DEPLOY[Goal: Predict Next 6 Months];
+    FINAL_MODEL -- Sample Data X_val_rfe or X_train_rfe --> SHAP_ANALYSIS{SHAP Analysis};
+    SHAP_ANALYSIS --> IMPORTANT_FEATURES[Important Features via SHAP];
 
-    FINAL_MODEL --> DEPLOY[Mục tiêu: Dự đoán 6 tháng tới];
-    FINAL_MODEL -- Dữ liệu Sample (X_val_rfe hoặc X_train_rfe) --> SHAP_ANALYSIS{SHAP Analysis};
-    SHAP_ANALYSIS --> IMPORTANT_FEATURES[Features Quan trọng theo SHAP];
-
-    %% Luồng Phân khúc Khách hàng (Song song hoặc sau khi có features)
-    DATA_FOR_SEG[Dữ liệu Khách hàng Tổng hợp (từ df_train_aligned) + Demographics] --> PREPROC_SEG[Tiền xử lý cho Segmentation];
-    PREPROC_SEG --> OPTIMAL_K[Xác định K tối ưu (Elbow/Silhouette)];
+    %% Customer Segmentation Flow (Parallel or Post-Feature Engineering)
+    DATA_FOR_SEG[Aggregated Customer Data + Demographics] --> PREPROC_SEG[Preprocessing for Segmentation];
+    PREPROC_SEG --> OPTIMAL_K[Determine Optimal K - Elbow/Silhouette];
     OPTIMAL_K --> CLUSTERING[K-Means Clustering];
-    CLUSTERING --> SEGMENTS[Các Phân khúc Khách hàng];
-    SEGMENTS -- Kết hợp với 'label' --> PROFILE_SEGMENTS[Đánh giá & Profile Phân khúc theo Nhãn];
+    CLUSTERING --> SEGMENTS[Customer Segments];
+    SEGMENTS -- Combine with 'label' --> PROFILE_SEGMENTS[Evaluate & Profile Segments by Label];
 
+    %% Styling (Optional)
     classDef data fill:#f9f,stroke:#333,stroke-width:2px;
     classDef process fill:#ccf,stroke:#333,stroke-width:2px;
     classDef model fill:#cfc,stroke:#333,stroke-width:2px,color:#000;
@@ -94,12 +94,10 @@ graph TD
     classDef deployment fill:#e7d38f,stroke:#333,stroke-width:2px;
     classDef analysis fill:#d2b4de,stroke:#333,stroke-width:2px;
 
-
-    class A,SELECTED_FEATURES,DATA_FOR_SEG data;
+    class A,SELECTED_FEATURES,DATA_FOR_SEG,IMPORTANT_FEATURES,SEGMENTS,PROFILE_SEGMENTS data;
     class PREPROC,PREPROC_SEG,RFECV_STEP,OPTIMAL_K,CLUSTERING process;
     class OPT1_EVAL,OPT2_EVAL,SELECT_BEST_BASE,TUNE_MODEL,FINAL_MODEL,EVAL_FINAL model;
     class SHAP_ANALYSIS analysis;
-    class IMPORTANT_FEATURES,SEGMENTS,PROFILE_SEGMENTS data;
     class DEPLOY deployment;
 ```
 ```mermaid
