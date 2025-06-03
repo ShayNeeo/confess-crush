@@ -218,7 +218,7 @@ graph TD
 
     subgraph Option 2
         direction LR
-        C --> C1[PRECV];
+        C --> C1[RFECV];
         C1 --> C2[Features đã tạo];
         C2 --> C3[SMOTE / Xử lý mất cân bằng];
         C3 --> C4[Normalize / Scale];
