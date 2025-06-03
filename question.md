@@ -100,26 +100,3 @@ graph TD
     class SHAP_ANALYSIS analysis;
     class DEPLOY deployment;
 ```
-```mermaid
-graph TD
-    AA[Dữ liệu khách hàng tổng hợp] --> CC(Tiền xử lý);
-    BB[Demographics] --> CC;
-    CC --> DD{Elbow / Silhouette};
-    DD --> EE((Optimal K));
-    EE --> FF[Phân khúc khách hàng];
-
-    %% Styling (Tùy chọn)
-    classDef data fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef process fill:#ccf,stroke:#333,stroke-width:2px;
-    classDef decision fill:#f80,stroke:#333,stroke-width:2px;
-    classDef result fill:#cfc,stroke:#333,stroke-width:2px,color:#000;
-
-    class AA,BB data;
-    class CC process;
-    class DD decision;
-    class EE data;
-    class FF result;
-```
-
-
-
