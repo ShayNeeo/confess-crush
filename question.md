@@ -230,19 +230,17 @@ graph TD
         
         INSIGHTS_GEN --> BUSINESS_INSIGHTS["📋 Business Insights<br/>& Recommendations"]
         FINAL_MODEL --> DEPLOY_PLAN["🚀 Deployment Planning<br/>Future Predictions"]
-    end
-
-    %% Beautiful Styling with Gradients and Modern Colors
-    classDef dataSource fill:linear-gradient(135deg, #667eea, #764ba2),stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
-    classDef process fill:linear-gradient(135deg, #f093fb, #f5576c),stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
-    classDef model fill:linear-gradient(135deg, #4facfe, #00f2fe),stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
-    classDef decision fill:linear-gradient(135deg, #43e97b, #38f9d7),stroke:#fff,stroke-width:2px,color:#333,font-weight:bold
-    classDef analysis fill:linear-gradient(135deg, #fa709a, #fee140),stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
-    classDef deployment fill:linear-gradient(135deg, #a8edea, #fed6e3),stroke:#fff,stroke-width:3px,color:#333,font-weight:bold
-    classDef champion fill:linear-gradient(135deg, #ffecd2, #fcb69f),stroke:#ff6b6b,stroke-width:4px,color:#333,font-weight:bold
-    classDef insights fill:linear-gradient(135deg, #667eea, #764ba2),stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
-    classDef intermediate fill:linear-gradient(135deg, #a8e6cf, #dcedc1),stroke:#4ecdc4,stroke-width:2px,color:#333
-    classDef metrics fill:linear-gradient(135deg, #ffd89b, #19547b),stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
+    end    %% Beautiful Styling with Modern Colors
+    classDef dataSource fill:#667eea,stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
+    classDef process fill:#f093fb,stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
+    classDef model fill:#4facfe,stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
+    classDef decision fill:#43e97b,stroke:#fff,stroke-width:2px,color:#333,font-weight:bold
+    classDef analysis fill:#fa709a,stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
+    classDef deployment fill:#a8edea,stroke:#333,stroke-width:3px,color:#333,font-weight:bold
+    classDef champion fill:#ffecd2,stroke:#ff6b6b,stroke-width:4px,color:#333,font-weight:bold
+    classDef insights fill:#764ba2,stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
+    classDef intermediate fill:#a8e6cf,stroke:#4ecdc4,stroke-width:2px,color:#333
+    classDef metrics fill:#ffd89b,stroke:#333,stroke-width:2px,color:#333,font-weight:bold
 
     %% Apply classes to nodes
     class A1,A2,A3 dataSource
@@ -255,4 +253,3 @@ graph TD
     class DF_TRAIN_ALIGNED,DF_TEST_ALIGNED,X_TRAIN_RAW,Y_TRAIN,X_VAL_RAW,Y_VAL,X_TRAIN_SCALED,X_VAL_SCALED,X_TRAIN_SMOTE,SELECTED_FEATURES,X_TRAIN_RFE,X_VAL_RFE,X_TRAIN_SMOTE_RFE,DATA_FOR_SEG,CLUSTERS,FINAL_PERSONAS,USER_LABELS,SPLIT_DATA,TUNE_SETUP intermediate
     class METRICS_OPT1,METRICS_OPT2,EVAL_1,EVAL_2 metrics
 ```
-
