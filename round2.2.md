@@ -61,11 +61,147 @@ Hành trình của chúng ta được chia thành 3 chương lớn, mỗi chươ
 
 ```mermaid
 graph TD
-    A[Bắt đầu Script với Cấu Hình] --> B(Chương 1: Chuẩn Bị Dữ Liệu);
-    B -- Dữ liệu đã Tiền xử lý, Chia TrainVal, Scale, SMOTE --> C(Chương 2: Huấn Luyện & Đánh Giá Model);
-    C -- Model Dự Đoán Tốt Nhất --> D(Chương 3: Phân Tích Sâu);
-    B -- Thông tin Người dùng, Dữ liệu Train sạch --> D;
-    D -- SHAP, Phân khúc, Personas --> E[Kết thúc: Insights, Đề Xuất Chiến Lược cho Sàn TMĐT];
+    %% Data Sources
+    A1["📊 competition_train_features.csv<br/><i>Training Features</i>"] --> SETUP
+    A2["📊 competition_test_features.csv<br/><i>Test Features</i>"] --> SETUP
+    A3["👥 cleaned_user_info.csv<br/><i>User Demographics</i>"] --> SETUP
+      SETUP["🔧 Environment Setup<br/>Libraries & Config"] --> LOAD_TRAIN
+
+    %% PART 1: Data Loading & Feature Preparation
+    LOAD_TRAIN["📈 Load Training Data<br/>competition_train_features.csv"]
+    LOAD_TEST["📈 Load Test Data<br/>competition_test_features.csv"]
+    LOAD_USER["👥 Load User Info<br/>cleaned_user_info.csv"]
+    
+    DROP_DATES["🗓️ Drop Date Columns<br/>Non-predictive features"]
+    ENCODE_CAT["🔤 Categorical Encoding<br/>Label/One-hot encoding"]
+    HANDLE_MISSING["❓ Handle Missing Values<br/>Imputation strategies"]
+    FEATURE_ENG["🛠️ Feature Engineering<br/>Create derived features"]
+    
+    LOAD_TRAIN --> DROP_DATES
+    LOAD_TEST --> DROP_DATES
+    DROP_DATES --> ENCODE_CAT
+    ENCODE_CAT --> HANDLE_MISSING
+    HANDLE_MISSING --> FEATURE_ENG
+    
+    FEATURE_ENG --> DF_ALIGNED["📊 Aligned Datasets<br/><i>Train & Test Ready</i>"]
+    DF_ALIGNED --> TRAIN_VAL_SPLIT["🔀 Train/Validation Split<br/><i>80/20 split</i>"]
+    
+    TRAIN_VAL_SPLIT --> X_TRAIN["🎯 X_train<br/><i>Training Features</i>"]
+    TRAIN_VAL_SPLIT --> Y_TRAIN["🏷️ y_train<br/><i>Training Labels</i>"]
+    TRAIN_VAL_SPLIT --> X_VAL["🎯 X_val<br/><i>Validation Features</i>"]
+    TRAIN_VAL_SPLIT --> Y_VAL["🏷️ y_val<br/><i>Validation Labels</i>"]
+    
+    X_TRAIN --> SCALING["📏 Feature Scaling<br/>StandardScaler"]
+    X_VAL --> SCALING
+    SCALING --> SCALED_DATA["✨ Scaled Features<br/><i>Normalized datasets</i>"]
+
+    %% PART 2: Model Training, Evaluation & Optimization
+    SCALED_DATA --> SMOTE_BALANCE["🔄 SMOTE Balancing<br/>Address class imbalance"]
+    SMOTE_BALANCE --> BALANCED_DATA["⚖️ Balanced Training Set<br/><i>Equal class distribution</i>"]
+    
+    OPTION1["🎯 Option 1: Base Models<br/>Random Forest, Logistic Regression<br/>Gradient Boosting, Decision Tree"]
+    OPTION2["🎯 Option 2: Extended Models<br/>+ MLP, SVC, Extra Trees<br/>AdaBoost, Naive Bayes"]
+    
+    BALANCED_DATA --> OPTION1
+    BALANCED_DATA --> OPTION2
+    
+    OPTION1 --> METRICS1["📈 Performance Metrics 1<br/>Accuracy, Precision, Recall, F1"]
+    OPTION2 --> METRICS2["📈 Performance Metrics 2<br/>Extended evaluation"]
+    
+    METRICS1 --> MODEL_SELECTION["🏆 Best Model Selection<br/>Based on validation performance"]
+    METRICS2 --> MODEL_SELECTION
+    
+    MODEL_SELECTION --> RFECV["🔍 Recursive Feature Elimination<br/>Cross-Validation (RFECV)"]
+    RFECV --> OPTIMAL_FEATURES["⭐ Optimal Feature Set<br/><i>~19 selected features</i>"]
+    
+    SCALED_DATA --> FILTER_FEATURES["🎛️ Apply Feature Selection<br/>Filter to optimal features"]
+    OPTIMAL_FEATURES --> FILTER_FEATURES
+    FILTER_FEATURES --> REDUCED_DATA["🎯 Feature-Reduced Dataset<br/><i>Optimized for performance</i>"]
+    
+    REDUCED_DATA --> FINAL_SMOTE["🔄 Final SMOTE Application<br/>On selected features"]
+    FINAL_SMOTE --> FINAL_TRAINING_SET["⚖️ Final Training Set<br/><i>Balanced + Feature-Selected</i>"]
+    
+    MODEL_SELECTION --> SELECT_TOP2["🎯 Select Top 2 Models<br/>For intensive tuning"]
+    SELECT_TOP2 --> GRID_SEARCH["🔧 Grid Search CV<br/>Hyperparameter optimization"]
+    
+    GRID_SEARCH --> TUNED_MODEL1["🔧 Tuned Model 1<br/><i>Optimized hyperparameters</i>"]
+    GRID_SEARCH --> TUNED_MODEL2["🔧 Tuned Model 2<br/><i>Optimized hyperparameters</i>"]
+    
+    FINAL_TRAINING_SET --> FINAL_EVALUATION["📊 Final Model Evaluation<br/>Cross-validation + holdout"]
+    TUNED_MODEL1 --> FINAL_EVALUATION
+    TUNED_MODEL2 --> FINAL_EVALUATION
+    
+    FINAL_EVALUATION --> CHAMPION_MODEL["👑 Champion Model<br/><i>Best performing model</i>"]
+
+    %% PART 3: SHAP Analysis, User Segmentation & Business Insights
+    CHAMPION_MODEL --> SHAP_CALC["🔬 SHAP Value Calculation<br/>Feature importance analysis"]
+    REDUCED_DATA --> SHAP_CALC
+    
+    SHAP_CALC --> SHAP_PLOTS["📊 SHAP Visualizations<br/>Summary, waterfall, dependence plots"]
+    SHAP_CALC --> FEATURE_IMPORTANCE["⭐ Global Feature Importance<br/>Most predictive features"]
+    
+    DF_ALIGNED --> USER_BEHAVIOR["📊 Aggregate User Behavior<br/>Transaction patterns & metrics"]
+    LOAD_USER --> USER_DEMOGRAPHICS["👤 User Demographics<br/>Age, location, preferences"]
+    
+    USER_BEHAVIOR --> MERGE_DATA["🔗 Merge Behavioral & Demographic<br/>Comprehensive user profiles"]
+    USER_DEMOGRAPHICS --> MERGE_DATA
+    
+    MERGE_DATA --> SEGMENT_PREP["⚙️ Segmentation Preprocessing<br/>Scaling & normalization"]
+    SEGMENT_PREP --> ELBOW_METHOD["📈 Optimal K Determination<br/>Elbow method analysis"]
+    
+    ELBOW_METHOD --> KMEANS["🎯 K-Means Clustering<br/><i>Typically K=4 segments</i>"]
+    KMEANS --> USER_CLUSTERS["👥 User Clusters<br/>Behavioral segments"]
+    
+    USER_CLUSTERS --> CLUSTER_PROFILES["📊 Initial Cluster Profiling<br/>Segment characteristics"]
+    
+    DF_ALIGNED --> REPURCHASE_LABELS["🏷️ User-Level Repurchase Rates<br/>Aggregate purchase behavior"]
+    
+    CLUSTER_PROFILES --> MERGE_OUTCOMES["🔗 Merge Clusters with Outcomes<br/>Segment + repurchase data"]
+    REPURCHASE_LABELS --> MERGE_OUTCOMES
+    
+    MERGE_OUTCOMES --> ENHANCED_PROFILES["✨ Enhanced Cluster Profiles<br/>Segments with repurchase rates"]
+    
+    ENHANCED_PROFILES --> PERSONA_RULES["👤 Define Persona Criteria<br/>Thresholds & characteristics"]
+    PERSONA_RULES --> ASSIGN_PERSONAS["🎭 Assign User Personas<br/>Map clusters to personas"]
+    
+    ASSIGN_PERSONAS --> FINAL_PERSONAS["🎭 Final User Personas<br/>Named & characterized segments"]
+    FINAL_PERSONAS --> PERSONA_ANALYSIS["📈 Persona Repurchase Analysis<br/>Conversion rates by persona"]
+    
+    ENHANCED_PROFILES --> VISUALIZATION["📊 Cluster Visualizations<br/>2D/3D scatter plots"]
+    PERSONA_ANALYSIS --> PERSONA_VIZ["🎨 Persona Visualizations<br/>Business-friendly charts"]
+
+    %% Business Impact & Recommendations
+    CHAMPION_MODEL --> INSIGHTS_ENGINE["💡 Business Insights Generator<br/>Automated insight extraction"]
+    FEATURE_IMPORTANCE --> INSIGHTS_ENGINE
+    FINAL_PERSONAS --> INSIGHTS_ENGINE
+    PERSONA_ANALYSIS --> INSIGHTS_ENGINE
+    
+    INSIGHTS_ENGINE --> KEY_INSIGHTS["📋 Key Business Insights<br/>Actionable recommendations"]
+    INSIGHTS_ENGINE --> MARKETING_STRATEGY["🎯 Marketing Strategy<br/>Persona-based targeting"]
+    INSIGHTS_ENGINE --> RETENTION_TACTICS["🔄 Retention Tactics<br/>Segment-specific approaches"]
+    
+    CHAMPION_MODEL --> DEPLOYMENT_PLAN["🚀 Model Deployment Plan<br/>Production implementation"]
+    CHAMPION_MODEL --> PREDICTION_PIPELINE["🔮 Future Prediction Pipeline<br/>Real-time scoring"]
+
+    %% Styling with GitHub-compatible colors
+    classDef dataSource fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
+    classDef process fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    classDef model fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,color:#000
+    classDef decision fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    classDef analysis fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000
+    classDef insights fill:#e0f2f1,stroke:#00695c,stroke-width:2px,color:#000
+    classDef champion fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#000,font-weight:bold
+    classDef intermediate fill:#f5f5f5,stroke:#616161,stroke-width:1px,color:#000
+
+    %% Apply classes
+    class A1,A2,A3,LOAD_TRAIN,LOAD_TEST,LOAD_USER dataSource
+    class DROP_DATES,ENCODE_CAT,HANDLE_MISSING,FEATURE_ENG,SCALING,SMOTE_BALANCE,FINAL_SMOTE,FILTER_FEATURES,SEGMENT_PREP process
+    class OPTION1,OPTION2,RFECV,GRID_SEARCH,TUNED_MODEL1,TUNED_MODEL2,KMEANS,SHAP_CALC model
+    class MODEL_SELECTION,SELECT_TOP2,ELBOW_METHOD,PERSONA_RULES,ASSIGN_PERSONAS decision
+    class SHAP_PLOTS,FEATURE_IMPORTANCE,CLUSTER_PROFILES,ENHANCED_PROFILES,PERSONA_ANALYSIS,VISUALIZATION,PERSONA_VIZ analysis
+    class KEY_INSIGHTS,MARKETING_STRATEGY,RETENTION_TACTICS,DEPLOYMENT_PLAN,PREDICTION_PIPELINE,INSIGHTS_ENGINE insights
+    class CHAMPION_MODEL champion
+    class SETUP,DF_ALIGNED,TRAIN_VAL_SPLIT,X_TRAIN,Y_TRAIN,X_VAL,Y_VAL,SCALED_DATA,BALANCED_DATA,METRICS1,METRICS2,OPTIMAL_FEATURES,REDUCED_DATA,FINAL_TRAINING_SET,FINAL_EVALUATION,USER_BEHAVIOR,USER_DEMOGRAPHICS,MERGE_DATA,USER_CLUSTERS,REPURCHASE_LABELS,MERGE_OUTCOMES,FINAL_PERSONAS intermediate
 ```
 
 ### Chương 1: Thu Thập Thông Tin Tình Báo - Chuẩn Bị Dữ Liệu
