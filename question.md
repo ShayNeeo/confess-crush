@@ -100,156 +100,227 @@ graph TD
     class SHAP_ANALYSIS analysis;
     class DEPLOY deployment;
 ```
-# Beautiful ML Workflow Diagram
+# DAZONE2025 R2.2 ML Analysis Workflow
+
+## Comprehensive Machine Learning Pipeline for Customer Repurchase Prediction
 
 ```mermaid
 graph TD
-    %% Data Ingestion with icons
-    A1["📊 CSV: competition_train_features.csv"] --> PROC_TRAIN_FEAT
-    A2["📊 CSV: competition_test_features.csv"] --> PROC_TEST_FEAT
-    A3["👥 CSV: cleaned_user_info.csv"] --> MERGE_USER_INFO_SEG
-
-    subgraph PART1 ["🔧 Part 1: Data Preparation"]
-        direction TB
-        PROC_TRAIN_FEAT["⚙️ Preprocess Train Features<br/>Drop Dates, Encode Categories"] --> DF_TRAIN_ALIGNED["📈 df_train_aligned<br/><i>Features + Labels</i>"]
-        PROC_TEST_FEAT["⚙️ Preprocess Test Features"] --> DF_TEST_ALIGNED["📈 df_test_aligned"]
-
-        DF_TRAIN_ALIGNED -.-> SPLIT_DATA["🔀 Train/Validation Split"]
-        SPLIT_DATA --> X_TRAIN_RAW["🎯 X_train_raw"]
-        SPLIT_DATA --> Y_TRAIN["🏷️ y_train<br/><i>labels</i>"]
-        SPLIT_DATA --> X_VAL_RAW["🎯 X_val_raw"]
-        SPLIT_DATA --> Y_VAL["🏷️ y_val<br/><i>labels</i>"]
-
-        X_TRAIN_RAW --> SCALE_TRAIN["📏 Scale Features"]
-        X_VAL_RAW --> SCALE_VAL["📏 Scale Features"]
-        
-        SCALE_TRAIN --> X_TRAIN_SCALED["✨ X_train_scaled<br/><i>~20 features</i>"]
-        SCALE_VAL --> X_VAL_SCALED["✨ X_val_scaled<br/><i>~20 features</i>"]
-
-        X_TRAIN_SCALED -.-> SMOTE_INITIAL["🔄 SMOTE Balancing"]
-        SMOTE_INITIAL --> X_TRAIN_SMOTE["⚖️ X_train_smote<br/><i>balanced dataset</i>"]
-    end
-
-    subgraph PART2 ["🤖 Part 2: Model Training & Optimization"]
-        direction TB
-        
-        subgraph EVAL ["📊 Initial Model Evaluation"]
-            direction LR
-            X_TRAIN_SMOTE --> OPT1_EVAL["🎯 Option 1<br/>4 Base Models"]
-            X_TRAIN_SMOTE --> OPT2_EVAL["🎯 Option 2<br/>6 Models (MLP, SVC)"]
-            OPT1_EVAL --> METRICS_OPT1["📈 Metrics Set 1"]
-            OPT2_EVAL --> METRICS_OPT2["📈 Metrics Set 2"]
-            METRICS_OPT1 --> SELECT_BEST_BASE["🏆 Select Best<br/>Base Model"]
-            METRICS_OPT2 --> SELECT_BEST_BASE
-        end
-
-        subgraph FEATURE_SEL ["🎯 Feature Selection (RFECV)"]
-            direction TB
-            SELECT_BEST_BASE --> RFECV_STEP["🔍 RFECV Analysis<br/>Recursive Feature Elimination"]
-            RFECV_STEP --> SELECTED_FEATURES["⭐ Selected Features<br/><i>~19 optimal features</i>"]
-            X_TRAIN_SCALED -.-> FILTER_TRAIN["🎛️ Filter Features"]
-            X_VAL_SCALED -.-> FILTER_VAL["🎛️ Filter Features"]
-            SELECTED_FEATURES --> FILTER_TRAIN
-            SELECTED_FEATURES --> FILTER_VAL
-            FILTER_TRAIN --> X_TRAIN_RFE["🎯 X_train_rfe<br/><i>scaled + selected</i>"]
-            FILTER_VAL --> X_VAL_RFE["🎯 X_val_rfe<br/><i>scaled + selected</i>"]
-        end
-
-        X_TRAIN_RFE -.-> SMOTE_FINAL["🔄 SMOTE on RFE Data"]
-        SMOTE_FINAL --> X_TRAIN_SMOTE_RFE["⚖️ X_train_smote_rfe<br/><i>final training set</i>"]
-        
-        subgraph TUNING ["⚡ Hyperparameter Tuning"]
-            direction TB
-            SELECTED_FEATURES --> TUNE_SETUP["🛠️ Setup Tuning<br/>Top 2 Models"]
-            TUNE_SETUP --> TUNE_MODEL_1["🎛️ Tune Model 1<br/><i>e.g., MLP</i>"]
-            TUNE_SETUP --> TUNE_MODEL_2["🎛️ Tune Model 2<br/><i>e.g., Random Forest</i>"]
-            
-            TUNE_MODEL_1 --> TUNED_1["🔧 Tuned Model 1"]
-            TUNE_MODEL_2 --> TUNED_2["🔧 Tuned Model 2"]
-
-            TUNED_1 -.-> EVAL_1["📊 Evaluate Model 1"]
-            TUNED_2 -.-> EVAL_2["📊 Evaluate Model 2"]
-            X_TRAIN_SMOTE_RFE -.-> EVAL_1
-            X_TRAIN_SMOTE_RFE -.-> EVAL_2
-            X_VAL_RFE -.-> EVAL_1
-            X_VAL_RFE -.-> EVAL_2
-            
-            EVAL_1 --> FINAL_COMPARE["🏆 Final Model<br/>Selection"]
-            EVAL_2 --> FINAL_COMPARE
-            SELECT_BEST_BASE -.-> FINAL_COMPARE
-            FINAL_COMPARE --> FINAL_MODEL["👑 Champion Model<br/><i>e.g., RF_Tuned</i>"]
-        end
-    end
+    %% Data Sources
+    A1["📊 competition_train_features.csv<br/><i>Training Features</i>"] --> SETUP
+    A2["📊 competition_test_features.csv<br/><i>Test Features</i>"] --> SETUP
+    A3["👥 cleaned_user_info.csv<br/><i>User Demographics</i>"] --> SETUP
     
-    subgraph PART3 ["🔍 Part 3 & 4: Analysis & Insights"]
+    SETUP["🔧 Environment Setup<br/>Libraries & Config"] --> PART1
+
+    subgraph PART1 ["📁 PART 1: Data Loading & Feature Preparation"]
         direction TB
         
-        subgraph SHAP_SECTION ["💡 SHAP Analysis"]
-            direction LR
-            FINAL_MODEL --> SHAP_ANALYSIS["🔬 SHAP Analysis<br/>Feature Importance"]
-            X_VAL_RFE -.-> SHAP_ANALYSIS
-            SHAP_ANALYSIS --> SHAP_OUTPUT["📊 SHAP Visualizations<br/>& Importance Scores"]
+        subgraph DATA_LOAD ["📥 Data Loading & Initial Processing"]
+            LOAD_TRAIN["📈 Load Training Data<br/>competition_train_features.csv"]
+            LOAD_TEST["📈 Load Test Data<br/>competition_test_features.csv"]
+            LOAD_USER["👥 Load User Info<br/>cleaned_user_info.csv"]
         end
+        
+        subgraph PREPROCESSING ["⚙️ Data Preprocessing"]
+            DROP_DATES["🗓️ Drop Date Columns<br/>Non-predictive features"]
+            ENCODE_CAT["🔤 Categorical Encoding<br/>Label/One-hot encoding"]
+            HANDLE_MISSING["❓ Handle Missing Values<br/>Imputation strategies"]
+            FEATURE_ENG["🛠️ Feature Engineering<br/>Create derived features"]
+        end
+        
+        LOAD_TRAIN --> DROP_DATES
+        LOAD_TEST --> DROP_DATES
+        DROP_DATES --> ENCODE_CAT
+        ENCODE_CAT --> HANDLE_MISSING
+        HANDLE_MISSING --> FEATURE_ENG
+        
+        FEATURE_ENG --> DF_ALIGNED["📊 Aligned Datasets<br/><i>Train & Test Ready</i>"]
+        DF_ALIGNED --> TRAIN_VAL_SPLIT["🔀 Train/Validation Split<br/><i>80/20 split</i>"]
+        
+        TRAIN_VAL_SPLIT --> X_TRAIN["🎯 X_train<br/><i>Training Features</i>"]
+        TRAIN_VAL_SPLIT --> Y_TRAIN["🏷️ y_train<br/><i>Training Labels</i>"]
+        TRAIN_VAL_SPLIT --> X_VAL["🎯 X_val<br/><i>Validation Features</i>"]
+        TRAIN_VAL_SPLIT --> Y_VAL["🏷️ y_val<br/><i>Validation Labels</i>"]
+        
+        X_TRAIN --> SCALING["📏 Feature Scaling<br/>StandardScaler"]
+        X_VAL --> SCALING
+        SCALING --> SCALED_DATA["✨ Scaled Features<br/><i>Normalized datasets</i>"]
+    end
 
-        subgraph SEGMENTATION ["👥 User Segmentation & Personas"]
+    subgraph PART2 ["🤖 PART 2: Model Training, Evaluation & Optimization"]
+        direction TB
+        
+        SCALED_DATA --> SMOTE_BALANCE["🔄 SMOTE Balancing<br/>Address class imbalance"]
+        SMOTE_BALANCE --> BALANCED_DATA["⚖️ Balanced Training Set<br/><i>Equal class distribution</i>"]
+        
+        subgraph MODEL_EVAL ["📊 Initial Model Evaluation"]
             direction TB
-            DF_TRAIN_ALIGNED --> AGG_BEHAVIOR["📊 Aggregate User<br/>Behavior Patterns"]
-            AGG_BEHAVIOR --> DATA_MERGE["🔗 Merge Data"]
-            MERGE_USER_INFO_SEG --> DATA_MERGE
-            DATA_MERGE --> DATA_FOR_SEG["🎯 Segmentation Dataset"]
+            OPTION1["🎯 Option 1: Base Models<br/>Random Forest, Logistic Regression<br/>Gradient Boosting, Decision Tree"]
+            OPTION2["🎯 Option 2: Extended Models<br/>+ MLP, SVC, Extra Trees<br/>AdaBoost, Naive Bayes"]
             
-            DATA_FOR_SEG --> PREPROC_SEG["⚙️ Preprocess &<br/>Scale for Clustering"]
-            PREPROC_SEG --> OPTIMAL_K["📈 Determine Optimal K<br/><i>e.g., K=4</i>"]
-            OPTIMAL_K --> KMEANS_CLUSTER["🎯 K-Means Clustering"]
-            KMEANS_CLUSTER --> CLUSTERS["👥 User Clusters<br/>with Labels"]
+            BALANCED_DATA --> OPTION1
+            BALANCED_DATA --> OPTION2
             
-            CLUSTERS --> CLUSTER_PROFILES["📊 Initial Cluster<br/>Profiles"]
-            DF_TRAIN_ALIGNED --> USER_LABELS["🏷️ User-Level<br/>Repurchase Labels"]
+            OPTION1 --> METRICS1["📈 Performance Metrics 1<br/>Accuracy, Precision, Recall, F1"]
+            OPTION2 --> METRICS2["📈 Performance Metrics 2<br/>Extended evaluation"]
             
-            CLUSTERS --> MERGE_LABELS["🔗 Merge with Labels"]
-            USER_LABELS --> MERGE_LABELS
-            MERGE_LABELS --> ENHANCED_PROFILES["✨ Enhanced Profiles<br/>with Repurchase Rates"]
+            METRICS1 --> MODEL_SELECTION["🏆 Best Model Selection<br/>Based on validation performance"]
+            METRICS2 --> MODEL_SELECTION
+        end
+        
+        subgraph FEATURE_SELECTION ["🎯 Feature Selection with RFECV"]
+            direction TB
+            MODEL_SELECTION --> RFECV["🔍 Recursive Feature Elimination<br/>Cross-Validation (RFECV)"]
+            RFECV --> OPTIMAL_FEATURES["⭐ Optimal Feature Set<br/><i>~19 selected features</i>"]
             
-            ENHANCED_PROFILES --> PERSONA_DEF["👤 Define Persona<br/>Thresholds"]
-            PERSONA_DEF --> PERSONA_ASSIGN["🎭 Assign Personas<br/>to Clusters"]
-            PERSONA_ASSIGN --> FINAL_PERSONAS["🎭 Final User Personas<br/>with Segments"]
+            SCALED_DATA --> FILTER_FEATURES["🎛️ Apply Feature Selection<br/>Filter to optimal features"]
+            OPTIMAL_FEATURES --> FILTER_FEATURES
+            FILTER_FEATURES --> REDUCED_DATA["🎯 Feature-Reduced Dataset<br/><i>Optimized for performance</i>"]
+        end
+        
+        REDUCED_DATA --> FINAL_SMOTE["🔄 Final SMOTE Application<br/>On selected features"]
+        FINAL_SMOTE --> FINAL_TRAINING_SET["⚖️ Final Training Set<br/><i>Balanced + Feature-Selected</i>"]
+        
+        subgraph HYPERPARAMETER_TUNING ["⚡ Hyperparameter Tuning"]
+            direction TB
+            MODEL_SELECTION --> SELECT_TOP2["🎯 Select Top 2 Models<br/>For intensive tuning"]
+            SELECT_TOP2 --> GRID_SEARCH["🔧 Grid Search CV<br/>Hyperparameter optimization"]
             
-            FINAL_PERSONAS --> PERSONA_ANALYSIS["📈 Persona Repurchase<br/>Analysis"]
-            ENHANCED_PROFILES --> CLUSTER_VIZ["📊 Cluster Visualizations"]
-            PERSONA_ANALYSIS --> PERSONA_VIZ["🎨 Persona Visualizations"]
+            GRID_SEARCH --> TUNED_MODEL1["🔧 Tuned Model 1<br/><i>Optimized hyperparameters</i>"]
+            GRID_SEARCH --> TUNED_MODEL2["🔧 Tuned Model 2<br/><i>Optimized hyperparameters</i>"]
+            
+            FINAL_TRAINING_SET --> FINAL_EVALUATION["📊 Final Model Evaluation<br/>Cross-validation + holdout"]
+            TUNED_MODEL1 --> FINAL_EVALUATION
+            TUNED_MODEL2 --> FINAL_EVALUATION
+            
+            FINAL_EVALUATION --> CHAMPION_MODEL["👑 Champion Model<br/><i>Best performing model</i>"]
         end
     end
 
-    subgraph PART5 ["🚀 Part 5: Business Impact & Deployment"]
+    subgraph PART3 ["🔍 PART 3: SHAP Analysis, User Segmentation & Business Insights"]
         direction TB
-        FINAL_MODEL --> INSIGHTS_GEN["💡 Business Insights<br/>Generator"]
-        SHAP_OUTPUT --> INSIGHTS_GEN
-        FINAL_PERSONAS --> INSIGHTS_GEN
-        PERSONA_ANALYSIS --> INSIGHTS_GEN
-        ENHANCED_PROFILES --> INSIGHTS_GEN
         
-        INSIGHTS_GEN --> BUSINESS_INSIGHTS["📋 Business Insights<br/>& Recommendations"]
-        FINAL_MODEL --> DEPLOY_PLAN["🚀 Deployment Planning<br/>Future Predictions"]
-    end    %% Beautiful Styling with Modern Colors
-    classDef dataSource fill:#667eea,stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
-    classDef process fill:#f093fb,stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
-    classDef model fill:#4facfe,stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
-    classDef decision fill:#43e97b,stroke:#fff,stroke-width:2px,color:#333,font-weight:bold
-    classDef analysis fill:#fa709a,stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
-    classDef deployment fill:#a8edea,stroke:#333,stroke-width:3px,color:#333,font-weight:bold
-    classDef champion fill:#ffecd2,stroke:#ff6b6b,stroke-width:4px,color:#333,font-weight:bold
-    classDef insights fill:#764ba2,stroke:#fff,stroke-width:3px,color:#fff,font-weight:bold
-    classDef intermediate fill:#a8e6cf,stroke:#4ecdc4,stroke-width:2px,color:#333
-    classDef metrics fill:#ffd89b,stroke:#333,stroke-width:2px,color:#333,font-weight:bold
+        subgraph SHAP_ANALYSIS ["💡 SHAP Explainability Analysis"]
+            direction LR
+            CHAMPION_MODEL --> SHAP_CALC["🔬 SHAP Value Calculation<br/>Feature importance analysis"]
+            REDUCED_DATA --> SHAP_CALC
+            
+            SHAP_CALC --> SHAP_PLOTS["📊 SHAP Visualizations<br/>Summary, waterfall, dependence plots"]
+            SHAP_CALC --> FEATURE_IMPORTANCE["⭐ Global Feature Importance<br/>Most predictive features"]
+        end
+        
+        subgraph USER_SEGMENTATION ["👥 User Segmentation & Clustering"]
+            direction TB
+            DF_ALIGNED --> USER_BEHAVIOR["📊 Aggregate User Behavior<br/>Transaction patterns & metrics"]
+            LOAD_USER --> USER_DEMOGRAPHICS["👤 User Demographics<br/>Age, location, preferences"]
+            
+            USER_BEHAVIOR --> MERGE_DATA["🔗 Merge Behavioral & Demographic<br/>Comprehensive user profiles"]
+            USER_DEMOGRAPHICS --> MERGE_DATA
+            
+            MERGE_DATA --> SEGMENT_PREP["⚙️ Segmentation Preprocessing<br/>Scaling & normalization"]
+            SEGMENT_PREP --> ELBOW_METHOD["📈 Optimal K Determination<br/>Elbow method analysis"]
+            
+            ELBOW_METHOD --> KMEANS["🎯 K-Means Clustering<br/><i>Typically K=4 segments</i>"]
+            KMEANS --> USER_CLUSTERS["👥 User Clusters<br/>Behavioral segments"]
+            
+            USER_CLUSTERS --> CLUSTER_PROFILES["📊 Initial Cluster Profiling<br/>Segment characteristics"]
+            
+            DF_ALIGNED --> REPURCHASE_LABELS["🏷️ User-Level Repurchase Rates<br/>Aggregate purchase behavior"]
+            
+            CLUSTER_PROFILES --> MERGE_OUTCOMES["🔗 Merge Clusters with Outcomes<br/>Segment + repurchase data"]
+            REPURCHASE_LABELS --> MERGE_OUTCOMES
+            
+            MERGE_OUTCOMES --> ENHANCED_PROFILES["✨ Enhanced Cluster Profiles<br/>Segments with repurchase rates"]
+        end
+        
+        subgraph PERSONA_DEVELOPMENT ["🎭 Persona Development"]
+            direction TB
+            ENHANCED_PROFILES --> PERSONA_RULES["👤 Define Persona Criteria<br/>Thresholds & characteristics"]
+            PERSONA_RULES --> ASSIGN_PERSONAS["🎭 Assign User Personas<br/>Map clusters to personas"]
+            
+            ASSIGN_PERSONAS --> FINAL_PERSONAS["🎭 Final User Personas<br/>Named & characterized segments"]
+            FINAL_PERSONAS --> PERSONA_ANALYSIS["📈 Persona Repurchase Analysis<br/>Conversion rates by persona"]
+            
+            ENHANCED_PROFILES --> VISUALIZATION["📊 Cluster Visualizations<br/>2D/3D scatter plots"]
+            PERSONA_ANALYSIS --> PERSONA_VIZ["🎨 Persona Visualizations<br/>Business-friendly charts"]
+        end
+    end
 
-    %% Apply classes to nodes
-    class A1,A2,A3 dataSource
-    class PROC_TRAIN_FEAT,PROC_TEST_FEAT,SCALE_TRAIN,SCALE_VAL,PREPROC_SEG,AGG_BEHAVIOR,MERGE_USER_INFO_SEG,SMOTE_INITIAL,SMOTE_FINAL,FILTER_TRAIN,FILTER_VAL,DATA_MERGE process
-    class OPT1_EVAL,OPT2_EVAL,TUNE_MODEL_1,TUNE_MODEL_2,TUNED_1,TUNED_2,KMEANS_CLUSTER,RFECV_STEP,SHAP_ANALYSIS model
-    class SELECT_BEST_BASE,FINAL_COMPARE,OPTIMAL_K,PERSONA_DEF,PERSONA_ASSIGN decision
-    class CLUSTER_PROFILES,ENHANCED_PROFILES,PERSONA_ANALYSIS,CLUSTER_VIZ,PERSONA_VIZ,SHAP_OUTPUT,BUSINESS_INSIGHTS,INSIGHTS_GEN analysis
-    class DEPLOY_PLAN deployment
-    class FINAL_MODEL champion
-    class DF_TRAIN_ALIGNED,DF_TEST_ALIGNED,X_TRAIN_RAW,Y_TRAIN,X_VAL_RAW,Y_VAL,X_TRAIN_SCALED,X_VAL_SCALED,X_TRAIN_SMOTE,SELECTED_FEATURES,X_TRAIN_RFE,X_VAL_RFE,X_TRAIN_SMOTE_RFE,DATA_FOR_SEG,CLUSTERS,FINAL_PERSONAS,USER_LABELS,SPLIT_DATA,TUNE_SETUP intermediate
-    class METRICS_OPT1,METRICS_OPT2,EVAL_1,EVAL_2 metrics
+    subgraph BUSINESS_INSIGHTS ["🚀 Business Impact & Recommendations"]
+        direction TB
+        CHAMPION_MODEL --> INSIGHTS_ENGINE["💡 Business Insights Generator<br/>Automated insight extraction"]
+        FEATURE_IMPORTANCE --> INSIGHTS_ENGINE
+        FINAL_PERSONAS --> INSIGHTS_ENGINE
+        PERSONA_ANALYSIS --> INSIGHTS_ENGINE
+        
+        INSIGHTS_ENGINE --> KEY_INSIGHTS["📋 Key Business Insights<br/>Actionable recommendations"]
+        INSIGHTS_ENGINE --> MARKETING_STRATEGY["🎯 Marketing Strategy<br/>Persona-based targeting"]
+        INSIGHTS_ENGINE --> RETENTION_TACTICS["🔄 Retention Tactics<br/>Segment-specific approaches"]
+        
+        CHAMPION_MODEL --> DEPLOYMENT_PLAN["🚀 Model Deployment Plan<br/>Production implementation"]
+        CHAMPION_MODEL --> PREDICTION_PIPELINE["🔮 Future Prediction Pipeline<br/>Real-time scoring"]
+    end
+
+    %% Styling with GitHub-compatible colors
+    classDef dataSource fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
+    classDef process fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    classDef model fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,color:#000
+    classDef decision fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    classDef analysis fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000
+    classDef insights fill:#e0f2f1,stroke:#00695c,stroke-width:2px,color:#000
+    classDef champion fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#000,font-weight:bold
+    classDef intermediate fill:#f5f5f5,stroke:#616161,stroke-width:1px,color:#000
+
+    %% Apply classes
+    class A1,A2,A3,LOAD_TRAIN,LOAD_TEST,LOAD_USER dataSource
+    class DROP_DATES,ENCODE_CAT,HANDLE_MISSING,FEATURE_ENG,SCALING,SMOTE_BALANCE,FINAL_SMOTE,FILTER_FEATURES,SEGMENT_PREP process
+    class OPTION1,OPTION2,RFECV,GRID_SEARCH,TUNED_MODEL1,TUNED_MODEL2,KMEANS,SHAP_CALC model
+    class MODEL_SELECTION,SELECT_TOP2,ELBOW_METHOD,PERSONA_RULES,ASSIGN_PERSONAS decision
+    class SHAP_PLOTS,FEATURE_IMPORTANCE,CLUSTER_PROFILES,ENHANCED_PROFILES,PERSONA_ANALYSIS,VISUALIZATION,PERSONA_VIZ analysis
+    class KEY_INSIGHTS,MARKETING_STRATEGY,RETENTION_TACTICS,DEPLOYMENT_PLAN,PREDICTION_PIPELINE,INSIGHTS_ENGINE insights
+    class CHAMPION_MODEL champion
+    class SETUP,DF_ALIGNED,TRAIN_VAL_SPLIT,X_TRAIN,Y_TRAIN,X_VAL,Y_VAL,SCALED_DATA,BALANCED_DATA,METRICS1,METRICS2,OPTIMAL_FEATURES,REDUCED_DATA,FINAL_TRAINING_SET,FINAL_EVALUATION,USER_BEHAVIOR,USER_DEMOGRAPHICS,MERGE_DATA,USER_CLUSTERS,REPURCHASE_LABELS,MERGE_OUTCOMES,FINAL_PERSONAS intermediate
 ```
+
+## 📋 Workflow Summary
+
+This comprehensive ML workflow diagram represents the **DAZONE2025 R2.2 Main Analysis** pipeline, structured in three main parts:
+
+### 🔧 **PART 1: Data Loading & Feature Preparation**
+- **Data Sources**: Training features, test features, and user demographic data
+- **Preprocessing**: Date removal, categorical encoding, missing value handling
+- **Feature Engineering**: Creation of derived features for enhanced predictive power
+- **Data Splitting**: Train/validation split with proper scaling and normalization
+
+### 🤖 **PART 2: Model Training, Evaluation & Optimization**
+- **Initial Evaluation**: Comparison of 4-6 different ML algorithms
+- **Feature Selection**: RFECV (Recursive Feature Elimination with Cross-Validation)
+- **Class Balancing**: SMOTE technique to address imbalanced datasets
+- **Hyperparameter Tuning**: Grid search optimization for top-performing models
+- **Model Selection**: Champion model selection based on cross-validation performance
+
+### 🔍 **PART 3: SHAP Analysis, User Segmentation & Business Insights**
+- **Explainability**: SHAP analysis for feature importance and model interpretability
+- **User Segmentation**: K-means clustering for behavioral pattern identification
+- **Persona Development**: Business-meaningful user personas with repurchase characteristics
+- **Business Impact**: Actionable insights and deployment recommendations
+
+## 🎨 Visual Features
+
+- **GitHub Compatible**: Uses solid colors instead of gradients for perfect GitHub display
+- **Clear Hierarchy**: Distinguished node types with consistent color schemes
+- **Professional Styling**: Clean borders, readable fonts, and logical flow
+- **Comprehensive Coverage**: End-to-end ML pipeline from data to deployment
+
+## 🚀 Usage
+
+Copy the Mermaid code above and paste it into:
+- **GitHub README files** (automatic rendering)
+- **GitLab documentation** 
+- **Notion pages**
+- **Mermaid Live Editor**
+- **VS Code with Mermaid extension**
+
+Perfect for technical documentation, project presentations, and stakeholder communications!
+
