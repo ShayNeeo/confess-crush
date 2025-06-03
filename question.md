@@ -60,44 +60,47 @@ Hành trình của chúng ta được chia thành 3 chương lớn, mỗi chươ
 
 ```mermaid
 graph TD
-    A[Dữ liệu ban đầu] --> B(Option 1 Processing);
-    A --> C(Option 2 Processing);
+    A[Dữ liệu ban đầu (.csv features)] --> PREPROC[Tiền xử lý (Scale, Encode, SMOTE cho Train ban đầu)];
+    PREPROC --> OPT1_EVAL[Option 1: Huấn luyện & Đánh giá 4 Model trên dữ liệu SMOTE];
+    PREPROC --> OPT2_EVAL[Option 2: Huấn luyện & Đánh giá 6 Model trên dữ liệu SMOTE];
 
-    subgraph Option 1
-        direction LR
-        B --> B1[train 4 model];
-        B1 --> B2((model tốt nhất Opt1));
-    end
+    OPT1_EVAL --> SELECT_BEST_BASE[Chọn Model Cơ sở Tốt nhất (BestModelOverall)];
+    OPT2_EVAL --> SELECT_BEST_BASE;
 
-    subgraph Option 2
-        direction LR
-        C --> C1[RFECV];
-        C1 --> C2[Features đã tạo];
-        C2 --> C3[SMOTE / Xử lý mất cân bằng];
-        C3 --> C4[Normalize / Scale];
-        C4 --> C5[Train 6 model];
-        C5 --> C6((model tốt nhất Opt2));
-    end
+    SELECT_BEST_BASE -- Dữ liệu Train Gốc (Đã Scale) --> RFECV_STEP[RFECV: Lựa chọn Features cho BestModelOverall];
+    RFECV_STEP --> SELECTED_FEATURES[Tập Features đã chọn lọc];
 
-    B2 --> D((model đã lựa chọn));
-    C6 --> D;
+    SELECTED_FEATURES -- Tạo lại X_train_smote_rfe, X_val_rfe --> TUNE_MODEL[Tinh chỉnh Siêu tham số (RandomizedSearchCV) cho BestModelOverall trên X_train_rfe (gốc)];
+    
+    TUNE_MODEL --> FINAL_MODEL((Model Tốt nhất Cuối cùng));
+    FINAL_MODEL -- Dữ liệu Validation (X_val_rfe) --> EVAL_FINAL[Đánh giá Model Cuối cùng];
 
-    D --> E{SHAP};
-    E --> F[Features quan trọng];
-    D --> G[Chạy cho 6 tháng tiếp theo];
-    D -.-> H((câu 1));
 
-    %% Styling (Tùy chọn)
+    FINAL_MODEL --> DEPLOY[Mục tiêu: Dự đoán 6 tháng tới];
+    FINAL_MODEL -- Dữ liệu Sample (X_val_rfe hoặc X_train_rfe) --> SHAP_ANALYSIS{SHAP Analysis};
+    SHAP_ANALYSIS --> IMPORTANT_FEATURES[Features Quan trọng theo SHAP];
+
+    %% Luồng Phân khúc Khách hàng (Song song hoặc sau khi có features)
+    DATA_FOR_SEG[Dữ liệu Khách hàng Tổng hợp (từ df_train_aligned) + Demographics] --> PREPROC_SEG[Tiền xử lý cho Segmentation];
+    PREPROC_SEG --> OPTIMAL_K[Xác định K tối ưu (Elbow/Silhouette)];
+    OPTIMAL_K --> CLUSTERING[K-Means Clustering];
+    CLUSTERING --> SEGMENTS[Các Phân khúc Khách hàng];
+    SEGMENTS -- Kết hợp với 'label' --> PROFILE_SEGMENTS[Đánh giá & Profile Phân khúc theo Nhãn];
+
     classDef data fill:#f9f,stroke:#333,stroke-width:2px;
     classDef process fill:#ccf,stroke:#333,stroke-width:2px;
     classDef model fill:#cfc,stroke:#333,stroke-width:2px,color:#000;
     classDef decision fill:#f80,stroke:#333,stroke-width:2px;
     classDef deployment fill:#e7d38f,stroke:#333,stroke-width:2px;
+    classDef analysis fill:#d2b4de,stroke:#333,stroke-width:2px;
 
-    class A,C2,F,H data;
-    class B,C,C1,C3,C4,C5,E process;
-    class B1,B2,C6,D model;
-    class G deployment;
+
+    class A,SELECTED_FEATURES,DATA_FOR_SEG data;
+    class PREPROC,PREPROC_SEG,RFECV_STEP,OPTIMAL_K,CLUSTERING process;
+    class OPT1_EVAL,OPT2_EVAL,SELECT_BEST_BASE,TUNE_MODEL,FINAL_MODEL,EVAL_FINAL model;
+    class SHAP_ANALYSIS analysis;
+    class IMPORTANT_FEATURES,SEGMENTS,PROFILE_SEGMENTS data;
+    class DEPLOY deployment;
 ```
 ```mermaid
 graph TD
