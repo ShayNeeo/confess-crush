@@ -104,7 +104,7 @@ graph TD
 
 ## Comprehensive Machine Learning Pipeline for Customer Repurchase Prediction
 
-```mermaid
+
 graph TD
     %% Data Sources
     A1["📊 competition_train_features.csv<br/><i>Training Features</i>"] --> SETUP
@@ -281,7 +281,6 @@ graph TD
     class KEY_INSIGHTS,MARKETING_STRATEGY,RETENTION_TACTICS,DEPLOYMENT_PLAN,PREDICTION_PIPELINE,INSIGHTS_ENGINE insights
     class CHAMPION_MODEL champion
     class SETUP,DF_ALIGNED,TRAIN_VAL_SPLIT,X_TRAIN,Y_TRAIN,X_VAL,Y_VAL,SCALED_DATA,BALANCED_DATA,METRICS1,METRICS2,OPTIMAL_FEATURES,REDUCED_DATA,FINAL_TRAINING_SET,FINAL_EVALUATION,USER_BEHAVIOR,USER_DEMOGRAPHICS,MERGE_DATA,USER_CLUSTERS,REPURCHASE_LABELS,MERGE_OUTCOMES,FINAL_PERSONAS intermediate
-```
 
 ## 📋 Workflow Summary
 
