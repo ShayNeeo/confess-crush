@@ -109,107 +109,107 @@ graph TD
 
     subgraph "Part 1: Data Preparation"
         direction LR
-        PROC_TRAIN_FEAT[Preprocess Train Features: Drop Dates, Encode Cats] --> DF_TRAIN_ALIGNED[df_train_aligned (Features + Label)];
-        PROC_TEST_FEAT[Preprocess Test Features] --> DF_TEST_ALIGNED[df_test_aligned];
+        PROC_TRAIN_FEAT["Preprocess Train Features: Drop Dates, Encode Cats"] --> DF_TRAIN_ALIGNED["df_train_aligned (Features + Label)"];
+        PROC_TEST_FEAT["Preprocess Test Features"] --> DF_TEST_ALIGNED["df_test_aligned"];
 
-        DF_TRAIN_ALIGNED -- Split --> X_TRAIN_RAW[X_train_raw];
-        DF_TRAIN_ALIGNED -- Split --> Y_TRAIN[y_train];
-        DF_TRAIN_ALIGNED -- Split --> X_VAL_RAW[X_val_raw];
-        DF_TRAIN_ALIGNED -- Split --> Y_VAL[y_val];
+        DF_TRAIN_ALIGNED -- Split --> X_TRAIN_RAW["X_train_raw"];
+        DF_TRAIN_ALIGNED -- Split --> Y_TRAIN["y_train (labels)"];
+        DF_TRAIN_ALIGNED -- Split --> X_VAL_RAW["X_val_raw"];
+        DF_TRAIN_ALIGNED -- Split --> Y_VAL["y_val (labels)"];
 
-        X_TRAIN_RAW --> SCALE_TRAIN[Scale Features];
-        X_VAL_RAW --> SCALE_VAL[Scale Features];
+        X_TRAIN_RAW --> SCALE_TRAIN["Scale Features"];
+        X_VAL_RAW --> SCALE_VAL["Scale Features"];
         
-        SCALE_TRAIN --> X_TRAIN_SCALED[X_train_scaled (e.g. 20 features)];
-        SCALE_VAL --> X_VAL_SCALED[X_val_scaled (e.g. 20 features)];
+        SCALE_TRAIN --> X_TRAIN_SCALED["X_train_scaled (e.g. 20 features)"];
+        SCALE_VAL --> X_VAL_SCALED["X_val_scaled (e.g. 20 features)"];
 
-        X_TRAIN_SCALED -- SMOTE with y_train --> X_TRAIN_SMOTE[X_train_smote (for initial model eval)];
+        X_TRAIN_SCALED -- SMOTE with y_train --> X_TRAIN_SMOTE["X_train_smote (for initial model eval)"];
     end
 
     subgraph "Part 2: Model Training, Evaluation & Tuning"
         direction TB
         subgraph "Initial Model Evaluation"
             direction LR
-            X_TRAIN_SMOTE --> OPT1_EVAL[Opt 1: Train 4 Models];
-            X_TRAIN_SMOTE --> OPT2_EVAL[Opt 2: Train 6 Models (MLP, SVC etc.)];
-            OPT1_EVAL -- Evaluate on X_val_scaled, y_val --> METRICS_OPT1[Metrics Opt1];
-            OPT2_EVAL -- Evaluate on X_val_scaled, y_val --> METRICS_OPT2[Metrics Opt2];
-            METRICS_OPT1 --> SELECT_BEST_BASE[Select Best Base Model Pre-Tuning];
+            X_TRAIN_SMOTE --> OPT1_EVAL["Opt 1: Train 4 Models"];
+            X_TRAIN_SMOTE --> OPT2_EVAL["Opt 2: Train 6 Models (MLP, SVC etc.)"];
+            OPT1_EVAL -- "Evaluate on X_val_scaled, y_val" --> METRICS_OPT1["Metrics Opt1"];
+            OPT2_EVAL -- "Evaluate on X_val_scaled, y_val" --> METRICS_OPT2["Metrics Opt2"];
+            METRICS_OPT1 --> SELECT_BEST_BASE["Select Best Base Model Pre-Tuning"];
             METRICS_OPT2 --> SELECT_BEST_BASE;
         end
 
         subgraph "Feature Selection (RFECV)"
             direction LR
-            SELECT_BEST_BASE -- Uses X_train_scaled, y_train --> RFECV_STEP[RFECV on Best Base Model (Surrogate if needed)];
-            RFECV_STEP --> SELECTED_FEATURES[Selected Feature Set (e.g., 19 features)];
-            X_TRAIN_SCALED -- Filter by Selected --> X_TRAIN_RFE[X_train_rfe (scaled, RFE features)];
-            X_VAL_SCALED -- Filter by Selected --> X_VAL_RFE[X_val_rfe (scaled, RFE features)];
+            SELECT_BEST_BASE -- "Uses X_train_scaled, y_train" --> RFECV_STEP["RFECV on Best Base Model (Surrogate if needed)"];
+            RFECV_STEP --> SELECTED_FEATURES["Selected Feature Set (e.g., 19 features)"];
+            X_TRAIN_SCALED -- "Filter by Selected" --> X_TRAIN_RFE["X_train_rfe (scaled, RFE features)"];
+            X_VAL_SCALED -- "Filter by Selected" --> X_VAL_RFE["X_val_rfe (scaled, RFE features)"];
         end
 
-        X_TRAIN_RFE -- SMOTE with y_train --> X_TRAIN_SMOTE_RFE[X_train_smote_rfe (for tuned model eval training)];
+        X_TRAIN_RFE -- "SMOTE with y_train" --> X_TRAIN_SMOTE_RFE["X_train_smote_rfe (for tuned model eval training)"];
         
         subgraph "Hyperparameter Tuning (Production: Top 2 Models)"
             direction TB
-            SELECTED_FEATURES ----> TUNE_MODELS_SETUP[Setup Tuning for Top Models];
-            TUNE_MODELS_SETUP -- Model 1 + (X_train_rfe, y_train - NO SMOTE) --> TUNE_MODEL_1[Tune Model 1 (e.g., MLP)];
-            TUNE_MODELS_SETUP -- Model 2 + (X_train_rfe, y_train - NO SMOTE) --> TUNE_MODEL_2[Tune Model 2 (e.g., RF)];
+            SELECTED_FEATURES ----> TUNE_MODELS_SETUP["Setup Tuning for Top Models"];
+            TUNE_MODELS_SETUP -- "Model 1 + (X_train_rfe, y_train - NO SMOTE)" --> TUNE_MODEL_1["Tune Model 1 (e.g., MLP)"];
+            TUNE_MODELS_SETUP -- "Model 2 + (X_train_rfe, y_train - NO SMOTE)" --> TUNE_MODEL_2["Tune Model 2 (e.g., RF)"];
             
-            TUNE_MODEL_1 --> TUNED_MODEL_1_INSTANCE[Tuned Model 1 Instance];
-            TUNE_MODEL_2 --> TUNED_MODEL_2_INSTANCE[Tuned Model 2 Instance];
+            TUNE_MODEL_1 --> TUNED_MODEL_1_INSTANCE["Tuned Model 1 Instance"];
+            TUNE_MODEL_2 --> TUNED_MODEL_2_INSTANCE["Tuned Model 2 Instance"];
 
-            TUNED_MODEL_1_INSTANCE -- Train on X_train_smote_rfe, Eval on X_val_rfe --> EVAL_TUNED_1[Evaluate Tuned Model 1];
-            TUNED_MODEL_2_INSTANCE -- Train on X_train_smote_rfe, Eval on X_val_rfe --> EVAL_TUNED_2[Evaluate Tuned Model 2];
+            TUNED_MODEL_1_INSTANCE -- "Train on X_train_smote_rfe, Eval on X_val_rfe" --> EVAL_TUNED_1["Evaluate Tuned Model 1"];
+            TUNED_MODEL_2_INSTANCE -- "Train on X_train_smote_rfe, Eval on X_val_rfe" --> EVAL_TUNED_2["Evaluate Tuned Model 2"];
             
-            EVAL_TUNED_1 --> COMPARE_FINAL[Compare & Select Final Best Model];
+            EVAL_TUNED_1 --> COMPARE_FINAL["Compare & Select Final Best Model"];
             EVAL_TUNED_2 --> COMPARE_FINAL;
-            SELECT_BEST_BASE -- Original Best Model --> COMPARE_FINAL;
-            COMPARE_FINAL --> FINAL_MODEL((Final Best Model (e.g., RF_Comp_Tuned)));
+            SELECT_BEST_BASE -- "Original Best Model" --> COMPARE_FINAL;
+            COMPARE_FINAL --> FINAL_MODEL(("_Final Best Model (e.g., RF_Comp_Tuned)_"));
         end
     end
     
     subgraph "Part 3 & 4: Post-Modeling Analysis & Reporting"
         direction TB
         subgraph "SHAP Analysis"
-            FINAL_MODEL --> SHAP_ANALYSIS[SHAP Analysis on Final Model];
+            FINAL_MODEL --> SHAP_ANALYSIS["SHAP Analysis on Final Model"];
             X_VAL_RFE --> SHAP_ANALYSIS;  // Data for SHAP (consistent with model training if RFE used)
-            SHAP_ANALYSIS --> SHAP_OUTPUT[SHAP Plots & Importance Values];
+            SHAP_ANALYSIS --> SHAP_OUTPUT["SHAP Plots & Importance Values"];
         end
 
         subgraph "User Segmentation, Profiling & Persona Assignment"
             direction TB
-            DF_TRAIN_ALIGNED --> AGG_BEHAVIOR[Aggregate User Behavior from df_train_aligned];
-            AGG_BEHAVIOR & MERGE_USER_INFO_SEG[Merge with UserInfo (A3)] --> DATA_FOR_SEG[User Data for Segmentation];
+            DF_TRAIN_ALIGNED --> AGG_BEHAVIOR["Aggregate User Behavior from df_train_aligned"];
+            AGG_BEHAVIOR & MERGE_USER_INFO_SEG["Merge with UserInfo (A3)"] --> DATA_FOR_SEG["User Data for Segmentation"];
             MERGE_USER_INFO_SEG -.-> DATA_FOR_SEG; 
             
-            DATA_FOR_SEG --> PREPROC_SEG[Preprocess & Scale for Segmentation -> X_cluster_scaled];
-            PREPROC_SEG --> OPTIMAL_K[Determine Optimal K (e.g., K=4 from log)];
-            OPTIMAL_K --> KMEANS_CLUSTER[K-Means Clustering];
-            KMEANS_CLUSTER -- Assigns Cluster Labels --> DF_SEG_WITH_CLUSTERS[df_segmentation_data_with_clusters];
+            DATA_FOR_SEG --> PREPROC_SEG["Preprocess & Scale for Segmentation to X_cluster_scaled"];
+            PREPROC_SEG --> OPTIMAL_K["Determine Optimal K (e.g., K=4 from log)"];
+            OPTIMAL_K --> KMEANS_CLUSTER["K-Means Clustering"];
+            KMEANS_CLUSTER -- "Assigns Cluster Labels" --> DF_SEG_WITH_CLUSTERS["df_segmentation_data_with_clusters"];
             
-            DF_SEG_WITH_CLUSTERS --> INITIAL_CLUSTER_PROFILES[Initial Cluster Profiles (Numeric Means, Demo Modes)];
+            DF_SEG_WITH_CLUSTERS --> INITIAL_CLUSTER_PROFILES["Initial Cluster Profiles (Numeric Means, Demo Modes)"];
 
-            DF_TRAIN_ALIGNED --> USER_LEVEL_LABELS_CALC[Calculate User-Level Repurchase Labels (user_level_labels)];
-            DF_SEG_WITH_CLUSTERS & USER_LEVEL_LABELS_CALC --> MERGED_FOR_EARLY_PROFILE[Merge Segments with User Repurchase Labels];
-            MERGED_FOR_EARLY_PROFILE --> CLUSTER_LABEL_PROFILE[Calculate cluster_label_profile (Repurchase Rate & Size per Cluster)];
+            DF_TRAIN_ALIGNED --> USER_LEVEL_LABELS_CALC["Calculate User-Level Repurchase Labels (user_level_labels)"];
+            DF_SEG_WITH_CLUSTERS & USER_LEVEL_LABELS_CALC --> MERGED_FOR_EARLY_PROFILE["Merge Segments with User Repurchase Labels"];
+            MERGED_FOR_EARLY_PROFILE --> CLUSTER_LABEL_PROFILE["Calculate cluster_label_profile (Repurchase Rate & Size per Cluster)"];
             
-            INITIAL_CLUSTER_PROFILES & CLUSTER_LABEL_PROFILE --> ENHANCED_CLUSTER_PROFILES[Enhanced cluster_profiles_mean (with Repurchase Rate & Size)];
+            INITIAL_CLUSTER_PROFILES & CLUSTER_LABEL_PROFILE --> ENHANCED_CLUSTER_PROFILES["Enhanced cluster_profiles_mean (with Repurchase Rate & Size)"];
             
-            ENHANCED_CLUSTER_PROFILES --> PERSONA_THRESHOLDS[Define Persona Thresholds];
-            PERSONA_THRESHOLDS & ENHANCED_CLUSTER_PROFILES --> ASSIGN_PERSONAS[Assign Personas to Clusters (persona_map)];
-            ASSIGN_PERSONAS --> DF_SEG_WITH_PERSONAS[Update df_segmentation_data_with_clusters with 'persona' col];
+            ENHANCED_CLUSTER_PROFILES --> PERSONA_THRESHOLDS["Define Persona Thresholds"];
+            PERSONA_THRESHOLDS & ENHANCED_CLUSTER_PROFILES --> ASSIGN_PERSONAS["Assign Personas to Clusters (persona_map)"];
+            ASSIGN_PERSONAS --> DF_SEG_WITH_PERSONAS["Update df_segmentation_data_with_clusters with 'persona' col"];
             
-            DF_SEG_WITH_PERSONAS & CLUSTER_LABEL_PROFILE & PERSONA_THRESHOLDS --> VALIDATE_PERSONAS[Persona Performance Validation];
+            DF_SEG_WITH_PERSONAS & CLUSTER_LABEL_PROFILE & PERSONA_THRESHOLDS --> VALIDATE_PERSONAS["Persona Performance Validation"];
        
-            DF_SEG_WITH_PERSONAS & USER_LEVEL_LABELS_CALC --> MERGED_FOR_FINAL_PROFILING[df_merged_for_profiling (for Part IV reporting)];
-            MERGED_FOR_FINAL_PROFILING --> ANALYZE_PERSONA_REPURCHASE[Analyze/Report Repurchase by Persona];
-            CLUSTER_LABEL_PROFILE --> VISUALIZE_CLUSTER_REPURCHASE[Visualize Repurchase by Cluster];
-            ANALYZE_PERSONA_REPURCHASE --> VISUALIZE_PERSONA_REPURCHASE[Visualize Repurchase by Persona];
+            DF_SEG_WITH_PERSONAS & USER_LEVEL_LABELS_CALC --> MERGED_FOR_FINAL_PROFILING["df_merged_for_profiling (for Part IV reporting)"];
+            MERGED_FOR_FINAL_PROFILING --> ANALYZE_PERSONA_REPURCHASE["Analyze/Report Repurchase by Persona"];
+            CLUSTER_LABEL_PROFILE --> VISUALIZE_CLUSTER_REPURCHASE["Visualize Repurchase by Cluster"];
+            ANALYZE_PERSONA_REPURCHASE --> VISUALIZE_PERSONA_REPURCHASE["Visualize Repurchase by Persona"];
         end
         
         subgraph "Part V: Insights & Deployment Planning"
             direction TB
-            FINAL_MODEL & SHAP_OUTPUT & DF_SEG_WITH_PERSONAS & ANALYZE_PERSONA_REPURCHASE & CLUSTER_LABEL_PROFILE --> BUSINESS_INSIGHTS[Generate Business Insights & Recommendations];
-            FINAL_MODEL --> DEPLOY_MODEL[Plan: Deploy Model for Future Predictions];
+            FINAL_MODEL & SHAP_OUTPUT & DF_SEG_WITH_PERSONAS & ANALYZE_PERSONA_REPURCHASE & CLUSTER_LABEL_PROFILE --> BUSINESS_INSIGHTS["Generate Business Insights & Recommendations"];
+            FINAL_MODEL --> DEPLOY_MODEL["Plan: Deploy Model for Future Predictions"];
         end
     end
 
